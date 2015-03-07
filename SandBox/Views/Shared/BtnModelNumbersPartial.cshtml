@@ -1,0 +1,63 @@
+﻿@model SandBox.Models.ItemVM
+
+<div class="panel-heading"><h3>Models:</h3></div>
+<div class="panel panel-default btn-group">
+    @foreach (var item in Model.itemNumbersFull)
+    {
+        if (Model.BtnsOrderVM.SelNumbers.ContainsKey(item))
+        {
+            if (Model.BtnsOrderVM.SelNumbers[item])
+            {
+                @Html.ActionLink(item.ToString(), "SelectItem", new { itemNumber = item }, new { @class = "btn btn-primary active" })
+            }
+            else
+            {
+                @Html.ActionLink(item.ToString(), "SelectItem", new { itemNumber = item }, new { @class = "btn btn-primary" })
+            }
+        }
+        else
+        {
+            @Html.ActionLink(item.ToString(), "SelectItem", new { itemNumber = item }, new { @class = "btn btn-primary" })
+        }
+    }
+</div>
+
+    <div class="panel-heading">
+        <h3 class="panel-title">
+            <a data-toggle="collapse" data-target="#collapseOne"
+               href="#collapseOne" class="collapsed">Colors:</a>
+        </h3>
+    </div>
+    <div id="collapseOne" class="panel panel-collapse collapse">
+        <div class="btn-group" data-toggle="buttons">
+            @foreach (var color in Model.itemColors[Model.BtnsOrderVM.SelNumbers.Where(x => x.Value == true).FirstOrDefault().Key])
+            {
+                <label class="btn btn-primary">
+                    <input type="radio" name="@color" id="@color" autocomplete="off" > @color
+                </label>
+            }
+        </div>
+    </div>
+
+<div class="panel-heading">
+    <h3 class="panel-title">
+        <a data-toggle="collapse" data-target="#collapseTwo"
+           href="#collapseTwo" class="collapsed">Sizes:</a>
+    </h3>
+</div>
+<div id="collapseTwo" class="panel panel-collapse collapse">
+    <div class="btn-group" data-toggle="buttons">
+        @foreach (var size in Model.itemSizes[Model.BtnsOrderVM.SelNumbers.Where(x => x.Value == true).FirstOrDefault().Key])
+        {
+            <label class="btn btn-primary">
+                <input type="radio" name="@size" id="@size" autocomplete="off"> @size
+            </label>
+        }
+    </div>
+</div>
+<div>
+    Git start!
+</div>
+
+
+

@@ -1,0 +1,65 @@
+﻿@model SandBox.Models.ItemVM
+
+
+@foreach (var modelNumber in Model.itemNumbers)
+{
+    <div>
+        <table class="table table-condensed table-bordered">
+            <tr>
+                <th>@modelNumber</th>
+                @foreach (var size in Model.itemSizes[modelNumber])
+                {
+                    <th>@size</th>
+                }
+            </tr>
+            @foreach (var color in Model.itemColors[modelNumber])
+            {
+                <tr>
+                    <th>@color</th>
+                    @{
+                //Warning!: some dangerous magic detected
+
+                int prev = Model.itemSizes[modelNumber].Min();
+                int curr = 0;
+                int index = 1;
+                bool firstNotDisplayed = true;
+
+                foreach (var whItem in Model.itemsList[modelNumber].Where(x => x.Color == color))
+                {
+                    curr = whItem.Size;
+                        if ((curr - prev) != 2 || ((curr - prev) == 2
+                            && firstNotDisplayed))
+                        {
+                            if (firstNotDisplayed && curr - Model.itemSizes[modelNumber].Min() == 2
+                                || firstNotDisplayed && curr - Model.itemSizes[modelNumber].Min() >= 4)
+                            {
+                                <td></td>
+                            }
+
+                            int emptyTdCount = ((curr - prev) / 2) - 1;
+                            for (int i = 0; i < emptyTdCount; i++)
+                            {
+                                <td></td>
+                            }
+
+                            <td>@whItem.Quantity</td>
+
+                            firstNotDisplayed = false;
+                        }
+                        else
+                        {
+                            <td>@whItem.Quantity</td>
+                            firstNotDisplayed = false;
+                        }
+
+                        prev = curr;
+                        index++;
+                }
+                    }
+                </tr>
+            }
+        </table>
+
+    </div>
+}
+

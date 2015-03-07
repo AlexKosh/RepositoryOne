@@ -1,0 +1,19 @@
+﻿@model SandBox.Models.ItemVM
+
+@{
+    ViewBag.Title = "Order";
+}
+
+<br />
+<div>
+    @Html.Partial("BtnModelNumbersPartial", Model)
+</div>
+
+<div>
+    <h2>Pre-ordered:</h2>
+    @Html.Partial("SizeColTablePartial", Model)
+</div>
+
+<div class="text-center">
+    @Html.ActionLink("To Home/Index", "Index", "Home", null, new { @class = "btn btn-default" })
+</div>
