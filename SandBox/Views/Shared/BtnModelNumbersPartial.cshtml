@@ -1,63 +1,64 @@
 ﻿@model SandBox.Models.ItemVM
 
-<div class="panel-heading"><h3>Models:</h3></div>
-<div class="panel panel-default btn-group">
-    @foreach (var item in Model.itemNumbersFull)
-    {
-        if (Model.BtnsOrderVM.SelNumbers.ContainsKey(item))
+@using (Html.BeginForm("SelectModel"))
+{
+    <div class="panel-heading"><h3>Models:</h3></div>
+
+    <div class="panel panel-default btn-group">
+        @foreach (var itemNumber in Model.itemNumbersFull)
         {
-            if (Model.BtnsOrderVM.SelNumbers[item])
+            if (itemNumber == (int)Session["SelectedModelNumber"])
             {
-                @Html.ActionLink(item.ToString(), "SelectItem", new { itemNumber = item }, new { @class = "btn btn-primary active" })
+                @Html.ActionLink(itemNumber.ToString(), "SelectModel",
+                new { id = itemNumber }, new { @class = "btn btn-success" });
             }
             else
             {
-                @Html.ActionLink(item.ToString(), "SelectItem", new { itemNumber = item }, new { @class = "btn btn-primary" })
+                @Html.ActionLink(itemNumber.ToString(), "SelectModel",
+                new { id = itemNumber }, new { @class = "btn btn-default" });
             }
         }
-        else
-        {
-            @Html.ActionLink(item.ToString(), "SelectItem", new { itemNumber = item }, new { @class = "btn btn-primary" })
-        }
-    }
-</div>
-
-    <div class="panel-heading">
-        <h3 class="panel-title">
-            <a data-toggle="collapse" data-target="#collapseOne"
-               href="#collapseOne" class="collapsed">Colors:</a>
-        </h3>
     </div>
-    <div id="collapseOne" class="panel panel-collapse collapse">
-        <div class="btn-group" data-toggle="buttons">
-            @foreach (var color in Model.itemColors[Model.BtnsOrderVM.SelNumbers.Where(x => x.Value == true).FirstOrDefault().Key])
+
+    if (Session["SelectedModelNumber"] != null)
+    {
+        <br />
+        <div class="panel panel-default btn-group">
+            @foreach (var itemColor in Model.itemColors[(int)Session["SelectedModelNumber"]])
             {
-                <label class="btn btn-primary">
-                    <input type="radio" name="@color" id="@color" autocomplete="off" > @color
-                </label>
+                if (itemColor == (string)Session["SelectedColor"])
+                {
+                    @Html.ActionLink(itemColor, "SelectColor",
+                new { id = itemColor }, new { @class = "btn btn-success" });
+                }
+                else
+                {
+                    @Html.ActionLink(itemColor, "SelectColor",
+                    new { id = itemColor }, new { @class = "btn btn-default" });
+                }
             }
         </div>
-    </div>
-
-<div class="panel-heading">
-    <h3 class="panel-title">
-        <a data-toggle="collapse" data-target="#collapseTwo"
-           href="#collapseTwo" class="collapsed">Sizes:</a>
-    </h3>
-</div>
-<div id="collapseTwo" class="panel panel-collapse collapse">
-    <div class="btn-group" data-toggle="buttons">
-        @foreach (var size in Model.itemSizes[Model.BtnsOrderVM.SelNumbers.Where(x => x.Value == true).FirstOrDefault().Key])
-        {
-            <label class="btn btn-primary">
-                <input type="radio" name="@size" id="@size" autocomplete="off"> @size
-            </label>
-        }
-    </div>
-</div>
-<div>
-    Git start!
-</div>
+    }
+    if (Session["SelectedColor"] != null)
+    {
+        <br />
+        <div class="panel panel-default btn-group">
+            @foreach (var itemSize in Model.itemSizes[(int)Session["SelectedModelNumber"]])
+            {
+                @Html.ActionLink(itemSize.ToString(), "SelectSize", new { id = itemSize },
+                new { @class = "btn btn-default" });
+            }
+        </div>
+    }
 
 
-
+    @*<div class="panel">
+            <p>
+                <span style="font-size:x-large">Selected:</span>
+                <br />
+                model: @Session["SelectedModelNumber"]
+                <br />
+                color: @Session["SelectedColor"]
+            </p>
+        </div>*@
+}

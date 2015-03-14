@@ -122,12 +122,7 @@ namespace SandBox.Concrete
             itemVM.itemSizes = new Dictionary<int, List<int>>();
             List<WarehouseItem> itemsList = new List<WarehouseItem>();
             itemVM.itemsList = new Dictionary<int, List<WarehouseItem>>();
-
-            if (itemVM.BtnsOrderVM.SelNumbers == null)
-            {
-                itemVM.BtnsOrderVM.SelNumbers = new Dictionary<int, bool>();
-            }            
-
+                        
             foreach (int modelNumber in itemVM.itemNumbers)
             {
 
@@ -155,8 +150,7 @@ namespace SandBox.Concrete
         public ItemVM MakeItemVM(IEnumerable<WarehouseItem> itemParam,
             List<int> FullNumbersParam,
             Dictionary<int, List<int>> SizesParam,
-            Dictionary<int, List<string>> ColorsParam,
-            BtnsOrderVM btnOrderVMParam)
+            Dictionary<int, List<string>> ColorsParam)
         {
             ItemVM itemVM = new ItemVM();            
 
@@ -180,8 +174,7 @@ namespace SandBox.Concrete
             List<WarehouseItem> itemsList = new List<WarehouseItem>();
 
             itemVM.itemColors = ColorsParam;
-            itemVM.itemSizes = SizesParam;
-            itemVM.BtnsOrderVM = btnOrderVMParam;
+            itemVM.itemSizes = SizesParam;            
 
             foreach (int modelNumber in itemVM.itemNumbers)
             {               

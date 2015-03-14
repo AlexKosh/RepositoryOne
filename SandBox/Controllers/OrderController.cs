@@ -10,7 +10,21 @@ namespace SandBox.Controllers
 {
     public class OrderController : Controller
     {
-        public List<WarehouseItem> orders = new List<WarehouseItem>();
+        public List<WarehouseItem> orders = new List<WarehouseItem>() 
+        {
+            new WarehouseItem { ItemNumber = 417, Name = "Vika", Color = "Blue", Size = 44, Price = 680, Quantity = 1344 },
+            new WarehouseItem { ItemNumber = 417, Name = "Vika", Color = "Blue", Size = 48, Price = 680, Quantity = 1348 },
+            new WarehouseItem { ItemNumber = 417, Name = "Vika", Color = "Pearl", Size = 48, Price = 680, Quantity = 448 },
+            new WarehouseItem { ItemNumber = 417, Name = "Vika", Color = "Blue", Size = 56, Price = 680, Quantity = 1356 },
+            new WarehouseItem { ItemNumber = 423, Name = "Vera", Color = "Pearl", Size = 56, Price = 710, Quantity = 456 },
+            new WarehouseItem { ItemNumber = 417, Name = "Vika", Color = "Black", Size = 46, Price = 680, Quantity = 13146 },
+            new WarehouseItem { ItemNumber = 423, Name = "Vera", Color = "Pearl", Size = 48, Price = 710, Quantity = 448 },
+            new WarehouseItem { ItemNumber = 423, Name = "Vera", Color = "Blue", Size = 56, Price = 710, Quantity = 1356 },
+            new WarehouseItem { ItemNumber = 423, Name = "Vera", Color = "Black", Size = 46, Price = 710, Quantity = 13146 },
+            new WarehouseItem { ItemNumber = 423, Name = "Vera", Color = "Pearl", Size = 52, Price = 710, Quantity = 452 },
+            new WarehouseItem { ItemNumber = 431, Name = "Nadia", Color = "Pearl", Size = 52, Price = 740, Quantity = 452 },
+            new WarehouseItem { ItemNumber = 431, Name = "Nadia", Color = "Pearl", Size = 54, Price = 740, Quantity = 0454 }
+        };
         
         private IItemRepository repository;
         public OrderController(IItemRepository repo)
@@ -20,98 +34,43 @@ namespace SandBox.Controllers
 
         ItemVM dbModel = new ItemVM();
         ItemVM ordersModel = new ItemVM();
+        WarehouseItem selectedItem = new WarehouseItem();
 
         public ActionResult Index()
         {
-            if (Session["BtnOrderVMSession"] != null)
+            if (Session["Ord"] != null)
             {
-                btnOrdVMSes = (BtnsOrderVM)Session["BtnOrderVMSession"];
-            }
-            orders.Add(new WarehouseItem { ItemNumber = 417, Name = "Vika", Color = "Blue", Size = 44, Price = 680, Quantity = 1344 });
-            orders.Add(new WarehouseItem { ItemNumber = 417, Name = "Vika", Color = "Blue", Size = 48, Price = 680, Quantity = 1348 });
-            orders.Add(new WarehouseItem { ItemNumber = 417, Name = "Vika", Color = "Pearl", Size = 48, Price = 680, Quantity = 448 });
-            orders.Add(new WarehouseItem { ItemNumber = 417, Name = "Vika", Color = "Blue", Size = 56, Price = 680, Quantity = 1356 });
-            orders.Add(new WarehouseItem { ItemNumber = 423, Name = "Vera", Color = "Pearl", Size = 56, Price = 710, Quantity = 456 });
-            orders.Add(new WarehouseItem { ItemNumber = 417, Name = "Vika", Color = "Black", Size = 46, Price = 680, Quantity = 13146 });
-            orders.Add(new WarehouseItem { ItemNumber = 423, Name = "Vera", Color = "Pearl", Size = 48, Price = 710, Quantity = 448 });
-            orders.Add(new WarehouseItem { ItemNumber = 423, Name = "Vera", Color = "Blue", Size = 56, Price = 710, Quantity = 1356 });
-            orders.Add(new WarehouseItem { ItemNumber = 423, Name = "Vera", Color = "Black", Size = 46, Price = 710, Quantity = 13146 });
-            orders.Add(new WarehouseItem { ItemNumber = 423, Name = "Vera", Color = "Pearl", Size = 52, Price = 710, Quantity = 452 });
-            orders.Add(new WarehouseItem { ItemNumber = 431, Name = "Nadia", Color = "Pearl", Size = 52, Price = 740, Quantity = 452 });
-            orders.Add(new WarehouseItem { ItemNumber = 431, Name = "Nadia", Color = "Pearl", Size = 54, Price = 740, Quantity = 0454 });
-
-
+                 orders = (List<WarehouseItem>)Session["Ord"];
+            }            
             dbModel = repository.MakeItemVM(repository.IEWarehouseItems);
-            ordersModel = repository.MakeItemVM(orders, dbModel.itemNumbers, dbModel.itemSizes, dbModel.itemColors, btnOrdVMSes);
+            ordersModel = repository.MakeItemVM(orders, dbModel.itemNumbers, dbModel.itemSizes, dbModel.itemColors);
 
             return View(ordersModel);
-        }
-
-        //public ActionResult AddToOrder()
-        //{
-        //    orders.Add(new WarehouseItem 
-        //    { ItemNumber = 417, Name = "Vika", Color = "Blue", Size = 44, Price = 680, Quantity = 1344 });
-        //    orders.Add(new WarehouseItem 
-        //    { ItemNumber = 417, Name = "Vika", Color = "Blue", Size = 48, Price = 680, Quantity = 1348 });
-        //    orders.Add(new WarehouseItem 
-        //    { ItemNumber = 417, Name = "Vika", Color = "Pearl", Size = 48, Price = 680, Quantity = 448 });
-        //    orders.Add(new WarehouseItem 
-        //    { ItemNumber = 417, Name = "Vika", Color = "Blue", Size = 56, Price = 680, Quantity = 1356 });
-        //    orders.Add(new WarehouseItem 
-        //    { ItemNumber = 423, Name = "Vera", Color = "Pearl", Size = 56, Price = 710, Quantity = 456 });
-        //    orders.Add(new WarehouseItem 
-        //    { ItemNumber = 417, Name = "Vika", Color = "Black", Size = 46, Price = 680, Quantity = 13146 });
-        //    orders.Add(new WarehouseItem
-        //    { ItemNumber = 423, Name = "Vera", Color = "Pearl", Size = 48, Price = 710, Quantity = 448 });
-        //    orders.Add(new WarehouseItem
-        //    { ItemNumber = 423, Name = "Vera", Color = "Blue", Size = 56, Price = 710, Quantity = 1356 });
-        //    orders.Add(new WarehouseItem
-        //    { ItemNumber = 423, Name = "Vera", Color = "Black", Size = 46, Price = 710, Quantity = 13146 });
-        //    orders.Add(new WarehouseItem
-        //    { ItemNumber = 423, Name = "Vera", Color = "Pearl", Size = 52, Price = 710, Quantity = 452 });
-
-        //    dbModel = repository.MakeItemVM(repository.IEWarehouseItems);
-        //    ordersModel = repository.MakeItemVM(orders, dbModel.itemNumbers, dbModel.itemSizes, dbModel.itemColors, dbModel.BtnsOrderVM);
-
-        //    return View("Index", ordersModel);
-        //}
-               
-        BtnsOrderVM btnOrdVMSes = new BtnsOrderVM();
-
-
-        public ActionResult SelectItem(int itemNumber)
+        }               
+        
+        public RedirectToRouteResult SelectModel(int id = 0)
         {
-            if (Session["BtnOrderVMSession"] != null)
-            {
-                btnOrdVMSes = (BtnsOrderVM)Session["BtnOrderVMSession"];
-            }
-            
-            orders.Add(new WarehouseItem { ItemNumber = 417, Name = "Vika", Color = "Blue", Size = 44, Price = 680, Quantity = 1344 });
-            orders.Add(new WarehouseItem { ItemNumber = 417, Name = "Vika", Color = "Blue", Size = 48, Price = 680, Quantity = 1348 });
-            orders.Add(new WarehouseItem { ItemNumber = 417, Name = "Vika", Color = "Pearl", Size = 48, Price = 680, Quantity = 448 });
-            
-            dbModel = repository.MakeItemVM(repository.IEWarehouseItems);
-            ordersModel = repository.MakeItemVM(orders, dbModel.itemNumbers, dbModel.itemSizes, dbModel.itemColors, btnOrdVMSes);
-                                               
-            if (btnOrdVMSes.SelNumbers.ContainsKey(itemNumber))
-            {
-                if (btnOrdVMSes.SelNumbers[itemNumber])
-                {
-                    btnOrdVMSes.SelNumbers[itemNumber] = false;
-                }
-                else
-                {
-                    btnOrdVMSes.SelNumbers[itemNumber] = true;
-                }
-            }
-            else
-            {
-                btnOrdVMSes.SelNumbers.Add(itemNumber, true);
-            }
-
-            Session.Add("BtnOrderVMSession", btnOrdVMSes);
-            
-            return View("Index", ordersModel);
+            Session["SelectedModelNumber"] = id;      
+            return RedirectToAction("Index");
         }
+
+        public RedirectToRouteResult SelectColor(string id = "")
+        {
+            Session["SelectedColor"] = id;
+            return RedirectToAction("Index");
+        }
+        public RedirectToRouteResult SelectSize(int id = 0)
+        {
+            Session["SelectedSize"] = id;
+            orders.Add(new WarehouseItem
+            {
+                ItemNumber = (int)Session["SelectedModelNumber"],
+                Color = Session["SelectedColor"].ToString(),
+                Size = id,
+                Quantity = 1
+            });
+            Session["Ord"] = orders;
+            return RedirectToAction("Index");
+        }  
     }
 }

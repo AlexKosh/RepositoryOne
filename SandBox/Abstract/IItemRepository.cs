@@ -29,7 +29,6 @@ namespace SandBox.Abstract
         ItemVM MakeItemVM(IEnumerable<WarehouseItem> itemParam,
             List<int> FullNumbersParam,
             Dictionary<int, List<int>> SizesParam,
-            Dictionary<int, List<string>> ColorsParam,
-            BtnsOrderVM btnOrderVMParam);
+            Dictionary<int, List<string>> ColorsParam);
     }
 }
