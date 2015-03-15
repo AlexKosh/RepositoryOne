@@ -236,6 +236,35 @@ namespace SandBox.Concrete
             return itemVM;
         }
 
+
+        public void SetPrice(int itemNumberParam, int newPrice)
+        {
+            var WhItemsList = IEWarehouseItems
+                .Where(x => x.ItemNumber == itemNumberParam)
+                .Select(x => x);
+            var StItemsList = IEStoreItems
+                .Where(x => x.ItemNumber == itemNumberParam)
+                .Select(x => x);
+
+            if (WhItemsList != null)
+            {
+                foreach (var item in WhItemsList)
+                {
+                    item.Price = newPrice;
+                }
+            }
+
+            if (StItemsList != null)
+            {
+                foreach (var item in StItemsList)
+                {
+                    item.Price = newPrice;
+                }
+            }  
+
+            context.SaveChanges();
+        }
+
         //populate Db with model 417, 423, 431, 432
         public void Populate()
         {

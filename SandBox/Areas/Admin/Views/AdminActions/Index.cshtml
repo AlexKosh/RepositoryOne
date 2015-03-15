@@ -1,0 +1,12 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Index - Admin</h2>
+
+@Html.Partial("SetPrice")
+
+<label class="label label-primary">@Session["itemExample"]</label>
+<label class="label label-primary">@Session["priceExample"]</label>

@@ -1,0 +1,12 @@
+﻿<div class="panel-body">
+    <h3>Set new price:</h3>
+    @using (Html.BeginForm("SetPrice"))
+    {
+        <label>Model #:</label>
+        <input name="itemNumb" type="number" value=""/>
+        <label>New price:</label>
+        <input name="newPrice" type="number" value="" />
+        
+        <input class="btn btn-success" type="submit" value="Set new price" />
+    }
+</div>

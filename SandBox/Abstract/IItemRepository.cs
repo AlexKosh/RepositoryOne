@@ -39,5 +39,8 @@ namespace SandBox.Abstract
 
         //overload MakeItemVM method for StoreItem
         ItemVM<StoreItem> MakeItemVM(IEnumerable<StoreItem> ieItem);
+
+        //Sets the price for the model 
+        void SetPrice(int itemNumber, int newPrice);
     }
 }
