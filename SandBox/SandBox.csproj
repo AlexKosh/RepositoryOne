@@ -107,6 +107,10 @@
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Areas\WholesalersAndOrders\Views\web.config" />
+    <Content Include="Areas\Warehouse\Views\web.config" />
+    <Content Include="Areas\Warehouse\Views\_ViewStart.cshtml" />
+    <Content Include="Areas\Warehouse\Views\Shared\_Layout.cshtml" />
+    <Content Include="Areas\Warehouse\Views\OnStock\Index.cshtml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -119,6 +123,8 @@
     <Compile Include="Abstract\IItemRepository.cs" />
     <Compile Include="App_Start\NinjectWebCommon.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Areas\Warehouse\Controllers\OnStockController.cs" />
+    <Compile Include="Areas\Warehouse\WarehouseAreaRegistration.cs" />
     <Compile Include="Areas\WholesalersAndOrders\Models\Order.cs" />
     <Compile Include="Areas\WholesalersAndOrders\Models\Wholesaler.cs" />
     <Compile Include="Areas\WholesalersAndOrders\WholesalersAndOrdersAreaRegistration.cs" />
@@ -137,6 +143,10 @@
     <Compile Include="Migrations\201503150719452_AddWholesalersAndOrders.cs" />
     <Compile Include="Migrations\201503150719452_AddWholesalersAndOrders.Designer.cs">
       <DependentUpon>201503150719452_AddWholesalersAndOrders.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201503151030396_AddDescriptionToOrderDbSet.cs" />
+    <Compile Include="Migrations\201503151030396_AddDescriptionToOrderDbSet.Designer.cs">
+      <DependentUpon>201503151030396_AddDescriptionToOrderDbSet.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\BtnsOrderVM.cs" />
@@ -169,6 +179,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Areas\Warehouse\Models\" />
     <Folder Include="Areas\WholesalersAndOrders\Controllers\" />
     <Folder Include="Areas\WholesalersAndOrders\Views\Shared\" />
   </ItemGroup>
@@ -178,6 +189,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201503150719452_AddWholesalersAndOrders.resx">
       <DependentUpon>201503150719452_AddWholesalersAndOrders.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201503151030396_AddDescriptionToOrderDbSet.resx">
+      <DependentUpon>201503151030396_AddDescriptionToOrderDbSet.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

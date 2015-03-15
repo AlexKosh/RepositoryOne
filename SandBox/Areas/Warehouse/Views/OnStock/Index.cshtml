@@ -1,0 +1,17 @@
+﻿@model SandBox.Models.ItemVM
+
+@{
+    ViewBag.Title = "Wh";
+}
+
+<h2>Warehouse: </h2>
+
+<div class="btn-group">
+    @Html.ActionLink("To the Main page", "Index", "Home",
+    new { area = "" }, new { @class = "btn btn-default" })
+</div>
+
+<div>
+    @Html.Partial("SizeColTablePartial", Model);
+</div>
+

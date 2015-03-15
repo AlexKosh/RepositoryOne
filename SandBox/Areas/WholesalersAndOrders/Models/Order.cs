@@ -21,5 +21,6 @@ namespace SandBox.Areas.WholesalersAndOrders.Models
         public bool Delivery { get; set; }
         public string DeliveryAddress { get; set; }
         public DateTime DeliveryDateTime { get; set; }
+        public string Description { get; set; }
     }
 }

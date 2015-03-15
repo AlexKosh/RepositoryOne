@@ -195,6 +195,8 @@ namespace SandBox.Concrete
             }
             return itemVM;
         }
+
+        //populate Db with model 417, 423, 431, 432
         public void Populate()
         {
             List<string> colors = new List<string>() {"Blue", "Pearl", "Black", "Dark Biege"};
