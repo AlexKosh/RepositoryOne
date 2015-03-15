@@ -23,5 +23,12 @@ namespace SandBox.Areas.Store.Controllers
             DbModel = repository.MakeItemVM(repository.IEStoreItems);   
             return View(DbModel);
         }
+
+        public ActionResult PickItem(int model, string color, int size)
+        {
+            string order = string.Format("Picked: {0} {1} {2}", model, color, size);
+            Session["OrderExam"] = order;
+            return RedirectToAction("index");
+        }
     }
 }

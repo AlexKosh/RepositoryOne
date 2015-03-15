@@ -1,4 +1,4 @@
-﻿@model SandBox.Models.ItemVM<SandBox.Models.StoreItem>
+﻿@model SandBox.Models.ItemVM<SandBox.Models.WarehouseItem>
 
 
 @foreach (var modelNumber in Model.itemNumbers)
@@ -26,9 +26,9 @@
                 int index = 1;
                 bool firstNotDisplayed = true;
 
-                foreach (var stItem in Model.itemsList[modelNumber].Where(x => x.Color == color))
+                foreach (var whItem in Model.itemsList[modelNumber].Where(x => x.Color == color))
                 {
-                    curr = stItem.Size;
+                    curr = whItem.Size;
                         if ((curr - prev) != 2 || ((curr - prev) == 2
                             && firstNotDisplayed))
                         {
@@ -47,8 +47,8 @@
                             }
 
                             <td style="text-align:center">
-                                @Html.ActionLink(stItem.Quantity.ToString(), "PickItem",
-                                new { model = modelNumber, color = color, size = stItem.Size },
+                                @Html.ActionLink(whItem.Quantity.ToString(), "PickItem",
+                                new { model = modelNumber, color = color, size = whItem.Size },
                                 new { @class = "btn btn-default" })                               
                             </td>
 
@@ -57,8 +57,8 @@
                         else
                         {
                             <td style="text-align:center">
-                                @Html.ActionLink(stItem.Quantity.ToString(), "PickItem",
-                                new { model = modelNumber, color = color, size = stItem.Size },
+                                @Html.ActionLink(whItem.Quantity.ToString(), "PickItem",
+                                new { model = modelNumber, color = color, size = whItem.Size },
                                 new { @class = "btn btn-default" })
                             </td>
                             firstNotDisplayed = false;

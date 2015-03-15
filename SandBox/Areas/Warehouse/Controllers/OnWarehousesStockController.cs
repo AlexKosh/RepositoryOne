@@ -19,5 +19,12 @@ namespace SandBox.Areas.Warehouse.Controllers
         {            
             return View(repository.MakeItemVM(repository.IEWarehouseItems));
         }
+
+        public ActionResult PickItem(int model, string color, int size)
+        {
+            string order = string.Format("Picked: {0} {1} {2}", model, color, size);
+            Session["OrderExamWh"] = order;
+            return RedirectToAction("Index");
+        }
     }
 }

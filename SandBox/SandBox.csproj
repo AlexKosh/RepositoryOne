@@ -119,6 +119,7 @@
     <Content Include="Areas\Admin\Views\web.config" />
     <Content Include="Areas\Admin\Views\AdminActions\Index.cshtml" />
     <Content Include="Areas\Admin\Views\AdminActions\SetPrice.cshtml" />
+    <Content Include="Areas\Warehouse\Views\Shared\SizeColTablePartial.cshtml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -135,7 +136,7 @@
     <Compile Include="Areas\Admin\Controllers\AdminActionsController.cs" />
     <Compile Include="Areas\Store\Controllers\OnStoresStockController.cs" />
     <Compile Include="Areas\Store\StoreAreaRegistration.cs" />
-    <Compile Include="Areas\Warehouse\Controllers\OnStockController.cs" />
+    <Compile Include="Areas\Warehouse\Controllers\OnWarehousesStockController.cs" />
     <Compile Include="Areas\Warehouse\WarehouseAreaRegistration.cs" />
     <Compile Include="Areas\WholesalersAndOrders\Models\Order.cs" />
     <Compile Include="Areas\WholesalersAndOrders\Models\Wholesaler.cs" />
@@ -192,7 +193,6 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Areas\Admin\Models\" />
-    <Folder Include="Areas\Admin\Views\Actions\" />
     <Folder Include="Areas\Admin\Views\Shared\" />
     <Folder Include="Areas\Store\Models\" />
     <Folder Include="Areas\Warehouse\Models\" />
