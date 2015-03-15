@@ -62,6 +62,12 @@ namespace SandBox.Controllers
         public RedirectToRouteResult SelectSize(int id = 0)
         {
             Session["SelectedSize"] = id;
+
+            if (Session["Ord"] != null)
+            {
+                orders = (List<WarehouseItem>)Session["Ord"];
+            } 
+
             orders.Add(new WarehouseItem
             {
                 ItemNumber = (int)Session["SelectedModelNumber"],

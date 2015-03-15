@@ -7,7 +7,7 @@
     <div class="panel panel-default btn-group">
         @foreach (var itemNumber in Model.itemNumbersFull)
         {
-            if (itemNumber == (int)Session["SelectedModelNumber"])
+            if (itemNumber == (int?)Session["SelectedModelNumber"])
             {
                 @Html.ActionLink(itemNumber.ToString(), "SelectModel",
                 new { id = itemNumber }, new { @class = "btn btn-success" });
@@ -42,23 +42,13 @@
     if (Session["SelectedColor"] != null)
     {
         <br />
-        <div class="panel panel-default btn-group">
+        <div class="panel panel-default btn-group">            
             @foreach (var itemSize in Model.itemSizes[(int)Session["SelectedModelNumber"]])
             {
                 @Html.ActionLink(itemSize.ToString(), "SelectSize", new { id = itemSize },
                 new { @class = "btn btn-default" });
             }
+            @Html.ActionLink("All", "SelectAllSizes", null, new { @class = "btn btn-default" })
         </div>
-    }
-
-
-    @*<div class="panel">
-            <p>
-                <span style="font-size:x-large">Selected:</span>
-                <br />
-                model: @Session["SelectedModelNumber"]
-                <br />
-                color: @Session["SelectedColor"]
-            </p>
-        </div>*@
+    }     
 }
