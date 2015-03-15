@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using SandBox.Models;
+using SandBox.Areas.WholesalersAndOrders.Models;
 
 namespace SandBox.Abstract
 {
@@ -14,6 +15,10 @@ namespace SandBox.Abstract
         IEnumerable<StoreItem> IEStoreItems { get; }
 
         IEnumerable<SoldItem> IESoldItems { get; }
+
+        IEnumerable<Order> IEOrder { get; }
+
+        IEnumerable<Wholesaler> IEWholesaler { get; }
 
         void SaveOrder(IEnumerable<IItem> order);
 

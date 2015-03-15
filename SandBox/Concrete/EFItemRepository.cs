@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using SandBox.Abstract;
 using SandBox.Models;
+using SandBox.Areas.WholesalersAndOrders.Models;
 
 namespace SandBox.Concrete
 {
@@ -21,6 +22,14 @@ namespace SandBox.Concrete
         public IEnumerable<SoldItem> IESoldItems
         {
             get { return context.SoldDbSet; }
+        }
+        public IEnumerable<Order> IEOrder
+        {
+            get { return context.OrderDbSet; }
+        }
+        public IEnumerable<Wholesaler> IEWholesaler
+        {
+            get { return context.WholesalerDbSet; }
         }
 
         public void SaveOrder(IEnumerable<IItem> order)

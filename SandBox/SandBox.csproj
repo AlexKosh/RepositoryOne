@@ -106,6 +106,7 @@
     <Content Include="Global.asax" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Areas\WholesalersAndOrders\Views\web.config" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -118,6 +119,9 @@
     <Compile Include="Abstract\IItemRepository.cs" />
     <Compile Include="App_Start\NinjectWebCommon.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Areas\WholesalersAndOrders\Models\Order.cs" />
+    <Compile Include="Areas\WholesalersAndOrders\Models\Wholesaler.cs" />
+    <Compile Include="Areas\WholesalersAndOrders\WholesalersAndOrdersAreaRegistration.cs" />
     <Compile Include="Concrete\EFDbContext.cs" />
     <Compile Include="Concrete\EFItemRepository.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -126,6 +130,15 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Infrastructure\NinjectDependencyResolver.cs" />
+    <Compile Include="Migrations\201503041528361_InitialCreate.cs" />
+    <Compile Include="Migrations\201503041528361_InitialCreate.Designer.cs">
+      <DependentUpon>201503041528361_InitialCreate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201503150719452_AddWholesalersAndOrders.cs" />
+    <Compile Include="Migrations\201503150719452_AddWholesalersAndOrders.Designer.cs">
+      <DependentUpon>201503150719452_AddWholesalersAndOrders.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\BtnsOrderVM.cs" />
     <Compile Include="Models\ItemVM.cs" />
     <Compile Include="Models\OrderList.cs" />
@@ -156,6 +169,16 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Areas\WholesalersAndOrders\Controllers\" />
+    <Folder Include="Areas\WholesalersAndOrders\Views\Shared\" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201503041528361_InitialCreate.resx">
+      <DependentUpon>201503041528361_InitialCreate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201503150719452_AddWholesalersAndOrders.resx">
+      <DependentUpon>201503150719452_AddWholesalersAndOrders.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
