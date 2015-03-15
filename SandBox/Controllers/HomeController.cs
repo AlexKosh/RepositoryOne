@@ -19,7 +19,7 @@ namespace SandBox.Controllers
 
         public ActionResult Index()
         {            
-            return View(repository.MakeItemVM(repository.IEWarehouseItems));
+            return View();
         }       
 
     }

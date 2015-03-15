@@ -1,4 +1,4 @@
-﻿@model SandBox.Models.ItemVM
+﻿@model SandBox.Models.ItemVM<SandBox.Models.WarehouseItem>
 
 @{
     ViewBag.Title = "Main page";
@@ -7,12 +7,3 @@
 
 </div>
 
-<div class="panel-body navbar-top">
-    <div class="btn-group-lg text-center">
-        @Html.ActionLink("Orderlist", "Index", "Order", null, new { @class = "btn btn-default" })
-        @Html.ActionLink("Warehouse", "Index", "OnStock",
-    new { @area = "Warehouse" }, new { @class = "btn btn-default" })
-        @Html.ActionLink("Store", "Index", "OnStock",
-        new { @area = "Store" }, new { @class = "btn btn-default" })
-    </div>
-</div>

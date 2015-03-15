@@ -7,10 +7,10 @@ using System.Web.Mvc;
 
 namespace SandBox.Areas.Warehouse.Controllers
 {
-    public class OnStockController : Controller
+    public class OnWarehousesStockController : Controller
     {
         private IItemRepository repository;
-        public OnStockController(IItemRepository repo)
+        public OnWarehousesStockController(IItemRepository repo)
         {
             this.repository = repo;
         }

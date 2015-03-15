@@ -30,10 +30,14 @@ namespace SandBox.Abstract
 
         void DeleteItem(int itemID);
 
-        ItemVM MakeItemVM(IEnumerable<WarehouseItem> ieItem);
-        ItemVM MakeItemVM(IEnumerable<WarehouseItem> itemParam,
+        //overload MakeItemVM method for WarehouseItem
+        ItemVM<WarehouseItem> MakeItemVM(IEnumerable<WarehouseItem> ieItem);
+        ItemVM<WarehouseItem> MakeItemVM(IEnumerable<WarehouseItem> itemParam,
             List<int> FullNumbersParam,
             Dictionary<int, List<int>> SizesParam,
             Dictionary<int, List<string>> ColorsParam);
+
+        //overload MakeItemVM method for StoreItem
+        ItemVM<StoreItem> MakeItemVM(IEnumerable<StoreItem> ieItem);
     }
 }

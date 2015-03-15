@@ -118,9 +118,9 @@ namespace SandBox.Concrete
             }
         }
 
-        public ItemVM MakeItemVM(IEnumerable<WarehouseItem> ieItem)
+        public ItemVM<WarehouseItem> MakeItemVM(IEnumerable<WarehouseItem> ieItem)
         {
-            ItemVM itemVM = new ItemVM();
+            ItemVM<WarehouseItem> itemVM = new ItemVM<WarehouseItem>();
 
             itemVM.itemNumbers = ieItem
                 .Select(x => x.ItemNumber).Distinct().ToList();
@@ -155,13 +155,53 @@ namespace SandBox.Concrete
             }
             return itemVM;
         }
+
+        //overload MakeItemVM method with 1 param for StoreItem
+        public ItemVM<StoreItem> MakeItemVM(IEnumerable<StoreItem> ieItem)
+        {
+            ItemVM<StoreItem> itemVM = new ItemVM<StoreItem>();
+
+            itemVM.itemNumbers = ieItem
+                .Select(x => x.ItemNumber).Distinct().ToList();
+
+            List<string> listCol = new List<string>();
+            itemVM.itemColors = new Dictionary<int, List<string>>();
+            List<int> listSizes = new List<int>();
+            itemVM.itemSizes = new Dictionary<int, List<int>>();
+            List<StoreItem> itemsList = new List<StoreItem>();
+            itemVM.itemsList = new Dictionary<int, List<StoreItem>>();
+
+            foreach (int modelNumber in itemVM.itemNumbers)
+            {
+
+                listCol = ieItem
+                    .Where(x => x.ItemNumber == modelNumber)
+                    .Select(x => x.Color).Distinct().ToList();
+
+                itemVM.itemColors.Add(modelNumber, listCol);
+
+                listSizes = ieItem
+                    .Where(x => x.ItemNumber == modelNumber)
+                    .Select(x => x.Size).Distinct().ToList();
+
+                itemVM.itemSizes.Add(modelNumber, listSizes);
+
+                itemsList = ieItem
+                    .Where(x => x.ItemNumber == modelNumber)
+                    .Select(x => x).ToList();
+
+                itemVM.itemsList.Add(modelNumber, itemsList);
+            }
+            return itemVM;
+        }
         
-        public ItemVM MakeItemVM(IEnumerable<WarehouseItem> itemParam,
+        
+        public ItemVM<WarehouseItem> MakeItemVM(IEnumerable<WarehouseItem> itemParam,
             List<int> FullNumbersParam,
             Dictionary<int, List<int>> SizesParam,
             Dictionary<int, List<string>> ColorsParam)
         {
-            ItemVM itemVM = new ItemVM();            
+            ItemVM<WarehouseItem> itemVM = new ItemVM<WarehouseItem>();            
 
             if (FullNumbersParam == null)
             {

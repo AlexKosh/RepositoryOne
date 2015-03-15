@@ -32,8 +32,8 @@ namespace SandBox.Controllers
             this.repository = repo;
         }
 
-        ItemVM dbModel = new ItemVM();
-        ItemVM ordersModel = new ItemVM();
+        ItemVM<WarehouseItem> dbModel = new ItemVM<WarehouseItem>();
+        ItemVM<WarehouseItem> ordersModel = new ItemVM<WarehouseItem>();
         WarehouseItem selectedItem = new WarehouseItem();
 
         public ActionResult Index()

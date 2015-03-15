@@ -1,4 +1,4 @@
-﻿@model SandBox.Models.ItemVM
+﻿@model SandBox.Models.ItemVM<SandBox.Models.WarehouseItem>
 
 @{
     ViewBag.Title = "Order";
@@ -12,8 +12,4 @@
 <div>
     <h2>Pre-ordered:</h2>
     @Html.Partial("SizeColTablePartial", Model)
-</div>
-
-<div class="text-center">
-    @Html.ActionLink("To Home/Index", "Index", "Home", null, new { @class = "btn btn-default" })
 </div>

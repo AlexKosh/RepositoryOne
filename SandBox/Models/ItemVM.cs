@@ -6,7 +6,7 @@ using System.Web;
 
 namespace SandBox.Models
 {
-    public class ItemVM
+    public class ItemVM<T>
     {
         List<int> intList = new List<int>();
         public ItemVM()
@@ -17,6 +17,6 @@ namespace SandBox.Models
         public List<int> itemNumbersFull { get; set; }
         public Dictionary<int, List<int>> itemSizes { get; set; }
         public Dictionary<int, List<string>> itemColors { get; set; }
-        public Dictionary<int, List<WarehouseItem>> itemsList { get; set; }        
+        public Dictionary<int, List<T>> itemsList { get; set; }       
     }
 }

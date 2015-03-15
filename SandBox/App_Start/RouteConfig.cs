@@ -14,9 +14,10 @@ namespace SandBox
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
             //routes.MapRoute(
-            //    "SelectItemSchema",
-            //    url: "{controller}/{action}/{model}/{color}/{size}",
-            //    defaults: new { controller = "Order", action = "SelectItem" }
+            //    null,
+            //    url: "Store/{controller}/{action}/{id}",
+            //    defaults: new {controller = "OnStock",
+            //        action = "Index", id = UrlParameter.Optional }
             //    );
 
             routes.MapRoute(

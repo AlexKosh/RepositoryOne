@@ -110,7 +110,12 @@
     <Content Include="Areas\Warehouse\Views\web.config" />
     <Content Include="Areas\Warehouse\Views\_ViewStart.cshtml" />
     <Content Include="Areas\Warehouse\Views\Shared\_Layout.cshtml" />
-    <Content Include="Areas\Warehouse\Views\OnStock\Index.cshtml" />
+    <Content Include="Areas\Warehouse\Views\OnWarehousesStock\Index.cshtml" />
+    <Content Include="Areas\Store\Views\web.config" />
+    <Content Include="Areas\Store\Views\_ViewStart.cshtml" />
+    <Content Include="Areas\Store\Views\Shared\_Layout.cshtml" />
+    <Content Include="Areas\Store\Views\OnStoresStock\Index.cshtml" />
+    <Content Include="Areas\Store\Views\Shared\SizeColTablePartial.cshtml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -123,6 +128,8 @@
     <Compile Include="Abstract\IItemRepository.cs" />
     <Compile Include="App_Start\NinjectWebCommon.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Areas\Store\Controllers\OnStoresStockController.cs" />
+    <Compile Include="Areas\Store\StoreAreaRegistration.cs" />
     <Compile Include="Areas\Warehouse\Controllers\OnStockController.cs" />
     <Compile Include="Areas\Warehouse\WarehouseAreaRegistration.cs" />
     <Compile Include="Areas\WholesalersAndOrders\Models\Order.cs" />
@@ -179,6 +186,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Areas\Store\Models\" />
     <Folder Include="Areas\Warehouse\Models\" />
     <Folder Include="Areas\WholesalersAndOrders\Controllers\" />
     <Folder Include="Areas\WholesalersAndOrders\Views\Shared\" />
