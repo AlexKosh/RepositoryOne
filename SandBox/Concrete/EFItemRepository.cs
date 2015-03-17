@@ -150,6 +150,7 @@ namespace SandBox.Concrete
                 itemsList = ieItem
                     .Where(x => x.ItemNumber == modelNumber)
                     .Select(x => x).ToList();
+                itemsList.OrderBy(x => x.Size);
 
                 itemVM.itemsList.Add(modelNumber, itemsList);
             }
@@ -263,6 +264,35 @@ namespace SandBox.Concrete
             }  
 
             context.SaveChanges();
+        }
+
+        public void MoveItemsFromWhToSt(List<WarehouseItem> orderListParam)
+        {
+            using (var tx = context.Database.BeginTransaction())
+            {
+                try
+                {
+                    foreach (var item in orderListParam)
+                    {
+                        var targetItemInWh = IEWarehouseItems
+                            .First(x => x.ItemNumber == item.ItemNumber
+                            && x.Color == item.Color && x.Size == item.Size);
+                        targetItemInWh.Quantity -= item.Quantity;
+
+                        var targetItemInSt = IEStoreItems
+                            .First(x => x.ItemNumber == item.ItemNumber
+                            && x.Color == item.Color && x.Size == item.Size);
+                        targetItemInSt.Quantity += item.Quantity;                        
+                    }
+
+                    context.SaveChanges();
+                    tx.Commit();
+                }                
+                catch (Exception)
+                {
+                    tx.Rollback();
+                }
+            }
         }
 
         //populate Db with model 417, 423, 431, 432

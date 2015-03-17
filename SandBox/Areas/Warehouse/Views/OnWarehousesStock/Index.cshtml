@@ -7,7 +7,19 @@
 <h2>Warehouse: </h2>
 <h3 class="label label-success">@Session["OrderExamWh"]</h3>
 
-<div>
-    @Html.Partial("SizeColTablePartial", Model);
+<div class="col-lg-12">  
+
+    <div class="col-lg-6">
+        <h2>On stock:</h2>
+        @Html.Partial("SizeColTablePartial", Model);
+    </div>
+    <div class="col-lg-6">
+        <h2>Pre-ordered: @Html.ActionLink("Move to Store", "MoveItemsToStore", null, new { @class = "btn btn-default" })</h2>
+        
+        @if (Session["OrderList"] != null && ((List<SandBox.Models.WarehouseItem>)Session["OrderList"]).Count != 0)
+        {            
+            @Html.Partial("SizeColTableForPreOrder", (SandBox.Models.ItemVM<SandBox.Models.WarehouseItem>)Session["OrderToView"])
+        }
+    </div>
 </div>
 

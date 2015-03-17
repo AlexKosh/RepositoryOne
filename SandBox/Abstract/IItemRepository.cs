@@ -42,5 +42,8 @@ namespace SandBox.Abstract
 
         //Sets the price for the model 
         void SetPrice(int itemNumber, int newPrice);
+
+        //Moves items from Warehouse to Store
+        void MoveItemsFromWhToSt(List<WarehouseItem> orderListParam);
     }
 }

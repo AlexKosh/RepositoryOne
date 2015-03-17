@@ -1,7 +1,7 @@
 ﻿@model SandBox.Models.ItemVM<SandBox.Models.WarehouseItem>
 
 
-@foreach (var modelNumber in Model.itemNumbers)
+@foreach (var modelNumber in Model.itemNumbers.OrderBy(x => x))
 {
     <div>
         <table class="table table-condensed table-bordered" >
@@ -19,40 +19,73 @@
                         <button class="btn btn-default">@color</button>
                     </th>
                     @{
-                //Warning!: some dangerous magic detected
 
+                //Warning!: some dangerous magic detected
                 int prev = Model.itemSizes[modelNumber].Min();
                 int curr = 0;
                 int index = 1;
                 bool firstNotDisplayed = true;
+                SandBox.Models.WarehouseItem targetItem = new SandBox.Models.WarehouseItem(); 
 
                 foreach (var whItem in Model.itemsList[modelNumber].Where(x => x.Color == color))
                 {
                     curr = whItem.Size;
-                        if ((curr - prev) != 2 || ((curr - prev) == 2
-                            && firstNotDisplayed))
+                    if (Session["OrderList"] != null)
+                    {
+                        targetItem = ((List<SandBox.Models.WarehouseItem>)Session["OrderList"])
+                        .FirstOrDefault(
+                        x => x.ItemNumber == modelNumber
+                            && x.Color == color
+                            && x.Size == whItem.Size);
+                    }
+
+                    if ((curr - prev) != 2 || ((curr - prev) == 2
+                        && firstNotDisplayed))
+                    {
+                        if (firstNotDisplayed && curr - Model.itemSizes[modelNumber].Min() == 2
+                            || firstNotDisplayed && curr - Model.itemSizes[modelNumber].Min() >= 4)
                         {
-                            if (firstNotDisplayed && curr - Model.itemSizes[modelNumber].Min() == 2
-                                || firstNotDisplayed && curr - Model.itemSizes[modelNumber].Min() >= 4)
-                            {
-                                <td>                                    
-                                </td>
-                            }
+                            <td></td>
+                        }
 
-                            int emptyTdCount = ((curr - prev) / 2) - 1;
-                            for (int i = 0; i < emptyTdCount; i++)
-                            {
-                                <td>                                    
-                                </td>
-                            }
+                        int emptyTdCount = ((curr - prev) / 2) - 1;
+                        for (int i = 0; i < emptyTdCount; i++)
+                        {
+                            <td></td>
+                        }
 
+                        if (targetItem != null)
+                        {
                             <td style="text-align:center">
-                                @Html.ActionLink(whItem.Quantity.ToString(), "PickItem",
-                                new { model = modelNumber, color = color, size = whItem.Size },
-                                new { @class = "btn btn-default" })                               
+                                @Html.ActionLink((whItem.Quantity - targetItem.Quantity).ToString(),
+                                                 "PickItem",
+                                                 new { model = modelNumber, color = color, size = whItem.Size },
+                                                 new { @class = "btn btn-default" })
                             </td>
+                        }
+                        else
+                        {
+                            <td style="text-align:center">
+                                @Html.ActionLink(whItem.Quantity.ToString(),
+                                                 "PickItem",
+                                                 new { model = modelNumber, color = color, size = whItem.Size },
+                                                 new { @class = "btn btn-default" })
+                            </td>
+                        }
 
-                            firstNotDisplayed = false;
+
+                        firstNotDisplayed = false;
+                    }
+                    else
+                    {
+                        if (targetItem != null)
+                        {
+                            <td style="text-align:center">
+                                @Html.ActionLink((whItem.Quantity - targetItem.Quantity).ToString(),
+                                "PickItem",
+                                new { model = modelNumber, color = color, size = whItem.Size },
+                                new { @class = "btn btn-default" })
+                            </td>
                         }
                         else
                         {
@@ -61,13 +94,14 @@
                                 new { model = modelNumber, color = color, size = whItem.Size },
                                 new { @class = "btn btn-default" })
                             </td>
-                            firstNotDisplayed = false;
                         }
+                        firstNotDisplayed = false;
+                    }
 
-                        prev = curr;
-                        index++;
+                    prev = curr;
+                    index++;
                 }
-}
+                    }
                 </tr>
             }
         </table>

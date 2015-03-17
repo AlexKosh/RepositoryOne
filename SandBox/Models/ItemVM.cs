@@ -12,6 +12,7 @@ namespace SandBox.Models
         public ItemVM()
         {
             itemNumbers = new List<int>();
+            itemsList = new Dictionary<int, List<T>>();
         }
         public List<int> itemNumbers { get; set; }
         public List<int> itemNumbersFull { get; set; }
