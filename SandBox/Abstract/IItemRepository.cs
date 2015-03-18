@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using SandBox.Models;
 using SandBox.Areas.WholesalersAndOrders.Models;
+using SandBox.Areas.Warehouse.Models;
 
 namespace SandBox.Abstract
 {
@@ -16,9 +17,13 @@ namespace SandBox.Abstract
 
         IEnumerable<SoldItem> IESoldItems { get; }
 
-        IEnumerable<Order> IEOrder { get; }
-
         IEnumerable<Wholesaler> IEWholesaler { get; }
+
+        IEnumerable<OrderData> IEOrderData { get; }
+
+        IEnumerable<OrderItem> IEOrderItem { get; }
+
+        IEnumerable<TailoringItem> IETailoringItem { get; }
 
         void SaveOrder(IEnumerable<IItem> order);
 

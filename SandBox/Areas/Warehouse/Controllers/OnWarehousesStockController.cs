@@ -30,44 +30,64 @@ namespace SandBox.Areas.Warehouse.Controllers
         public ActionResult PickItem(int model, string color, int size)
         {
             dbModel = (ItemVM<WarehouseItem>)Session["dbModel"];
+            var targetItemInWh = dbModel.itemsList[model]
+                .First(x => x.ItemNumber == model && x.Color == color && x.Size == size);
 
             if (Session["OrderList"] != null)
             {
                 orderList = (List<WarehouseItem>)Session["OrderList"];
             }
-                        
             var itemToAdd = orderList.FirstOrDefault(x => x.ItemNumber == model && x.Color == color && x.Size == size);
 
-            if (itemToAdd != null)
-            {               
-                itemToAdd.Quantity += 1;
-            } 
+            if (targetItemInWh.Quantity > 0)
+            {
+                if (itemToAdd != null)
+                {
+                    if ((targetItemInWh.Quantity - itemToAdd.Quantity) > 0)
+                    {
+                        itemToAdd.Quantity += 1;
+                    }
+                    else
+                    {
+                        TempData["Error"] = "This item what you've picked is ended!";
+                    }
+                }
+                else
+                {
+                    orderList.Add(new WarehouseItem
+                    {
+                        ItemNumber = model,
+                        Color = color,
+                        Size = size,
+                        Quantity = 1
+                    });
+                }
+
+                Session["OrderList"] = orderList;
+                Session["OrderToView"] = repository.MakeItemVM(orderList,
+                    new List<int>(orderList.Select(x => x.ItemNumber).Distinct()),
+                    dbModel.itemSizes,
+                    dbModel.itemColors);                
+            }
             else
             {
-                orderList.Add(new WarehouseItem 
-                {
-                    ItemNumber = model,
-                    Color = color,
-                    Size = size,
-                    Quantity = 1
-                });
-            }         
-   
-            Session["OrderList"] = orderList;
-            Session["OrderToView"] = repository.MakeItemVM(orderList, 
-                new List<int>(orderList.Select(x => x.ItemNumber).Distinct()),
-                dbModel.itemSizes,
-                dbModel.itemColors);
-
-            string order = string.Format("Picked: {0} {1} {2}", model, color, size);
-            Session["OrderExamWh"] = order;
+                TempData["Error"] = "This item what you've picked is ended!";
+            }          
+  
             return RedirectToAction("Index");
         }
 
         public ActionResult MoveItemsToStore()
         {
-            repository.MoveItemsFromWhToSt((List<WarehouseItem>)Session["OrderList"]);
-            Session["OrderList"] = null;
+            if (Session["OrderList"] == null || ((List<WarehouseItem>)Session["OrderList"]).Count == 0)
+            {
+                TempData["Error"] = "Order list is empty!";
+            }
+            else
+            {
+                repository.MoveItemsFromWhToSt((List<WarehouseItem>)Session["OrderList"]);
+                Session["OrderList"] = null;
+            }            
             return RedirectToAction("Index");
         }
 

@@ -5,19 +5,33 @@
 }
 
 <h2>Warehouse: </h2>
-<h3 class="label label-success">@Session["OrderExamWh"]</h3>
 
-<div class="col-lg-12">  
+<div class="col-lg-12">
 
     <div class="col-lg-6">
         <h2>On stock:</h2>
+        <div class="btn-group btn-group-justified">
+            @Html.ActionLink("Add items to Wh", "BtnModelNumbersPartial", null, new { @class = "btn btn-default" })
+            @Html.ActionLink("Another btn", "MoveItemsToStore", null, new { @class = "btn btn-default" })
+            @Html.ActionLink("Another btn", "MoveItemsToStore", null, new { @class = "btn btn-default" })
+            @Html.ActionLink("Another btn", "MoveItemsToStore", null, new { @class = "btn btn-default" })
+        </div>
+        <br />
         @Html.Partial("SizeColTablePartial", Model);
     </div>
+
     <div class="col-lg-6">
-        <h2>Pre-ordered: @Html.ActionLink("Move to Store", "MoveItemsToStore", null, new { @class = "btn btn-default" })</h2>
-        
+        <h2>Pre-ordered: </h2>
+        <div class="btn-group btn-group-justified">
+            @Html.ActionLink("Move to Store", "MoveItemsToStore", null, new { @class = "btn btn-default" })
+            @Html.ActionLink("Another btn", "MoveItemsToStore", null, new { @class = "btn btn-default" })
+            @Html.ActionLink("Another btn", "MoveItemsToStore", null, new { @class = "btn btn-default" })
+            @Html.ActionLink("Another btn", "MoveItemsToStore", null, new { @class = "btn btn-default" })
+        </div>
+        <br />
+
         @if (Session["OrderList"] != null && ((List<SandBox.Models.WarehouseItem>)Session["OrderList"]).Count != 0)
-        {            
+        {
             @Html.Partial("SizeColTableForPreOrder", (SandBox.Models.ItemVM<SandBox.Models.WarehouseItem>)Session["OrderToView"])
         }
     </div>

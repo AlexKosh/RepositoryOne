@@ -5,6 +5,7 @@ using System.Web;
 using SandBox.Abstract;
 using SandBox.Models;
 using SandBox.Areas.WholesalersAndOrders.Models;
+using SandBox.Areas.Warehouse.Models;
 
 namespace SandBox.Concrete
 {
@@ -23,9 +24,17 @@ namespace SandBox.Concrete
         {
             get { return context.SoldDbSet; }
         }
-        public IEnumerable<Order> IEOrder
+        public IEnumerable<OrderData> IEOrderData
         {
-            get { return context.OrderDbSet; }
+            get { return context.OrderDataDbSet; }
+        }
+        public IEnumerable<OrderItem> IEOrderItem
+        {
+            get { return context.OrderItemDbSet; }
+        }
+        public IEnumerable<TailoringItem> IETailoringItem
+        { 
+            get { return context.TailoringItemDbSet;}
         }
         public IEnumerable<Wholesaler> IEWholesaler
         {

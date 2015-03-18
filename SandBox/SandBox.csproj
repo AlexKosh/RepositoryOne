@@ -138,8 +138,9 @@
     <Compile Include="Areas\Store\Controllers\OnStoresStockController.cs" />
     <Compile Include="Areas\Store\StoreAreaRegistration.cs" />
     <Compile Include="Areas\Warehouse\Controllers\OnWarehousesStockController.cs" />
+    <Compile Include="Areas\Warehouse\Models\TailoringItem.cs" />
     <Compile Include="Areas\Warehouse\WarehouseAreaRegistration.cs" />
-    <Compile Include="Areas\WholesalersAndOrders\Models\Order.cs" />
+    <Compile Include="Areas\WholesalersAndOrders\Models\OrderData.cs" />
     <Compile Include="Areas\WholesalersAndOrders\Models\Wholesaler.cs" />
     <Compile Include="Areas\WholesalersAndOrders\WholesalersAndOrdersAreaRegistration.cs" />
     <Compile Include="Concrete\EFDbContext.cs" />
@@ -162,9 +163,14 @@
     <Compile Include="Migrations\201503151030396_AddDescriptionToOrderDbSet.Designer.cs">
       <DependentUpon>201503151030396_AddDescriptionToOrderDbSet.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201503181757082_AddTailoringItemAndSeparateOrders.cs" />
+    <Compile Include="Migrations\201503181757082_AddTailoringItemAndSeparateOrders.Designer.cs">
+      <DependentUpon>201503181757082_AddTailoringItemAndSeparateOrders.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\BtnsOrderVM.cs" />
     <Compile Include="Models\ItemVM.cs" />
+    <Compile Include="Areas\WholesalersAndOrders\Models\OrderItem.cs" />
     <Compile Include="Models\OrderList.cs" />
     <Compile Include="Models\SoldItem.cs" />
     <Compile Include="Models\StoreItem.cs" />
@@ -196,7 +202,6 @@
     <Folder Include="Areas\Admin\Models\" />
     <Folder Include="Areas\Admin\Views\Shared\" />
     <Folder Include="Areas\Store\Models\" />
-    <Folder Include="Areas\Warehouse\Models\" />
     <Folder Include="Areas\WholesalersAndOrders\Controllers\" />
     <Folder Include="Areas\WholesalersAndOrders\Views\Shared\" />
   </ItemGroup>
@@ -209,6 +214,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201503151030396_AddDescriptionToOrderDbSet.resx">
       <DependentUpon>201503151030396_AddDescriptionToOrderDbSet.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201503181757082_AddTailoringItemAndSeparateOrders.resx">
+      <DependentUpon>201503181757082_AddTailoringItemAndSeparateOrders.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
