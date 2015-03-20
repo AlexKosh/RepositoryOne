@@ -24,6 +24,10 @@ namespace SandBox.Areas.Warehouse.Controllers
 
         public ActionResult Index()
         {
+            if (repository.IEWarehouseItems == null)
+            {
+                repository.Populate();
+            }
             dbModel = repository.MakeItemVM(repository.IEWarehouseItems);
             Session["dbModel"] = dbModel;
             return View(dbModel);

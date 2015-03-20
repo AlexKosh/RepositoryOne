@@ -432,8 +432,8 @@ namespace SandBox.Concrete
         //populate Db with model 417, 423, 431, 432
         public void Populate()
         {
-            List<string> colors = new List<string>() {"Blue", "Pearl", "Black", "Dark Biege"};
-            List<int> sizes = new List<int>() {44, 46, 48, 50, 52, 54, 56, 58, 60};
+            List<string> colors = new List<string>() { "Blue", "Pearl", "Black", "Dark Biege" };
+            List<int> sizes = new List<int>() { 44, 46, 48, 50, 52, 54, 56, 58, 60 };
 
             Dictionary<int, string> modelNames = new Dictionary<int, string>();
             modelNames.Add(417, "Vika");
@@ -446,9 +446,10 @@ namespace SandBox.Concrete
             {
                 WarehouseItem whItem = new WarehouseItem();
                 StoreItem storeItem = new StoreItem();
+                TailoringItem tlgItem = new TailoringItem();
 
-                whItem.Name = storeItem.Name = jacket.Value;
-                whItem.ItemNumber = storeItem.ItemNumber = jacket.Key;
+                whItem.Name = storeItem.Name = tlgItem.ItemName = jacket.Value;
+                whItem.ItemNumber = storeItem.ItemNumber = tlgItem.ItemNumber = jacket.Key;
 
                 foreach (var color in colors)
                 {
@@ -457,7 +458,7 @@ namespace SandBox.Concrete
                     {
                         continue;
                     }
-                    whItem.Color = storeItem.Color = color;
+                    whItem.Color = storeItem.Color = tlgItem.Color = color;
 
                     foreach (var size in sizes)
                     {
@@ -470,20 +471,19 @@ namespace SandBox.Concrete
                             continue;
                         }
 
-                        whItem.Size = storeItem.Size = size;
-                        whItem.Quantity = storeItem.Quantity = 0;
+                        whItem.Size = storeItem.Size = tlgItem.Size = size;
+                        whItem.Quantity = storeItem.Quantity = tlgItem.Quantity = 0;
                         whItem.Price = storeItem.Price = 0;
 
                         context.WarehouseDbSet.Add(whItem);
                         context.StoreDbSet.Add(storeItem);
+                        context.TailoringItemDbSet.Add(tlgItem);
                         context.SaveChanges();
                     }
 
                 }
             }
-            
-        }
 
-        
+        }        
     }
 }
