@@ -1,0 +1,28 @@
+﻿@{
+    ViewBag.Title = "AddToTailoringWh";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2 style="font-family:'sans-serif'">Add tailorings:</h2>
+@using (Html.BeginForm("AddToTailoringWh"))
+{
+    <div class="form-group">
+        <label>Model#:</label>
+        @Html.TextBox("itemNumber", TempData["itemNumber"], new { @class = "form-control" })
+    </div>
+    <div class="form-group">
+        <label>Color:</label>
+        @Html.TextBox("color", TempData["color"], new { @class = "form-control" })
+    </div>
+    <div class="form-group">
+        <label>Size:</label>
+        @Html.TextBox("size", null, new { @class = "form-control" })
+    </div>
+    <div class="form-group">
+        <label>Quantity:</label>
+        @Html.TextBox("quantity", TempData["quantity"], new { @class = "form-control" })
+    </div>
+    <input type="submit" class="btn btn-success" value="Add tailorings"/>
+    @Html.ActionLink("Go back to tailoring Wh", "TailoringWarehouse", null, new { @class = "btn btn-default"})
+}
+

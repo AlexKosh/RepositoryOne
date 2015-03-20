@@ -121,6 +121,9 @@
     <Content Include="Areas\Admin\Views\AdminActions\SetPrice.cshtml" />
     <Content Include="Areas\Warehouse\Views\Shared\SizeColTablePartial.cshtml" />
     <Content Include="Areas\Warehouse\Views\Shared\SizeColTableForPreOrder.cshtml" />
+    <Content Include="Areas\Warehouse\Views\OnWarehousesStock\TailoringWarehouse.cshtml" />
+    <Content Include="Areas\Warehouse\Views\Shared\SCTPforTailoring.cshtml" />
+    <Content Include="Areas\Warehouse\Views\OnWarehousesStock\AddToTailoringWh.cshtml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -166,6 +169,10 @@
     <Compile Include="Migrations\201503181757082_AddTailoringItemAndSeparateOrders.cs" />
     <Compile Include="Migrations\201503181757082_AddTailoringItemAndSeparateOrders.Designer.cs">
       <DependentUpon>201503181757082_AddTailoringItemAndSeparateOrders.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201503181813080_AddTailoringItemAndSeparateOrdersAndFixedTailoringItem.cs" />
+    <Compile Include="Migrations\201503181813080_AddTailoringItemAndSeparateOrdersAndFixedTailoringItem.Designer.cs">
+      <DependentUpon>201503181813080_AddTailoringItemAndSeparateOrdersAndFixedTailoringItem.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\BtnsOrderVM.cs" />
@@ -217,6 +224,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201503181757082_AddTailoringItemAndSeparateOrders.resx">
       <DependentUpon>201503181757082_AddTailoringItemAndSeparateOrders.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201503181813080_AddTailoringItemAndSeparateOrdersAndFixedTailoringItem.resx">
+      <DependentUpon>201503181813080_AddTailoringItemAndSeparateOrdersAndFixedTailoringItem.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

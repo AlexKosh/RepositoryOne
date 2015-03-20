@@ -1,4 +1,4 @@
-﻿@model SandBox.Models.ItemVM<SandBox.Models.WarehouseItem>
+﻿@model SandBox.Models.ItemVM<SandBox.Areas.Warehouse.Models.TailoringItem>
 
 
 @foreach (var modelNumber in Model.itemNumbers.OrderBy(x => x))
@@ -59,13 +59,13 @@
                             <td style="text-align:center">
                                 @Html.ActionLink((whItem.Quantity - targetItem.Quantity).ToString(),
                                                  "PickItem",
-                                                  new
-                                                  {
-                                                      model = modelNumber,
-                                                      color = color,
-                                                      size = whItem.Size,
-                                                      amount = whItem.Quantity - targetItem.Quantity
-                                                  },
+                                                 new
+                                                 {
+                                                     model = modelNumber,
+                                                     color = color,
+                                                     size = whItem.Size,
+                                                     amount = whItem.Quantity - targetItem.Quantity
+                                                 },
                                                  new { @class = "btn btn-default" })
                             </td>
                         }
@@ -74,13 +74,13 @@
                             <td style="text-align:center">
                                 @Html.ActionLink(whItem.Quantity.ToString(),
                                                  "PickItem",
-                                                  new
-                                                  {
-                                                      model = modelNumber,
-                                                      color = color,
-                                                      size = whItem.Size,
-                                                      amount = whItem.Quantity
-                                                  },
+                                                 new
+                                                 {
+                                                     model = modelNumber,
+                                                     color = color,
+                                                     size = whItem.Size,
+                                                     amount = whItem.Quantity
+                                                 },
                                                  new { @class = "btn btn-default" })
                             </td>
                         }
@@ -95,13 +95,13 @@
                             <td style="text-align:center">
                                 @Html.ActionLink((whItem.Quantity - targetItem.Quantity).ToString(),
                                 "PickItem",
-                                 new
-                                 {
-                                     model = modelNumber,
-                                     color = color,
-                                     size = whItem.Size,
-                                     amount = whItem.Quantity - targetItem.Quantity
-                                 },
+                                new
+                                {
+                                    model = modelNumber,
+                                    color = color,
+                                    size = whItem.Size,
+                                    amount = whItem.Quantity - targetItem.Quantity
+                                },
                                 new { @class = "btn btn-default" })
                             </td>
                         }
@@ -109,13 +109,13 @@
                         {
                             <td style="text-align:center">
                                 @Html.ActionLink(whItem.Quantity.ToString(), "PickItem",
-                                 new
-                                 {
-                                     model = modelNumber,
-                                     color = color,
-                                     size = whItem.Size,
-                                     amount = whItem.Quantity
-                                 },
+                                new
+                                {
+                                    model = modelNumber,
+                                    color = color,
+                                    size = whItem.Size,
+                                    amount = whItem.Quantity
+                                },
                                 new { @class = "btn btn-default" })
                             </td>
                         }
@@ -125,7 +125,7 @@
                     prev = curr;
                     index++;
                 }
-                    }
+}
                 </tr>
             }
         </table>

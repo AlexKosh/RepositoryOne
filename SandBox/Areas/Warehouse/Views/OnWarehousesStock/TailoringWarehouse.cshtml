@@ -1,0 +1,53 @@
+﻿@model SandBox.Models.ItemVM<SandBox.Areas.Warehouse.Models.TailoringItem>
+
+@{
+    ViewBag.Title = "TailoringWarehouse";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Tailoring: </h2>
+
+<div class="col-xs-6">
+
+    <h2>On stock:</h2>
+    @Html.ActionLink("to Warehouse view", "Index", null, new { @class = "btn btn-default" })
+    @Html.ActionLink("Add items", "AddToTailoringWh", null, new { @class = "btn btn-default" })
+
+    <span class="spinner">
+        <input type="number" class="form-control spinner" value="1" />
+    </span>
+</div>
+
+<div class="col-xs-6">
+
+    <h2>Selected: </h2>
+    @Html.ActionLink("Move to Warehouse", "MoveItemsToWh", null, new { @class = "btn btn-default" })
+    @Html.ActionLink("Clear list", "ClearOrderList", null, new { @class = "btn btn-default" })
+    @Html.ActionLink("Another btn", "MoveI1temsToStore", null, new { @class = "btn btn-default" })
+    @Html.ActionLink("Another btn", "MoveI1temsToStore", null, new { @class = "btn btn-default" })
+</div>
+
+@*<div class="nav navbar-btn">
+    <div class="col-xs-3">
+        @Html.ActionLink("to Warehouse view", "Index", null, new { @class = "btn btn-default" })
+        @Html.ActionLink("Add items", "AddToTailoringWh", null, new { @class = "btn btn-default" })
+        </div>
+
+        <div class="col-xs-1">
+            <input type="number" class="form-control" value="1" />
+        </div>
+    </div>*@
+
+
+@*<div>
+        <br />
+        <br />
+        @Html.Partial("SCTPforTailoring", Model);
+        <br />
+
+        @if (Session["OrderList"] != null && ((List<SandBox.Models.WarehouseItem>)Session["OrderList"]).Count != 0)
+        {
+            @Html.Partial("SizeColTableForPreOrder", (SandBox.Models.ItemVM<SandBox.Models.WarehouseItem>)Session["OrderToView"])
+        }
+
+    </div>*@

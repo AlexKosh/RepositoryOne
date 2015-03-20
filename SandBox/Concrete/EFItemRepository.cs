@@ -117,6 +117,24 @@ namespace SandBox.Concrete
                 context.SaveChanges();
             }
         }
+        public void SaveItemtoDB(TailoringItem itemToSave)
+        {
+            var ItemToEdit = IETailoringItem.Where(WhItem =>
+                WhItem.ItemNumber == itemToSave.ItemNumber
+                && WhItem.Size == itemToSave.Size
+                && WhItem.Color == itemToSave.Color).FirstOrDefault();
+
+            if (ItemToEdit != null)
+            {
+                ItemToEdit.Quantity += itemToSave.Quantity;
+            }
+            else
+            {
+                context.TailoringItemDbSet.Add(itemToSave);
+            }
+
+            context.SaveChanges();
+        }
         public void DeleteItem(int itemID)
         {
             WarehouseItem ItemToRemove = context.WarehouseDbSet.Find(itemID);
@@ -204,7 +222,46 @@ namespace SandBox.Concrete
             }
             return itemVM;
         }
-        
+
+        //overload MakeItemVM method with 1 param for TailoringItem
+        public ItemVM<TailoringItem> MakeItemVM(IEnumerable<TailoringItem> ieItem)
+        {
+            ItemVM<TailoringItem> itemVM = new ItemVM<TailoringItem>();
+
+            itemVM.itemNumbers = ieItem
+                .Select(x => x.ItemNumber).Distinct().ToList();
+
+            List<string> listCol = new List<string>();
+            itemVM.itemColors = new Dictionary<int, List<string>>();
+            List<int> listSizes = new List<int>();
+            itemVM.itemSizes = new Dictionary<int, List<int>>();
+            List<TailoringItem> itemsList = new List<TailoringItem>();
+            itemVM.itemsList = new Dictionary<int, List<TailoringItem>>();
+
+            foreach (int modelNumber in itemVM.itemNumbers)
+            {
+
+                listCol = ieItem
+                    .Where(x => x.ItemNumber == modelNumber)
+                    .Select(x => x.Color).Distinct().ToList();
+
+                itemVM.itemColors.Add(modelNumber, listCol);
+
+                listSizes = ieItem
+                    .Where(x => x.ItemNumber == modelNumber)
+                    .Select(x => x.Size).Distinct().ToList();
+
+                itemVM.itemSizes.Add(modelNumber, listSizes);
+
+                itemsList = ieItem
+                    .Where(x => x.ItemNumber == modelNumber)
+                    .Select(x => x).ToList();
+                itemsList.OrderBy(x => x.Size);
+
+                itemVM.itemsList.Add(modelNumber, itemsList);
+            }
+            return itemVM;
+        }
         
         public ItemVM<WarehouseItem> MakeItemVM(IEnumerable<WarehouseItem> itemParam,
             List<int> FullNumbersParam,
@@ -246,6 +303,46 @@ namespace SandBox.Concrete
             return itemVM;
         }
 
+        //overload MakeItemVM method with 4 param for TailoringItem
+        public ItemVM<TailoringItem> MakeItemVM(IEnumerable<TailoringItem> itemParam,
+            List<int> FullNumbersParam,
+            Dictionary<int, List<int>> SizesParam,
+            Dictionary<int, List<string>> ColorsParam)
+        {
+            ItemVM<TailoringItem> itemVM = new ItemVM<TailoringItem>();
+
+            if (FullNumbersParam == null)
+            {
+                itemVM.itemNumbersFull = itemParam
+                 .Select(x => x.ItemNumber).Distinct().ToList();
+            }
+            else
+            {
+                itemVM.itemNumbersFull = FullNumbersParam;
+            }
+
+
+            itemVM.itemNumbers = itemParam
+                 .Select(x => x.ItemNumber).Distinct().ToList();
+
+            itemVM.itemColors = new Dictionary<int, List<string>>();
+            itemVM.itemSizes = new Dictionary<int, List<int>>();
+            itemVM.itemsList = new Dictionary<int, List<TailoringItem>>();
+            List<TailoringItem> itemsList = new List<TailoringItem>();
+
+            itemVM.itemColors = ColorsParam;
+            itemVM.itemSizes = SizesParam;
+
+            foreach (int modelNumber in itemVM.itemNumbers)
+            {
+                itemsList = itemParam
+                    .Where(x => x.ItemNumber == modelNumber)
+                    .Select(x => x).OrderBy(x => x.Size).ToList();
+
+                itemVM.itemsList.Add(modelNumber, itemsList);
+            }
+            return itemVM;
+        }
 
         public void SetPrice(int itemNumberParam, int newPrice)
         {
@@ -297,6 +394,34 @@ namespace SandBox.Concrete
                     context.SaveChanges();
                     tx.Commit();
                 }                
+                catch (Exception)
+                {
+                    tx.Rollback();
+                }
+            }
+        }
+        public void MoveItemsFromTlrgToWh(List<WarehouseItem> orderListParam)
+        {
+            using (var tx = context.Database.BeginTransaction())
+            {
+                try
+                {
+                    foreach (var item in orderListParam)
+                    {
+                        var targetItemInWh = IETailoringItem
+                            .First(x => x.ItemNumber == item.ItemNumber
+                            && x.Color == item.Color && x.Size == item.Size);
+                        targetItemInWh.Quantity -= item.Quantity;
+
+                        var targetItemInSt = IEWarehouseItems
+                            .First(x => x.ItemNumber == item.ItemNumber
+                            && x.Color == item.Color && x.Size == item.Size);
+                        targetItemInSt.Quantity += item.Quantity;
+                    }
+
+                    context.SaveChanges();
+                    tx.Commit();
+                }
                 catch (Exception)
                 {
                     tx.Rollback();

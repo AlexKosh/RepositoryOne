@@ -32,6 +32,7 @@ namespace SandBox.Abstract
         void Populate();
 
         void SaveItemtoDB(WarehouseItem item);
+        void SaveItemtoDB(TailoringItem item);
 
         void DeleteItem(int itemID);
 
@@ -45,10 +46,20 @@ namespace SandBox.Abstract
         //overload MakeItemVM method for StoreItem
         ItemVM<StoreItem> MakeItemVM(IEnumerable<StoreItem> ieItem);
 
+        //overload MakeItemVM method for TailoringItem
+        ItemVM<TailoringItem> MakeItemVM(IEnumerable<TailoringItem> ieItem);
+
+         //overload MakeItemVM method with 4 param for TailoringItem
+        ItemVM<TailoringItem> MakeItemVM(IEnumerable<TailoringItem> itemParam,
+            List<int> FullNumbersParam,
+            Dictionary<int, List<int>> SizesParam,
+            Dictionary<int, List<string>> ColorsParam);
+
         //Sets the price for the model 
         void SetPrice(int itemNumber, int newPrice);
 
         //Moves items from Warehouse to Store
         void MoveItemsFromWhToSt(List<WarehouseItem> orderListParam);
+        void MoveItemsFromTlrgToWh(List<WarehouseItem> orderListParam);
     }
 }
