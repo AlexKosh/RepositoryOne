@@ -159,7 +159,8 @@ namespace SandBox.Areas.Warehouse.Controllers
                 dbModel = (ItemVM<WarehouseItem>)Session["dbModel"];
             }
 
-            tailoringVM = repository.MakeItemVM(repository.IETailoringItem, dbModel.itemNumbersFull, 
+            tailoringVM = repository.MakeItemVM(repository.IETailoringItem,
+                repository.IETailoringItem.Select(x => x.ItemNumber).Distinct().ToList(), 
                 dbModel.itemSizes, dbModel.itemColors);
             return View(tailoringVM);
         }
