@@ -82,10 +82,19 @@ namespace SandBox.Concrete
 
         public void SaveItemtoDB(WarehouseItem itemToSave)
         {
-            var ItemToEdit = IEWarehouseItems.Where(WhItem =>
+            WarehouseItem ItemToEdit = null;
+
+            try
+            {
+                ItemToEdit = context.WarehouseDbSet.Where(WhItem =>
                 WhItem.ItemNumber == itemToSave.ItemNumber
                 && WhItem.Size == itemToSave.Size
-                && WhItem.Color == itemToSave.Color).FirstOrDefault();
+                && WhItem.Color == itemToSave.Color).Select(x => x).First(); 
+            }
+            catch (Exception)
+            {                
+                
+            }                                      
 
             if (ItemToEdit != null)
             {
@@ -93,36 +102,31 @@ namespace SandBox.Concrete
             }
             else
             {
-                context.WarehouseDbSet.Add(itemToSave);
+                context.WarehouseDbSet.Add(new WarehouseItem {
+                    ItemNumber = itemToSave.ItemNumber,
+                    Color = itemToSave.Color,
+                    Size = itemToSave.Size,
+                    Quantity = itemToSave.Quantity                    
+                });
             }
 
             context.SaveChanges(); 
         }
         public void SaveItemtoDB(StoreItem itemToSave)
         {
+            StoreItem ItemToEdit = null;
+
             try
             {
-                var ItemToEdit = IEStoreItems.Where(StItem =>
-                StItem.ItemNumber == itemToSave.ItemNumber
-                && StItem.Size == itemToSave.Size
-                && StItem.Color == itemToSave.Color).First();
-
-                ItemToEdit.Quantity += itemToSave.Quantity;
-
-                context.SaveChanges();
-            }
-            catch (System.InvalidOperationException)
-            {
-                context.StoreDbSet.Add(itemToSave);
-                context.SaveChanges();
-            }
-        }
-        public void SaveItemtoDB(TailoringItem itemToSave)
-        {
-            var ItemToEdit = IETailoringItem.Where(WhItem =>
+                ItemToEdit = context.StoreDbSet.Where(WhItem =>
                 WhItem.ItemNumber == itemToSave.ItemNumber
                 && WhItem.Size == itemToSave.Size
-                && WhItem.Color == itemToSave.Color).FirstOrDefault();
+                && WhItem.Color == itemToSave.Color).Select(x => x).First();
+            }
+            catch (Exception)
+            {
+
+            }
 
             if (ItemToEdit != null)
             {
@@ -130,7 +134,46 @@ namespace SandBox.Concrete
             }
             else
             {
-                context.TailoringItemDbSet.Add(itemToSave);
+                context.StoreDbSet.Add(new StoreItem
+                {
+                    ItemNumber = itemToSave.ItemNumber,
+                    Color = itemToSave.Color,
+                    Size = itemToSave.Size,
+                    Quantity = itemToSave.Quantity
+                });
+            }
+
+            context.SaveChanges();
+        }
+        public void SaveItemtoDB(TailoringItem itemToSave)
+        {
+            TailoringItem ItemToEdit = null;
+
+            try
+            {
+                ItemToEdit = context.TailoringItemDbSet.Where(WhItem =>
+                WhItem.ItemNumber == itemToSave.ItemNumber
+                && WhItem.Size == itemToSave.Size
+                && WhItem.Color == itemToSave.Color).Select(x => x).First();
+            }
+            catch (Exception)
+            {
+
+            }
+
+            if (ItemToEdit != null)
+            {
+                ItemToEdit.Quantity += itemToSave.Quantity;
+            }
+            else
+            {
+                context.TailoringItemDbSet.Add(new TailoringItem
+                {
+                    ItemNumber = itemToSave.ItemNumber,
+                    Color = itemToSave.Color,
+                    Size = itemToSave.Size,
+                    Quantity = itemToSave.Quantity
+                });
             }
 
             context.SaveChanges();
@@ -475,15 +518,14 @@ namespace SandBox.Concrete
                         whItem.Quantity = storeItem.Quantity = tlgItem.Quantity = 0;
                         whItem.Price = storeItem.Price = 0;
 
-                        context.WarehouseDbSet.Add(whItem);
-                        context.StoreDbSet.Add(storeItem);
-                        context.TailoringItemDbSet.Add(tlgItem);
-                        context.SaveChanges();
+                        SaveItemtoDB(whItem);
+                        SaveItemtoDB(storeItem);
+                        SaveItemtoDB(tlgItem);                        
                     }
 
                 }
             }
-
+            
         }        
     }
 }

@@ -53,6 +53,15 @@
                 </h3>
             </div>
         }
+        @if (TempData["Success"] != null)
+        {
+
+            <div class="alert alert-success text-center">
+                <h3>
+                    @TempData["Success"]
+                </h3>
+            </div>
+        }
 
         @RenderBody()
         <hr />

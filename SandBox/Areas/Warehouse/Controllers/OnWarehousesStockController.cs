@@ -23,10 +23,15 @@ namespace SandBox.Areas.Warehouse.Controllers
         ItemVM<TailoringItem> tailoringVM = new ItemVM<TailoringItem>();
 
         public ActionResult Index()
-        {
-            if (repository.IEWarehouseItems == null)
+        {            
+            try
+            {
+                repository.IEWarehouseItems.First();
+            }
+            catch (Exception)
             {
                 repository.Populate();
+                TempData["Success"] = "Db populated";
             }
             dbModel = repository.MakeItemVM(repository.IEWarehouseItems);
             Session["dbModel"] = dbModel;
@@ -154,6 +159,15 @@ namespace SandBox.Areas.Warehouse.Controllers
         }
         public ActionResult TailoringWarehouse()
         {
+            try
+            {
+                repository.IETailoringItem.First();
+            }
+            catch (Exception)
+            {
+                repository.Populate();
+                TempData["Success"] = "Db populated";
+            }
             if (Session["dbModel"] == null)
             {
                 dbModel = repository.MakeItemVM(repository.IEWarehouseItems);

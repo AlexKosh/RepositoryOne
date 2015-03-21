@@ -20,10 +20,16 @@ namespace SandBox.Areas.Store.Controllers
         // GET: Store/OnStoresStock
         public ActionResult Index()
         {
-            if (repository.IEStoreItems == null)
+            try
+            {
+                repository.IEStoreItems.First();
+            }
+            catch (Exception)
             {
                 repository.Populate();
+                TempData["Success"] = "Db populated";
             }
+
             DbModel = repository.MakeItemVM(repository.IEStoreItems);   
             return View(DbModel);
         }
