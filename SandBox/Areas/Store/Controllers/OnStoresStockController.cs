@@ -15,7 +15,8 @@ namespace SandBox.Areas.Store.Controllers
         {
             this.repository = repo;
         }
-        ItemVM<StoreItem> DbModel = new ItemVM<StoreItem>();        
+        ItemVM<StoreItem> StoreWhModel = new ItemVM<StoreItem>();
+        List<StoreItem> orderList = new List<StoreItem>();
 
         // GET: Store/OnStoresStock
         public ActionResult Index()
@@ -30,15 +31,88 @@ namespace SandBox.Areas.Store.Controllers
                 TempData["Success"] = "Db populated";
             }
 
-            DbModel = repository.MakeItemVM(repository.IEStoreItems);   
-            return View(DbModel);
+            if (Session["StoreWhModel"] == null)
+            {
+                Session["StoreWhModel"] = StoreWhModel = repository.MakeItemVM(repository.IEStoreItems);
+            }
+            else
+            {
+                StoreWhModel = (ItemVM<StoreItem>)Session["StoreWhModel"];
+            }
+            return View(StoreWhModel);
         }
 
-        public ActionResult PickItem(int model, string color, int size)
+        public ActionResult PickItem(int model, string color, int size, int amount)
         {
-            string order = string.Format("Picked: {0} {1} {2}", model, color, size);
-            Session["OrderExam"] = order;
-            return RedirectToAction("index");
+            if (Session["StoreWhModel"] == null)
+            {
+                Session["StoreWhModel"] = StoreWhModel = repository.MakeItemVM(repository.IEStoreItems);
+            }
+            else
+            {
+                StoreWhModel = (ItemVM<StoreItem>)Session["StoreWhModel"];
+            }
+
+            if (Session["OrderListStore"] != null)
+            {
+                orderList = (List<StoreItem>)Session["OrderListStore"];
+            }
+
+            var itemToAdd = orderList.FirstOrDefault(x => x.ItemNumber == model && x.Color == color && x.Size == size);
+
+            if (amount <= 0)
+            {
+                TempData["Error"] = "This item what you've picked is ended!";
+            }
+            else
+            {
+                if (itemToAdd != null)
+                {
+                    itemToAdd.Quantity += 1;
+                }
+                else
+                {
+                    orderList.Add(new StoreItem
+                    {
+                        ItemNumber = model,
+                        Color = color,
+                        Size = size,
+                        Quantity = 1
+                    });
+                }
+
+            }
+
+            Session["OrderListStore"] = orderList;
+            Session["OrderToViewStore"] = repository.MakeItemVM(orderList,
+                new List<int>(orderList.Select(x => x.ItemNumber).Distinct()),
+                StoreWhModel.itemSizes,
+                StoreWhModel.itemColors);
+
+            string stringUrl = Request.UrlReferrer.AbsolutePath;
+
+            return Redirect(stringUrl);
+        }
+        public ActionResult DeleteFromOrder(int model, string color, int size)
+        {
+            if (Session["OrderToViewStore"] != null)
+            {
+                var itemToDelete = ((ItemVM<StoreItem>)Session["OrderToViewStore"])
+                .itemsList[model].Find(x => x.Color == color && x.Size == size);
+                ((ItemVM<StoreItem>)Session["OrderToViewStore"]).itemsList[model].Remove(itemToDelete);
+                ((List<StoreItem>)Session["OrderListStore"]).Remove(itemToDelete);
+            } 
+            string stringUrl = Request.UrlReferrer.AbsolutePath;
+            return Redirect(stringUrl);
+        }
+
+        public ActionResult ClearOrderList()
+        {
+            Session["OrderListStore"] = null;
+            Session["OrderToViewStore"] = null;
+
+            string stringUrl = Request.UrlReferrer.AbsolutePath;
+            return Redirect(stringUrl);
         }
     }
 }

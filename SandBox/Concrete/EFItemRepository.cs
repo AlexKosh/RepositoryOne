@@ -188,6 +188,7 @@ namespace SandBox.Concrete
             }
         }
 
+        //overload MakeItemVM method with 1 param for WarehouseItem
         public ItemVM<WarehouseItem> MakeItemVM(IEnumerable<WarehouseItem> ieItem)
         {
             ItemVM<WarehouseItem> itemVM = new ItemVM<WarehouseItem>();
@@ -305,7 +306,8 @@ namespace SandBox.Concrete
             }
             return itemVM;
         }
-        
+
+        //overload MakeItemVM method with 4 param for WarehouseItem
         public ItemVM<WarehouseItem> MakeItemVM(IEnumerable<WarehouseItem> itemParam,
             List<int> FullNumbersParam,
             Dictionary<int, List<int>> SizesParam,
@@ -337,6 +339,47 @@ namespace SandBox.Concrete
 
             foreach (int modelNumber in itemVM.itemNumbers)
             {               
+                itemsList = itemParam
+                    .Where(x => x.ItemNumber == modelNumber)
+                    .Select(x => x).OrderBy(x => x.Size).ToList();
+
+                itemVM.itemsList.Add(modelNumber, itemsList);
+            }
+            return itemVM;
+        }
+
+        //overload MakeItemVM method with 4 param for StoreItem
+        public ItemVM<StoreItem> MakeItemVM(IEnumerable<StoreItem> itemParam,
+            List<int> FullNumbersParam,
+            Dictionary<int, List<int>> SizesParam,
+            Dictionary<int, List<string>> ColorsParam)
+        {
+            ItemVM<StoreItem> itemVM = new ItemVM<StoreItem>();
+
+            if (FullNumbersParam == null)
+            {
+                itemVM.itemNumbersFull = itemParam
+                 .Select(x => x.ItemNumber).Distinct().ToList();
+            }
+            else
+            {
+                itemVM.itemNumbersFull = FullNumbersParam;
+            }
+
+
+            itemVM.itemNumbers = itemParam
+                 .Select(x => x.ItemNumber).Distinct().ToList();
+
+            itemVM.itemColors = new Dictionary<int, List<string>>();
+            itemVM.itemSizes = new Dictionary<int, List<int>>();
+            itemVM.itemsList = new Dictionary<int, List<StoreItem>>();
+            List<StoreItem> itemsList = new List<StoreItem>();
+
+            itemVM.itemColors = ColorsParam;
+            itemVM.itemSizes = SizesParam;
+
+            foreach (int modelNumber in itemVM.itemNumbers)
+            {
                 itemsList = itemParam
                     .Where(x => x.ItemNumber == modelNumber)
                     .Select(x => x).OrderBy(x => x.Size).ToList();

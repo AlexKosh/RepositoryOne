@@ -19,7 +19,8 @@ namespace SandBox.Areas.Warehouse.Controllers
 
         List<WarehouseItem> orderList = new List<WarehouseItem>();
         ItemVM<WarehouseItem> orderVM = new ItemVM<WarehouseItem>();
-        ItemVM<WarehouseItem> dbModel = new ItemVM<WarehouseItem>();
+        ItemVM<TailoringItem> dbModel = new ItemVM<TailoringItem>();
+        ItemVM<WarehouseItem> warehouseVM = new ItemVM<WarehouseItem>();
         ItemVM<TailoringItem> tailoringVM = new ItemVM<TailoringItem>();
 
         public ActionResult Index()
@@ -33,15 +34,27 @@ namespace SandBox.Areas.Warehouse.Controllers
                 repository.Populate();
                 TempData["Success"] = "Db populated";
             }
-            dbModel = repository.MakeItemVM(repository.IEWarehouseItems);
-            Session["dbModel"] = dbModel;
-            return View(dbModel);
+
+            if (Session["dbModel"] == null)
+            {
+                Session["dbModel"] = dbModel = repository.MakeItemVM(repository.IETailoringItem);
+            }
+
+            warehouseVM = repository.MakeItemVM(repository.IEWarehouseItems);            
+            return View(warehouseVM);
         }
 
         public ActionResult PickItem(int model, string color, int size, int amount)
         {
-            dbModel = (ItemVM<WarehouseItem>)Session["dbModel"];            
-
+            if (Session["dbModel"] == null)
+            {
+                Session["dbModel"] = dbModel = repository.MakeItemVM(repository.IETailoringItem);
+            }
+            else
+            {
+                dbModel = (ItemVM<TailoringItem>)Session["dbModel"];  
+            }
+            
             if (Session["OrderList"] != null)
             {
                 orderList = (List<WarehouseItem>)Session["OrderList"];
@@ -56,7 +69,7 @@ namespace SandBox.Areas.Warehouse.Controllers
             else
             {
                 if (itemToAdd != null)
-                {
+                {                    
                     itemToAdd.Quantity += 1;
                 }
                 else
@@ -168,19 +181,16 @@ namespace SandBox.Areas.Warehouse.Controllers
                 repository.Populate();
                 TempData["Success"] = "Db populated";
             }
+
             if (Session["dbModel"] == null)
             {
-                dbModel = repository.MakeItemVM(repository.IEWarehouseItems);
+                Session["dbModel"] = dbModel = repository.MakeItemVM(repository.IETailoringItem);
             }
             else
             {
-                dbModel = (ItemVM<WarehouseItem>)Session["dbModel"];
-            }
-
-            tailoringVM = repository.MakeItemVM(repository.IETailoringItem,
-                repository.IETailoringItem.Select(x => x.ItemNumber).Distinct().ToList(), 
-                dbModel.itemSizes, dbModel.itemColors);
-            return View(tailoringVM);
+                dbModel = (ItemVM<TailoringItem>)Session["dbModel"];
+            }            
+            return View(dbModel);
         }
     }
 }

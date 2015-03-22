@@ -124,6 +124,7 @@
     <Content Include="Areas\Warehouse\Views\OnWarehousesStock\TailoringWarehouse.cshtml" />
     <Content Include="Areas\Warehouse\Views\Shared\SCTPforTailoring.cshtml" />
     <Content Include="Areas\Warehouse\Views\OnWarehousesStock\AddToTailoringWh.cshtml" />
+    <Content Include="Areas\Store\Views\Shared\SizeColTableForPreOrder.cshtml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />

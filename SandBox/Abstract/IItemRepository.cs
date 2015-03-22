@@ -49,6 +49,12 @@ namespace SandBox.Abstract
         //overload MakeItemVM method for TailoringItem
         ItemVM<TailoringItem> MakeItemVM(IEnumerable<TailoringItem> ieItem);
 
+        //overload MakeItemVM method with 4 param for StoreItem
+        ItemVM<StoreItem> MakeItemVM(IEnumerable<StoreItem> itemParam,
+            List<int> FullNumbersParam,
+            Dictionary<int, List<int>> SizesParam,
+            Dictionary<int, List<string>> ColorsParam);
+
          //overload MakeItemVM method with 4 param for TailoringItem
         ItemVM<TailoringItem> MakeItemVM(IEnumerable<TailoringItem> itemParam,
             List<int> FullNumbersParam,
