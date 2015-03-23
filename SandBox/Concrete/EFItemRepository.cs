@@ -11,6 +11,7 @@ namespace SandBox.Concrete
 {
     public class EFItemRepository : IItemRepository
     {
+        #region initials
         private EFDbContext context = new EFDbContext();
         public IEnumerable<WarehouseItem> IEWarehouseItems
         {
@@ -40,7 +41,9 @@ namespace SandBox.Concrete
         {
             get { return context.WholesalerDbSet; }
         }
+        #endregion initials
 
+        #region items
         public void SaveOrder(IEnumerable<IItem> order)
         {
             foreach (var item in order)
@@ -570,5 +573,33 @@ namespace SandBox.Concrete
             }
             
         }        
+
+        #endregion items
+
+        #region wholesalersAndOrders
+        public string AddWholesaler(Wholesaler person)
+        {
+            try
+            {
+                if (context.WholesalerDbSet.First(x => x.PhoneNumber == person.PhoneNumber
+                || x.AlternatePhoneNumber == person.PhoneNumber) == null)
+                {
+                    context.WholesalerDbSet.Add(person);
+                    context.SaveChanges();
+                    return "Done";
+                }
+                else
+                {
+                    return "This wholesaler already exists.";
+                }
+            }
+            catch (InvalidOperationException)
+            {
+                context.WholesalerDbSet.Add(person);
+                context.SaveChanges();
+                return "Done";
+            }            
+        }
+        #endregion wholesalersAndOrders
     }
 }

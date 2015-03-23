@@ -1,0 +1,29 @@
+﻿@{
+    ViewBag.Title = "AddWholesaler";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div>
+    <h2>Add new wholesaler:</h2>
+    @using (Html.BeginForm("AddWholesaler"))
+    {
+        <label for="nameId">Name:</label>
+        <input name="name" id="nameId" type="text" class="form-control" value="" />
+        <label for="lastNameId">Last name:</label>
+        <input name="lastName" id="lastNameId" type="text" class="form-control" value="" />
+        <label for="cityId">City:</label>
+        <input name="city" id="cityId" type="text" class="form-control" value="" />
+        <label for="telId">Phone #:</label>
+        <input name="tel" id="telId" type="tel" class="form-control" value="" />
+        <label for="altTelId">Alt. Phone #:</label>
+        <input name="altTel" id="altTelId" type="tel" class="form-control" value="" />
+        <label for="addressId">Address:</label>
+        <input name="address" id="addressId" type="text" class="form-control" value="" />
+        <label for="altAddressId">Alt. Address:</label>
+        <input name="altAddress" id="altAddressId" type="text" class="form-control" value="" />
+        <br />
+        <input class="btn btn-success" type="submit" value="Add" />
+        @Html.ActionLink("Back to Orders", "Index", "Orders", null, new { @class="btn btn-default"})
+    }
+</div>
+

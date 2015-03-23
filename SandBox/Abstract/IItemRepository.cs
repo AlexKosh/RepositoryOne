@@ -67,5 +67,7 @@ namespace SandBox.Abstract
         //Moves items from Warehouse to Store
         void MoveItemsFromWhToSt(List<WarehouseItem> orderListParam);
         void MoveItemsFromTlrgToWh(List<WarehouseItem> orderListParam);
+        //Adds new wholesaler to the db
+        string AddWholesaler(Wholesaler person);
     }
 }

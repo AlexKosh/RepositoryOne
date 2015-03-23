@@ -125,6 +125,12 @@
     <Content Include="Areas\Warehouse\Views\Shared\SCTPforTailoring.cshtml" />
     <Content Include="Areas\Warehouse\Views\OnWarehousesStock\AddToTailoringWh.cshtml" />
     <Content Include="Areas\Store\Views\Shared\SizeColTableForPreOrder.cshtml" />
+    <Content Include="Areas\Store\Views\Shared\SizeColTablePartial - Copy.cshtml" />
+    <Content Include="Areas\WholesalersAndOrders\Views\Orders\Index.cshtml" />
+    <Content Include="Areas\WholesalersAndOrders\Views\Wholesalers\AddWholesaler.cshtml" />
+    <Content Include="Areas\WholesalersAndOrders\Views\Orders\AddOrder.cshtml" />
+    <Content Include="Areas\WholesalersAndOrders\Views\Shared\SizeColTablePartialExtended.cshtml" />
+    <Content Include="Areas\WholesalersAndOrders\Views\Shared\SizeColTableForPreOrder.cshtml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -144,6 +150,8 @@
     <Compile Include="Areas\Warehouse\Controllers\OnWarehousesStockController.cs" />
     <Compile Include="Areas\Warehouse\Models\TailoringItem.cs" />
     <Compile Include="Areas\Warehouse\WarehouseAreaRegistration.cs" />
+    <Compile Include="Areas\WholesalersAndOrders\Controllers\OrdersController.cs" />
+    <Compile Include="Areas\WholesalersAndOrders\Controllers\WholesalersController.cs" />
     <Compile Include="Areas\WholesalersAndOrders\Models\OrderData.cs" />
     <Compile Include="Areas\WholesalersAndOrders\Models\Wholesaler.cs" />
     <Compile Include="Areas\WholesalersAndOrders\WholesalersAndOrdersAreaRegistration.cs" />
@@ -210,8 +218,6 @@
     <Folder Include="Areas\Admin\Models\" />
     <Folder Include="Areas\Admin\Views\Shared\" />
     <Folder Include="Areas\Store\Models\" />
-    <Folder Include="Areas\WholesalersAndOrders\Controllers\" />
-    <Folder Include="Areas\WholesalersAndOrders\Views\Shared\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201503041528361_InitialCreate.resx">

@@ -1,0 +1,12 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Wholesalers and orders:</h2>
+
+<div>
+    @Html.ActionLink("Add wholesaler", "AddWholesaler", "Wholesalers", null, new { @class ="btn btn-primary"})
+    @Html.ActionLink("Add order", "AddOrder", null, new { @class ="btn btn-primary"})
+</div>
