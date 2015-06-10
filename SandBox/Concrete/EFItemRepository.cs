@@ -205,6 +205,7 @@ namespace SandBox.Concrete
             itemVM.itemSizes = new Dictionary<int, List<int>>();
             List<WarehouseItem> itemsList = new List<WarehouseItem>();
             itemVM.itemsList = new Dictionary<int, List<WarehouseItem>>();
+            itemVM.itemNumbersFull = ieItem.Select(x => x.ItemNumber).Distinct().ToList();
                         
             foreach (int modelNumber in itemVM.itemNumbers)
             {
@@ -245,6 +246,7 @@ namespace SandBox.Concrete
             itemVM.itemSizes = new Dictionary<int, List<int>>();
             List<StoreItem> itemsList = new List<StoreItem>();
             itemVM.itemsList = new Dictionary<int, List<StoreItem>>();
+            itemVM.itemNumbersFull = ieItem.Select(x => x.ItemNumber).Distinct().ToList();
 
             foreach (int modelNumber in itemVM.itemNumbers)
             {
@@ -284,6 +286,7 @@ namespace SandBox.Concrete
             itemVM.itemSizes = new Dictionary<int, List<int>>();
             List<TailoringItem> itemsList = new List<TailoringItem>();
             itemVM.itemsList = new Dictionary<int, List<TailoringItem>>();
+            itemVM.itemNumbersFull = ieItem.Select(x => x.ItemNumber).Distinct().ToList();
 
             foreach (int modelNumber in itemVM.itemNumbers)
             {
@@ -497,20 +500,37 @@ namespace SandBox.Concrete
                 {
                     foreach (var item in orderListParam)
                     {
-                        var targetItemInWh = IETailoringItem
+                        var targetItemInTl = IETailoringItem
                             .First(x => x.ItemNumber == item.ItemNumber
                             && x.Color == item.Color && x.Size == item.Size);
-                        targetItemInWh.Quantity -= item.Quantity;
+                        targetItemInTl.Quantity -= item.Quantity;
 
-                        var targetItemInSt = IEWarehouseItems
+                        if (IEWarehouseItems
+                            .First(x => x.ItemNumber == item.ItemNumber
+                            && x.Color == item.Color && x.Size == item.Size) == null)
+                        {
+                            WarehouseItem itemToWh = new WarehouseItem()
+                            {
+                                ItemNumber = item.ItemNumber,
+                                Color = item.Color,
+                                Size = item.Size,
+                                Quantity = item.Quantity
+                            };
+                            context.WarehouseDbSet.Add(itemToWh);                            
+                        }
+                        else
+                        {
+                            var targetItemInWh = IEWarehouseItems
                             .First(x => x.ItemNumber == item.ItemNumber
                             && x.Color == item.Color && x.Size == item.Size);
-                        targetItemInSt.Quantity += item.Quantity;
+                            targetItemInWh.Quantity += item.Quantity;
+                        }
+                        
                     }
 
                     context.SaveChanges();
                     tx.Commit();
-                }
+                }                
                 catch (Exception)
                 {
                     tx.Rollback();
