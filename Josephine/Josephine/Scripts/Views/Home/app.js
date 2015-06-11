@@ -2,11 +2,15 @@
 
 app.controller('HomeController', function (dataService, $scope) {
     
-    $scope.data = [1,2,3]
+    $scope.response = [1, 2, 3];
+
+    $scope.cl = function (text) {        
+        console.log(text);
+    }
 
     $scope.getData = function () {
-        $scope.data = dataService.get().then(function (data) { $scope.data = data});
-        console.log($scope.data);
+        $scope.response = dataService.get().then(function (d) { $scope.response = d });
+        //console.log($scope.data);
     }   
 });
 
