@@ -15,36 +15,36 @@ namespace Josephine.Concrete
             get { return context.Products; }
         }
 
-        public void populate()
+        public void populate(int mN, string n, string[] c, int[] s)
         {
-            int[] sizes = { 44, 46, 48, 50, 52, 54 };
-            string[] names = { "Vika", "Vera", "Nadya" };
-            int[] modelNumbers = { 417, 423, 431 };
-            string[] colors = { "Blue", "Black", "White", "Red" };
+            //int[] sizes = { 44, 46, 48, 50, 52, 54 };
+            //string name = "Vika";
+            //int modelNumber = 417;
+            //string[] colors = { "Blue", "Black", "White", "Red" };
+
+            int[] sizes = s;
+            string name = n;
+            int modelNumber = mN;
+            string[] colors = c;
 
             Product newJacket = new Product();
             int i = 0;
 
-            foreach (var modelNumber in modelNumbers)
-            {                
-                newJacket.ModelNumber = modelNumber;
-                newJacket.Name = names[i];
+            newJacket.Name = name;
+            newJacket.ModelNumber = modelNumber;
 
-                foreach (var color in colors)
+            foreach (string color in colors)
+            {
+                foreach (int size in sizes)
                 {
                     newJacket.Color = color;
+                    newJacket.Size = size;
+                    newJacket.Quantity = 0;
 
-                    foreach (var size in sizes)
-                    {
-                        newJacket.Size = size;
-                        newJacket.Quantity = 0;
-                        context.Products.Add(newJacket);
-                        context.SaveChanges();
-                    }
+                    context.Products.Add(newJacket);
+                    context.SaveChanges();
                 }
-                i++;
             }
-            
         }
     }
 }

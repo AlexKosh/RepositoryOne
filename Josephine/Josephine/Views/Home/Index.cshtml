@@ -45,9 +45,11 @@
                         {{modelArrByColors[0].Color}}
                     </td>
 
-                    <td ng-click="cl(modelArr[0][0].ModelNumber)" 
-                        ng-repeat="modelArrByColorsBySizes in modelArrByColors" 
-                        class="btn btn-default">{{modelArrByColorsBySizes.Size}}</td>
+                    <td ng-click="cl(modelArrByColorsBySizes)"
+                        ng-repeat="modelArrByColorsBySizes in modelArrByColors"
+                        class="btn btn-default">
+                        {{modelArrByColorsBySizes.Size}}
+                    </td>
                 </tr>
 
             </table>

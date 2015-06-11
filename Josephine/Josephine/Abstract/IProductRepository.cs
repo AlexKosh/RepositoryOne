@@ -11,6 +11,6 @@ namespace Josephine.Abstract
     {
         IEnumerable<Product> Products { get; }
 
-        void populate();
+        void populate(int mN, string n, string[] c, int[] s);
     }
 }

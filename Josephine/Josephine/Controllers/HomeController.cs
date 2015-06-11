@@ -18,7 +18,30 @@ namespace Josephine.Controllers
         
         public ActionResult Index()
         {
-            //repository.populate();
+            //repository.populate(
+            //    417,
+            //    "Vika",                
+            //    new string[] {"Black", "Blue", "Dark Biege", "Pearl"},
+            //    new int[] { 44, 46, 48, 50, 52, 54, 56, 58, 60 });
+
+            //repository.populate(
+            //    423,
+            //    "Vera",
+            //    new string[] { "Black", "Blue", "Dark Biege", "Pearl" },
+            //    new int[] { 44, 46, 48, 50, 52, 54, 56, 58 });
+
+            //repository.populate(
+            //    431,
+            //    "Nadya",
+            //    new string[] { "Blue", "Dark Biege", "Pearl" },
+            //    new int[] { 44, 46, 48, 50, 52, 54 });
+
+            //repository.populate(
+            //    403,
+            //    "Nika",
+            //    new string[] {"Main", "BlueBerry", "Terra", "Lilac"},
+            //    new int[] {48, 50, 52, 54, 56, 58 });
+
             return View();
         }
         public JsonResult Products()
@@ -46,7 +69,7 @@ namespace Josephine.Controllers
                 notation.Colors = tempModel.Select(x => x.Color).Distinct().OrderBy(x => x).ToList();
                 notation.Sizes = tempModel.Select(x => x.Size).Distinct().ToList();
                 data.DataNotations.Add(model.ToString(), notation);
-                
+                                
                 foreach (string color in notation.Colors)
                 {                    
                     var tempModelDataPerColor = tempModel.Where(x => x.Color == color).Select(x => x).OrderBy(x => x.Size);
@@ -55,7 +78,7 @@ namespace Josephine.Controllers
 
                 data.Data.Add(tempModelData);
                 tempModelData = new List<IEnumerable<Product>>();
-                                
+                notation = new Annotation();                                
             }
             
             return Json(data, JsonRequestBehavior.AllowGet);
