@@ -13,7 +13,10 @@
     <title>Products</title>
     <style>
         .btn-header {
-            width: 80px;
+            width: 95px;
+        }
+        .btn-tableData{
+            width: 42px;
         }
     </style>
 
@@ -22,6 +25,7 @@
 <body ng-controller="HomeController">
     <br />
     <button class="btn btn-success" ng-click="getData()">Get data</button>
+    <button class="btn btn-success" ng-click="makeKeys()">Get keys</button>
     <br />
     <span>{{response.DataNotations}}</span>
     <h4 ng-repeat="n in response.DataNotations">
@@ -29,7 +33,7 @@
         <br />
     </h4>
     
-    <h3>{{response.DataNotations[417].Sizes}}</h3>
+    <h4>{{orderData.Data}}</h4>
     
     <br />
     <div class="row">
@@ -37,7 +41,10 @@
             <table ng-repeat="modelArr in response.Data" class="table table-bordered table-striped">                
                 <tr>
                     <th class="btn btn-primary btn-header">{{modelArr[0][0].ModelNumber}}</th>
-                    <th class="btn btn-primary" ng-repeat="size in response.DataNotations[modelArr[0][0].ModelNumber].Sizes">{{size}}</th>
+                    <th class="btn btn-primary btn-tableData"
+                        ng-repeat="size in response.DataNotations[modelArr[0][0].ModelNumber].Sizes">
+                        {{size}}
+                    </th>
                 </tr>
                 <tr ng-repeat="modelArrByColors in modelArr"
                     >
@@ -45,10 +52,10 @@
                         {{modelArrByColors[0].Color}}
                     </td>
 
-                    <td ng-click="cl(modelArrByColorsBySizes)"
+                    <td ng-click="orderProduct(modelArrByColorsBySizes)"
                         ng-repeat="modelArrByColorsBySizes in modelArrByColors"
-                        class="btn btn-default">
-                        {{modelArrByColorsBySizes.Size}}
+                        class="btn btn-default btn-tableData">
+                        {{modelArrByColorsBySizes.Quantity}}
                     </td>
                 </tr>
 
