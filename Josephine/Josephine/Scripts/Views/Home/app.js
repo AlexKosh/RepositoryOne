@@ -9,48 +9,57 @@ app.controller('HomeController', function (dataService, $scope) {
     }    
 
     $scope.orderProduct = function (p, modelArrByColors) {
-        
-        function haveColorInArr(elem, index, array) {
-            return elem[0].Color == p.Color;
-        };
-        function hasModel(elem){
-            return elem[0][0].ModelNumber == p.ModelNumber;
-        }
+          
         function indexOfModel(elem) {            
             var index = elem ? elem.length : 0;
+            //console.log('Index of ModelArr: ' + index);
+            var hasOtherModelNumb = false;
+
             if (index > 0) {
+                
                 for (var i = 0; i < elem.length; i++) {
                     if (elem[i][0][0].ModelNumber == p.ModelNumber) {
                         index = i;
+                        hasOtherModelNumb = true;
                         break;
                     }
                 }
-            } else {
+            }
+            // this block will work if the array of models has some models but has no required model
+            // or this array has no model
+            if (!hasOtherModelNumb)
+            {
                 //creates array of colors of this model
                 elem[index] = [];
                 //creates array of products of this color
                 elem[index][0] = [];
                 //populates array of products
-                populateColorArray(elem[0][0]);
+                populateColorArray(elem[index][0]);
             }            
-            console.log(1);            
+            
+            //console.log('Index of Model: ' + index);
             return index;
         }
 
         function indexOfColor(elem) {
             index = elem ? elem.length : 0;
             console.log('Index of ColorArr: ' + index);
+            var hasOtherColor = false;
             if (index > 0) {
                 for (var i = 0; i < elem.length; i++) {
                     if (elem[i][0].Color == p.Color) {
                         index = i;
+                        hasOtherColor = true;
                         break;
                     }
                 }
-            } else {
-                //elem.push(new Array());
             }
-            console.log(2);            
+            if (!hasOtherColor) {
+                elem[index] = [];
+                populateColorArray(elem[index]);
+            }           
+               
+            console.log('Index of Color: ' + index);
             return index;
         }
 
@@ -60,15 +69,15 @@ app.controller('HomeController', function (dataService, $scope) {
             if (index > 0) {
                 for (var i = 0; i < elem.length; i++) {
                     if (elem[i].Id == p.Id) {
-                        index = i;
+                        index = i;                        
+                        elem[i].Quantity++;
                         break;
                     }
                 }
-            } else {
-                //populateColorArray(elem);
-            }
-            console.log(3);
+            } 
+            
             console.log('Index of Product: ' + index);
+            console.log('----------------------------');
             return index;
         }
 
@@ -84,80 +93,9 @@ app.controller('HomeController', function (dataService, $scope) {
                 
         var iM = indexOfModel($scope.orderData.Data);
         var iC = indexOfColor($scope.orderData.Data[iM]);
-        var iP = indexOfProduct($scope.orderData.Data[iM][iC]);
-        orderedProduct = $scope.orderData.Data[iM][iC][iP].Quantity++;
-        p.Quantity--;
-        //console.log(orderedProduct);        
-
-        //var haveModel = false;
-        //var haveColor = false;
-
-        //mainLoop:
-        //    for (var m = 0; m < $scope.orderData.Data.length; m++)
-        //    {
-        //        if ($scope.orderData.Data[m][0][0].ModelNumber == p.ModelNumber) {
-        //            //we have model in order
-        //            haveModel = true;
-        //            for (var c = 0; c < $scope.orderData.Data[m].length; c++) {
-        //                //console.log($scope.orderData.Data[m].some(haveColorInArr));
-        //                if ($scope.orderData.Data[m][c][0].Color == p.Color) {
-        //                    //we have model and color
-        //                    haveColor = true;
-        //                    if ($scope.orderData.Data[m][c].indexOf(p) == -1) {
-        //                        console.log($scope.orderData.Data[m][c].indexOf(p.Size));
-        //                        //we have model and color, but dont have this size
-        //                        var tempP = new Product(p);
-        //                        tempP.Quantity++;
-        //                        $scope.orderData.Data[m][c].push(tempP);                                
-        //                    } else {
-        //                        //we have model and color and size
-        //                        $scope.orderData.Data[m][c][$scope.orderData.Data[m][c].indexOf(p)].Quantity++;
-        //                    }                            
-        //                    //console.log($scope.orderData.Data[m][c]);
-        //                    p.Quantity--;
-        //                    break mainLoop;
-        //                }
-        //                if (!$scope.orderData.Data[m].some(haveColorInArr)) {
-        //                    //we have model, but dont have a color
-        //                    haveColor = true;
-        //                    var tempColArr = [];
-        //                    var tempP = new Product(p);
-        //                    tempP.Quantity++;
-        //                    tempColArr.push(tempP);
-        //                    $scope.orderData.Data[m].push(tempColArr);
-        //                    p.Quantity--;
-        //                    break mainLoop;
-        //                }
-        //            }
-        //        }                
-        //        haveColor = false;
-        //    }
-        //if (!haveModel) {
-        //    //we dont have model
-        //    var nestedTempArr = [];
-        //    var tempArr = [];
-        //    var tempP = new Product(p);
-        //    tempP.Quantity++;
-        //    nestedTempArr.push(tempP);
-        //    tempArr.push(nestedTempArr);
-        //    $scope.orderData.Data.push(tempArr);
-        //    p.Quantity--;            
-        //}
-
-        //if ($scope.orderData.Data.length == 0) {
-        //    //we dont have any arrays
-        //    var nestedTempArr = [];
-        //    var tempArr = [];
-        //    var tempP = new Product(p);
-        //    tempP.Quantity++;
-        //    nestedTempArr.push(tempP);
-        //    tempArr.push(nestedTempArr);
-        //    $scope.orderData.Data.push(tempArr);
-            
-        //    p.Quantity--;
-        //}
-        //console.log($scope.orderData.Data);
-
+        indexOfProduct($scope.orderData.Data[iM][iC]);
+        
+        p.Quantity--;        
     }    
 
     $scope.getData = function () {
