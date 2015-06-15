@@ -52,10 +52,10 @@
                         {{modelArrByColors[0].Color}}
                     </td>
 
-                    <td ng-click="orderProduct(modelArrByColorsBySizes)"
-                        ng-repeat="modelArrByColorsBySizes in modelArrByColors"
+                    <td ng-click="orderProduct(product, modelArrByColors)"
+                        ng-repeat="product in modelArrByColors"
                         class="btn btn-default btn-tableData">
-                        {{modelArrByColorsBySizes.Quantity}}
+                        {{product.Quantity}}
                     </td>
                 </tr>
 
