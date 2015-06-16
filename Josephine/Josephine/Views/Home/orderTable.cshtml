@@ -1,0 +1,24 @@
+﻿<div class="col-lg-6">
+    <table ng-repeat="modelArr in orderData.Data" class="table table-bordered table-striped">
+        <tr>
+            <th class="btn btn-primary btn-header">{{modelArr[0][0].ModelNumber}}</th>
+            <th class="btn btn-primary btn-tableData"
+                ng-repeat="size in response.DataNotations[modelArr[0][0].ModelNumber].Sizes">
+                {{size}}
+            </th>
+        </tr>
+        <tr ng-repeat="modelArrByColors in modelArr">
+            <td class="btn btn-primary btn-header">
+                {{modelArrByColors[0].Color}}
+            </td>
+
+            <td ng-click="orderProduct(product, modelArrByColors)"
+                ng-repeat="product in modelArrByColors"
+                class="btn btn-default btn-tableData">
+                {{product.Quantity}}
+            </td>
+        </tr>
+
+    </table>
+</div>
+

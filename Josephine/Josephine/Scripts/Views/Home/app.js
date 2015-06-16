@@ -124,3 +124,16 @@ app.factory('dataService', function ($http) {
         }
     };
 });
+
+app.directive('productTable', function () {
+    return {
+        restrict: 'E',
+        templateUrl: '/home/productTable'
+    };
+});
+app.directive('orderTable', function () {
+    return {
+        restrict: 'E',
+        templateUrl: '/home/orderTable'
+    };
+});

@@ -84,6 +84,15 @@ namespace Josephine.Controllers
             return Json(data, JsonRequestBehavior.AllowGet);
         }
 
+        public PartialViewResult productTable()
+        {
+            return PartialView();
+        }
+        public PartialViewResult orderTable()
+        {
+            return PartialView();
+        }
+
         private class DataNotation
         {            
             public DataNotation()
