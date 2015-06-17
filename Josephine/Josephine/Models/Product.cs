@@ -15,5 +15,17 @@ namespace Josephine.Models
         public string Color { get; set; }
         public int Size { get; set; }
         public int Quantity { get; set; }
+
+        public Store ToStore()
+        {
+            Store st = new Store(this.ModelNumber, this.Name, this.Color, this.Size, this.Quantity);
+            return st;
+        }
+
+        public Warehouse ToWarehouse()
+        {
+            Warehouse wh = new Warehouse(this.ModelNumber, this.Name, this.Color, this.Size, this.Quantity);
+            return wh;
+        }
     }
 }

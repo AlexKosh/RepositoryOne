@@ -1,8 +1,25 @@
-﻿var app = angular.module('Josephine', []);
+﻿var app = angular.module('Josephine', ['ngAnimate']);
 
 app.controller('HomeController', function (dataService, $scope) {
     
-    $scope.orderData = { Data: [], DataNotations: []};
+    $scope.orderData = { Data: [], DataNotations: [] };
+    $scope.warehouseData = {};
+    $scope.storeData = {};
+    $scope.leftTableView = {};
+    $scope.rightTableView = {};
+    $scope.isGotData = {
+        store: false,
+        warehouse: false,
+        order: false
+    }
+
+    $scope.swi = function () {
+        $scope.isGotData.store = false;
+    }
+    $scope.unswi = function () {
+        $scope.isGotData.store = true;
+    }
+    
 
     $scope.cl = function (text) {        
         console.log(text);
@@ -82,7 +99,7 @@ app.controller('HomeController', function (dataService, $scope) {
         }
 
         function populateColorArray(arr) {
-            var notations = $scope.response.DataNotations[p.ModelNumber].Sizes;
+            var notations = $scope.storeData.DataNotations[p.ModelNumber].Sizes;
             var tempProd;
             for (var i = 0; i < modelArrByColors.length; i++) {
                 tempProd = new Product(modelArrByColors[i]);
@@ -95,11 +112,22 @@ app.controller('HomeController', function (dataService, $scope) {
         var iC = indexOfColor($scope.orderData.Data[iM]);
         indexOfProduct($scope.orderData.Data[iM][iC]);
         
-        p.Quantity--;        
-    }    
+        p.Quantity--;
+        $scope.isGotData.order = true;
+    }
 
-    $scope.getData = function () {
-        $scope.response = dataService.get().then(function (d) { $scope.response = d });              
+
+    function getStoreData() {
+        dataService.getStore().then(function (d) {
+            $scope.storeData = d            
+            $scope.isGotData.store = true;
+        });           
+    }
+    function getWarehouseData() {
+        $scope.warehouseData = dataService.getWarehouse().then(function (d) {
+            $scope.warehouseData = d
+            $scope.isGotData.warehouse = true;
+        });
     }
 
     function Product(p) {
@@ -109,14 +137,26 @@ app.controller('HomeController', function (dataService, $scope) {
         this.Color = p.Color;
         this.Size = p.Size;
         this.Quantity = p.Quantity;
+        this.Price = p.Price;
     }
-    
+
+    getStoreData();
+    getWarehouseData();    
+    $scope.rightTableView = $scope.orderData;
+
 });
 
 app.factory('dataService', function ($http) {
     return {
-        get: function () {
-            var promise = $http.get('/home/products').then(function (response) {
+        getStore: function () {
+            var promise = $http.get('/home/store').then(function (response) {
+                console.log('In factory: ' + response.data);
+                return response.data;
+            });
+            return promise;
+        },
+        getWarehouse: function () {
+            var promise = $http.get('/home/warehouse').then(function (response) {
                 console.log('In factory: ' + response.data);
                 return response.data;
             });
@@ -125,15 +165,15 @@ app.factory('dataService', function ($http) {
     };
 });
 
-app.directive('productTable', function () {
+app.directive('leftTable', function () {
     return {
         restrict: 'E',
-        templateUrl: '/home/productTable'
+        templateUrl: '/home/leftTable'
     };
 });
-app.directive('orderTable', function () {
+app.directive('rightTable', function () {
     return {
         restrict: 'E',
-        templateUrl: '/home/orderTable'
+        templateUrl: '/home/rightTable'
     };
 });

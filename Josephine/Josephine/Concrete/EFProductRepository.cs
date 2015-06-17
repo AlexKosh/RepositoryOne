@@ -10,12 +10,16 @@ namespace Josephine.Concrete
     public class EFProductRepository : IProductRepository
     {
         private EFDbContext context = new EFDbContext();
-        public IEnumerable<Product> Products
+        public IEnumerable<Store> Products
         {
             get { return context.Products; }
         }
+        public IEnumerable<Warehouse> Warehouse
+        {
+            get { return context.Warehouse; }
+        }
 
-        public void populate(int mN, string n, string[] c, int[] s)
+        public void populate(int mN, string n, string[] c, int[] s, int p)
         {
             //int[] sizes = { 44, 46, 48, 50, 52, 54 };
             //string name = "Vika";
@@ -27,11 +31,12 @@ namespace Josephine.Concrete
             int modelNumber = mN;
             string[] colors = c;
 
-            Product newJacket = new Product();
+            Store newJacket = new Store();
             int i = 0;
 
             newJacket.Name = name;
             newJacket.ModelNumber = modelNumber;
+            newJacket.Price  = p;
 
             foreach (string color in colors)
             {
@@ -39,9 +44,11 @@ namespace Josephine.Concrete
                 {
                     newJacket.Color = color;
                     newJacket.Size = size;
-                    newJacket.Quantity = 0;
+                    newJacket.Quantity = 2;
 
                     context.Products.Add(newJacket);
+                    context.SaveChanges();
+                    context.Warehouse.Add(newJacket.ToWarehouse());
                     context.SaveChanges();
                 }
             }

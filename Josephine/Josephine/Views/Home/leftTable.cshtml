@@ -1,0 +1,36 @@
+﻿<div class="col-lg-6">
+    <div class="btn-group" data-toogle="buttons">
+        <label class="btn btn-default animate-table-radio" ng-show="isGotData.store">
+            <input type="radio" checked ng-model="leftTableView" ng-value="storeData">Store</input>
+        </label>
+        <label class="btn btn-default animate-table-radio" ng-show="isGotData.warehouse">
+            <input type="radio" ng-model="leftTableView" ng-value="warehouseData">Warehouse</input>
+        </label>
+        <label class="btn btn-default animate-table-radio" ng-show="isGotData.order">
+            <input type="radio" ng-model="leftTableView" ng-value="orderData">Selected</input>
+        </label>
+    </div>
+    <br />
+    <br />
+    <table ng-repeat="modelArr in leftTableView.Data" class="table animate-table-table">
+        <tr>
+            <th class="btn btn-primary btn-header">{{modelArr[0][0].ModelNumber}}</th>
+            <th class="btn btn-primary btn-tableData"
+                ng-repeat="size in storeData.DataNotations[modelArr[0][0].ModelNumber].Sizes">
+                {{size}}
+            </th>
+        </tr>
+        <tr ng-repeat="modelArrByColors in modelArr">
+            <td class="btn btn-primary btn-header">
+                {{modelArrByColors[0].Color}}
+            </td>
+
+            <td ng-click="orderProduct(product, modelArrByColors)"
+                ng-repeat="product in modelArrByColors"
+                class="btn btn-default btn-tableData">
+                {{product.Quantity}}
+            </td>
+        </tr>
+
+    </table>
+</div>

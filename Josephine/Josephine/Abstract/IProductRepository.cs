@@ -9,8 +9,9 @@ namespace Josephine.Abstract
 {
     public interface IProductRepository
     {
-        IEnumerable<Product> Products { get; }
+        IEnumerable<Store> Products { get; }
+        IEnumerable<Warehouse> Warehouse { get; }
 
-        void populate(int mN, string n, string[] c, int[] s);
+        void populate(int mN, string n, string[] c, int[] s, int p);
     }
 }

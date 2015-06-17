@@ -132,6 +132,8 @@
     </Compile>
     <Compile Include="Infrastructure\NinjectDependencyResolver.cs" />
     <Compile Include="Models\Product.cs" />
+    <Compile Include="Models\Store.cs" />
+    <Compile Include="Models\Warehouse.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -142,8 +144,8 @@
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
-    <Content Include="Views\Home\productTable.cshtml" />
-    <Content Include="Views\Home\orderTable.cshtml" />
+    <Content Include="Views\Home\leftTable.cshtml" />
+    <Content Include="Views\Home\rightTable.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
