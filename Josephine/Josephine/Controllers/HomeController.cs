@@ -126,6 +126,19 @@ namespace Josephine.Controllers
 
             return Json(data, JsonRequestBehavior.AllowGet);
         }
+        public JsonResult Orders()
+        {
+            OrderData data = new OrderData(repository.OrderInfo, repository.OrderProduct);
+            return Json(data, JsonRequestBehavior.AllowGet);
+        }
+        public JsonResult Customers()
+        {
+            return Json(repository.Customers, JsonRequestBehavior.AllowGet);
+        }
+        public JsonResult Employees()
+        {
+            return Json(repository.Employees, JsonRequestBehavior.AllowGet);
+        }
 
         public PartialViewResult leftTable()
         {
@@ -155,6 +168,16 @@ namespace Josephine.Controllers
             }            
             public List<string> Colors { get; set; }
             public List<int> Sizes { get; set; }
+        }
+        private class OrderData
+        {
+            public OrderData(IEnumerable<OrderInfo> oi, IEnumerable<OrderProduct> op)
+            {
+                OrderInfo = oi;
+                OrderProduct = op;
+            }
+            public IEnumerable<OrderInfo> OrderInfo { get; set; }
+            public IEnumerable<OrderProduct> OrderProduct { get; set; }
         }
     }
 }

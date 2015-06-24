@@ -10,7 +10,10 @@ app.controller('HomeController', function (dataService, $scope) {
     $scope.isGotData = {
         store: false,
         warehouse: false,
-        order: false
+        order: false,
+        orders: false,
+        customers: false,
+        employees: false
     }
 
     $scope.swi = function () {
@@ -116,17 +119,34 @@ app.controller('HomeController', function (dataService, $scope) {
         $scope.isGotData.order = true;
     }
 
-
     function getStoreData() {
         dataService.getStore().then(function (d) {
-            $scope.storeData = d            
+            $scope.storeData = d;
             $scope.isGotData.store = true;
         });           
     }
     function getWarehouseData() {
         $scope.warehouseData = dataService.getWarehouse().then(function (d) {
-            $scope.warehouseData = d
+            $scope.warehouseData = d;
             $scope.isGotData.warehouse = true;
+        });
+    }
+    function getOrdersData() {
+        $scope.ordersData = dataService.getOrders().then(function (d) {
+            $scope.ordersData = d;
+            $scope.isGotData.orders = true;
+        });
+    }
+    function getCustomersData() {
+        $scope.customersData = dataService.getCustomers().then(function (d) {
+            $scope.customersData = d;
+            $scope.isGotData.customers = true;
+        });
+    }
+    function getEmployeesData() {
+        $scope.employeesData = dataService.getEmployees().then(function (d) {
+            $scope.employeesData = d;
+            $scope.isGotData.employees = true;
         });
     }
 
@@ -143,6 +163,9 @@ app.controller('HomeController', function (dataService, $scope) {
     getStoreData();
     getWarehouseData();    
     $scope.rightTableView = $scope.orderData;
+    getOrdersData();
+    getCustomersData();
+    getEmployeesData();
 
 });
 
@@ -157,6 +180,27 @@ app.factory('dataService', function ($http) {
         },
         getWarehouse: function () {
             var promise = $http.get('/home/warehouse').then(function (response) {
+                console.log('In factory: ' + response.data);
+                return response.data;
+            });
+            return promise;
+        },
+        getOrders: function () {
+            var promise = $http.get('/home/orders').then(function (response) {
+                console.log('In factory: ' + response.data);
+                return response.data;
+            });
+            return promise;
+        },
+        getCustomers: function () {
+            var promise = $http.get('/home/customers').then(function (response) {
+                console.log('In factory: ' + response.data);
+                return response.data;
+            });
+            return promise;
+        },
+        getEmployees: function () {
+            var promise = $http.get('/home/employees').then(function (response) {
                 console.log('In factory: ' + response.data);
                 return response.data;
             });
