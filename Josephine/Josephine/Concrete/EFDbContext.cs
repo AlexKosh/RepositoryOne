@@ -9,7 +9,12 @@ namespace Josephine.Concrete
 {
     public class EFDbContext : DbContext
     {
-        public DbSet<Store> Products { get; set; }
+        public DbSet<Store> Store { get; set; }
         public DbSet<Warehouse> Warehouse { get; set; }
+        public DbSet<Customer> Customer { get; set; }
+        public DbSet<OrderInfo> OrderInfo { get; set; }
+        public DbSet<OrderProduct> OrderProduct { get; set; }
+        public DbSet<Sale> Sale { get; set; }
+        public DbSet<Employee> Employee { get; set; }
     }
 }

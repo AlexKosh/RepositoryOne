@@ -9,7 +9,7 @@ namespace Josephine.Models
     public class Product
     {
         [Key]
-        public int Id { get; set; }
+        public int ProductId { get; set; }
         public string Name { get; set; }
         public int ModelNumber { get; set; }
         public string Color { get; set; }

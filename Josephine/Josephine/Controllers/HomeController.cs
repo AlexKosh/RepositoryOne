@@ -51,7 +51,7 @@ namespace Josephine.Controllers
         public JsonResult Store()
         {  
             //local variable for decrease requests to db, contains all db data from table 'Products'
-            var tempDbData = repository.Products;
+            var tempDbData = repository.Store;
             //initialize variable that will returns
             DataNotation data = new DataNotation();
             //local temp variable that helps to compose 'data'
