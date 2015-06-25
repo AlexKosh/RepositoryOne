@@ -8,75 +8,99 @@
 <head>
     <meta name="viewport" content="width=device-width" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+    <link rel="stylesheet" href="~/Content/animate.css"/>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.16/angular.min.js"></script>
     <script src="https://code.angularjs.org/1.3.16/angular-animate.min.js"></script>
     <script src="~/Scripts/Views/Home/app.js" type="text/javascript"></script>
     <title>Products</title>
-    <style>
-        .btn-header {
-            width: 95px;
-        }
-        .btn-tableData{
-            width: 42px;
-        }
-        .animate-table-radio{            
-            -webkit-transition:all cubic-bezier(0.250, 0.460, 0.450, 0.940) 0.3s;
-              -moz-transition:all cubic-bezier(0.250, 0.460, 0.450, 0.940) 0.3s;
-                -o-transition:all cubic-bezier(0.250, 0.460, 0.450, 0.940) 0.3s;
-                  transition:all cubic-bezier(0.250, 0.460, 0.450, 0.940) 0.3s;                  
-        }
-        .animate-table-radio.ng-hide{
-            opacity: 0;
-            
-        }
-        .animate-table-radio.ng-hide-add.ng-hide-add-active{
-            opacity: 1;            
-        }       
-         
-        .animate-table-table{
-           
-        }
-
-        .animate-table-table.ng-leave,
-        .animate-table-table.ng-move,
-        .animate-table-table.ng-enter{            
-            -webkit-transition:all cubic-bezier(0.250, 0.460, 0.450, 0.940) 0.5s;
-              -moz-transition:all cubic-bezier(0.250, 0.460, 0.450, 0.940) 0.5s;
-                -o-transition:all cubic-bezier(0.250, 0.460, 0.450, 0.940) 0.5s;
-                  transition:all cubic-bezier(0.250, 0.460, 0.450, 0.940) 0.5s;
-        }
-        .animate-table-table.ng-leave.ng-leave-active,
-        .animate-table-table.ng-move,
-        .animate-table-table.ng-enter {
-            opacity: 0;
-            max-height: 0;
-        }
-
-        .animate-table-table.ng-leave,
-        .animate-table-table.ng-move.ng-move-active,
-        .animate-table-table.ng-enter.ng-enter-active{
-            opacity: 1;
-            
-        }
-        .animate-table-table.ng-enter-stagger {
-            /* this will have a 100ms delay between each successive enter animation */
-            -webkit-transition-delay: 0.04s;
-            transition-delay: 0.04s;
-            /* in case the stagger doesn't work then these two values
-            must be set to 0 to avoid an accidental CSS inheritance */
-            -webkit-transition-duration: 0s;
-            transition-duration: 0s;
-        }        
-    </style>
-
 </head>
 
 <body ng-controller="HomeController" class="container">
     <div class="row">
-        <br />
-        <div class="col-lg-2"></div>
-        <div class="col-lg-4"></div>
-        <div class="col-lg-4"></div>
+        <h2>Новый заказ</h2>
+        <form class="form-horizontal" role="form">
+
+            <div class="form-group row">
+                <label class="col-lg-2 control-label" for="emplName">Заказ принял: </label>
+                <div class="col-lg-4">
+                    <input type="text" placeholder="Имя сотрудника..." class="form-control" id="emplName" tabindex="1" />
+                </div>
+
+                <label class="col-lg-2 control-label" for="payMethod">Способ оплаты: </label>
+                <div class="col-lg-2">
+                    <select class="form-control" id="payMethod" ng-model="payMethodSelect" tabindex="8">
+                        <option value="1">Наличные</option>
+                        <option value="0">Водитель</option>
+                        <option value="1">Банк</option>
+                        <option value="0">Курьер</option>
+                        <option value="1">Денежный перевод</option>
+                        <option value="1">Наложенный платеж</option>
+                    </select>
+                </div>
+
+                <div ng-hide="payMethodSelect != 0">
+                    <label class="col-lg-1 control-label" for="payCode">Код: </label>
+                    <div class="col-lg-1">
+                        <input type="text" placeholder="Номер конверта..." class="form-control" id="payCode" tabindex="9" />
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="form-group row">
+                <label class="col-lg-2 control-label" for="custSurname">ФИО клиента: </label>
+                <div class="col-lg-2">
+                    <input type="text" placeholder="Фамилия..." class="form-control" id="custSurname" tabindex="2" />
+                </div>
+                <div class="col-lg-2">
+                    <input type="text" placeholder="Имя..." class="form-control" id="custName" tabindex="3" />
+                </div>                
+            </div>
+
+            <div class="form-group row">
+                <label class="col-lg-2 control-label" for="shipMethod">Способ доставки: </label>
+                <div class="col-lg-4">
+                    <select class="form-control" id="shipMethod" ng-model="shipMethodSelect" tabindex="4">
+                        <option value="1">Самовывоз</option>
+                        <option value="2">Автобус</option>
+                        <option value="3">Новая Почта</option>
+                        <option value="3">Автолюкс</option>
+                        <option value="2">Другое</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-lg-1 control-label"> с </label>
+                    <div class="col-lg-2">
+                        <input class="form-control" type="datetime-local"
+                               ng-disabled="shipMethodSelect == 3" tabindex="10" />
+                    </div>
+                    <label class="col-lg-1 control-label text-center"> по </label>
+                    <div class="col-lg-2">
+                        <input class="form-control" type="datetime-local"
+                               ng-disabled="shipMethodSelect == 3" tabindex="11" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group" ng-hide="shipMethodSelect != 2 && shipMethodSelect != 3">
+                <label class="col-lg-2 control-label" for="shipFrom">Место отправки заказа: </label>
+                <div class="col-lg-4">
+                    <input type="text" placeholder="Откуда..." class="form-control" id="shipFrom" tabindex="5" />
+                </div>
+            </div>
+
+            <div class="form-group" ng-hide="shipMethodSelect != 2 && shipMethodSelect != 3">
+                <label class="col-lg-2 control-label" for="shipWhere">Адрес доставки: </label>
+                <div class="col-lg-2">
+                    <input type="text" placeholder="Город..." class="form-control" id="shipWhere" tabindex="6" />
+                </div>
+                <div class="col-lg-2">
+                    <input type="text" placeholder="Адрес..." class="form-control" tabindex="7" />
+                </div>
+            </div>
+
+        </form>
     </div>
 
     <div class="row">

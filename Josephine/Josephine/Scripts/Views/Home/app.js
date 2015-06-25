@@ -15,14 +15,7 @@ app.controller('HomeController', function (dataService, $scope) {
         customers: false,
         employees: false
     }
-
-    $scope.swi = function () {
-        $scope.isGotData.store = false;
-    }
-    $scope.unswi = function () {
-        $scope.isGotData.store = true;
-    }
-    
+            
 
     $scope.cl = function (text) {        
         console.log(text);
@@ -88,7 +81,7 @@ app.controller('HomeController', function (dataService, $scope) {
             console.log('Index of ProductArr: ' + index);
             if (index > 0) {
                 for (var i = 0; i < elem.length; i++) {
-                    if (elem[i].Id == p.Id) {
+                    if (elem[i].ProductId == p.ProductId) {
                         index = i;                        
                         elem[i].Quantity++;
                         break;
@@ -151,7 +144,7 @@ app.controller('HomeController', function (dataService, $scope) {
     }
 
     function Product(p) {
-        this.Id = p.Id;
+        this.ProductId = p.ProductId;
         this.ModelNumber = p.ModelNumber;
         this.Name = p.Name;
         this.Color = p.Color;
@@ -221,3 +214,38 @@ app.directive('rightTable', function () {
         templateUrl: '/home/rightTable'
     };
 });
+
+//expiremental directives
+//app.directive('dropdownList', function( $timeout ){
+//    return {
+//        restrict: 'E',
+//        scope: {
+//            itemsList: '=',
+//            placeholder: '@'
+//        },
+//        template: '<input type="text" ng-model="search" placeholder="{{ placeholder }}" />' +
+//                    '<div class="search-item-list"><ul class="list">' +
+//                    '<li ng-repeat="item in itemsList | filter:search" ng-click="chooseItem( item )">{{ item.name }}' +
+//              '<span class="amount">{{ item.amount }}</span>' +
+//                 '</li>' +
+//                    '</ul></div>',
+//        link: function(scope, el, attr){
+//            var $listContainer = angular.element( el[0].querySelectorAll('.search-item-list')[0] );
+//            el.find('input').bind('focus',function(){
+//                $listContainer.addClass('show');
+//            });
+//            el.find('input').bind('blur',function(){
+//                /*
+//                   * 'blur' реагирует быстрее чем ng-click,
+//                   * поэтому без $timeout chooseItem не успеет поймать item до того, как лист исчезнет
+//                   */
+//                $timeout(function(){ $listContainer.removeClass('show') }, 200);
+//            });
+      
+//            scope.chooseItem = function( item ){
+//                scope.search = item.name;
+//                $listContainer.removeClass('show');
+//            }
+//        }
+//    }
+//});
