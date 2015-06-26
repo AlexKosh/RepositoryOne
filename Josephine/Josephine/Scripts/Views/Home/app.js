@@ -15,6 +15,7 @@ app.controller('HomeController', function (dataService, $scope) {
         customers: false,
         employees: false
     }
+    $scope.isCreatingNewOrder = false;
             
 
     $scope.cl = function (text) {        

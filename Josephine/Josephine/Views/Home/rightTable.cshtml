@@ -9,6 +9,8 @@
         <label class="btn btn-default animate-table-radio" ng-show="isGotData.order">
             <input type="radio" ng-model="rightTableView" ng-value="orderData">Selected</input>
         </label>
+        <button class="btn btn-warning animate-table-radio" ng-show="isGotData.order"
+               ng-click="isCreatingNewOrder = !isCreatingNewOrder" >Make an Order</button>
     </div>
     <br />
     <br />
