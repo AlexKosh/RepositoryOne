@@ -28,7 +28,7 @@
 
                 <label class="col-lg-2 control-label" for="payMethod">Способ оплаты: </label>
                 <div class="col-lg-2">
-                    <select class="form-control" id="payMethod" ng-model="payMethodSelect" tabindex="8">
+                    <select class="form-control" id="payMethod" ng-model="payMethodSelect" tabindex="10">
                         <option value="1">Наличные</option>
                         <option value="0">Водитель</option>
                         <option value="1">Банк</option>
@@ -41,20 +41,32 @@
                 <div ng-hide="payMethodSelect != 0">
                     <label class="col-lg-1 control-label" for="payCode">Код: </label>
                     <div class="col-lg-1">
-                        <input type="text" placeholder="Номер конверта..." class="form-control" id="payCode" tabindex="9" />
+                        <input type="text" placeholder="Номер конверта..." class="form-control" id="payCode" tabindex="11" />
                     </div>
                 </div>
             </div>
 
 
             <div class="form-group row">
+
                 <label class="col-lg-2 control-label" for="custSurname">ФИО клиента: </label>
                 <div class="col-lg-2">
                     <input type="text" placeholder="Фамилия..." class="form-control" id="custSurname" tabindex="2" />
                 </div>
                 <div class="col-lg-2">
                     <input type="text" placeholder="Имя..." class="form-control" id="custName" tabindex="3" />
-                </div>                
+                </div>
+
+
+                <div class="form-group">
+                    <label class="col-lg-1 col-lg-offset-2 control-label" for="discount">скидка: </label>
+                    <div class="col-lg-1">
+                        <input type="number" value="0" class="form-control" id="discount" tabindex="12" />
+                    </div>
+                    <label class="col-lg-1 control-label" for="sum">сумма: </label>
+                    <label class="col-lg-1 btn btn-success disabled" style="font-size:x-large">4500 </label>
+                </div>
+
             </div>
 
             <div class="form-group row">
@@ -67,19 +79,6 @@
                         <option value="3">Автолюкс</option>
                         <option value="2">Другое</option>
                     </select>
-                </div>
-
-                <div class="form-group">
-                    <label class="col-lg-1 control-label"> с </label>
-                    <div class="col-lg-2">
-                        <input class="form-control" type="datetime-local"
-                               ng-disabled="shipMethodSelect == 3" tabindex="10" />
-                    </div>
-                    <label class="col-lg-1 control-label text-center"> по </label>
-                    <div class="col-lg-2">
-                        <input class="form-control" type="datetime-local"
-                               ng-disabled="shipMethodSelect == 3" tabindex="11" />
-                    </div>
                 </div>
             </div>
 
@@ -97,6 +96,18 @@
                 </div>
                 <div class="col-lg-2">
                     <input type="text" placeholder="Адрес..." class="form-control" tabindex="7" />
+                </div>
+            </div>
+
+            <div class="form-group" ng-show="shipMethodSelect != 3">
+                <label class="col-lg-2 control-label"> Время отправки: </label>
+                <div class="col-lg-2">
+                    <input class="form-control" type="datetime-local"
+                           tabindex="8" />
+                </div>
+                <div class="col-lg-2">
+                    <input class="form-control" type="datetime-local"
+                           tabindex="9" />
                 </div>
             </div>
 
