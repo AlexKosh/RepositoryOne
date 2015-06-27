@@ -13,20 +13,22 @@ namespace Josephine.Models
         public int EmployeeId { get; set; }
         public int CustomerId { get; set; }
 
+        public string ShippingMethod { get; set; }
+        public string ShipFrom { get; set; }
+        public string ShippingToCity { get; set; }
+        public string ShipAddress { get; set; } 
+
         public DateTime OrderDate { get; set; }
         public DateTime ShipmentDateMin { get; set; }
         public DateTime ShipmentDateMax { get; set; }
-
-        public string ShipAddress { get; set; }        
-        public string OrderNotation { get; set; }
-        public string ShipFrom { get; set; }
-        public string ShippingMethod { get; set; }
+                       
+        public string OrderNotation { get; set; }        
         public int Priority { get; set; }
-        public int OrderRecievingCode { get; set; }
 
         public string PaymentMethod { get; set; }
-        public int OrderCost { get; set; }
+        public string OrderRecievingCode { get; set; }
+        public int Paid { get; set; }
         public int OrderDiscount { get; set; }
-        public bool isPaid { get; set; }
+        public int OrderCost { get; set; }
     }
 }

@@ -1,0 +1,150 @@
+﻿<div ng-show="isCreatingNewOrder">
+    <div class="row">
+        <h2>Новый заказ</h2>
+        <form class="form-horizontal" role="form">
+
+            <div class="col-lg-6">
+
+                <div class="form-group">
+                    <label class="col-lg-4 control-label" for="emplName">Заказ принял: </label>
+                    <div class="col-lg-8">
+                        <input type="text" placeholder="Имя сотрудника..."
+                               class="form-control" id="emplName" tabindex="1" />
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-lg-4 control-label" for="custSurname">ФИО клиента: </label>
+                    <div class="col-lg-4">
+                        <input type="text" placeholder="Фамилия..." 
+                               class="form-control" id="custSurname" tabindex="2" />
+                    </div>
+                    <div class="col-lg-4">
+                        <input type="text" placeholder="Имя..." 
+                               class="form-control" id="custName" tabindex="3" />
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-lg-4 control-label" for="shipMethod">Способ доставки: </label>
+                    <div class="col-lg-8">
+                        <select class="form-control" id="shipMethod"
+                                ng-model="tempOrderInfo.ShippingMethod" tabindex="4">
+                            <option value="1">Самовывоз</option>
+                            <option value="2">Автобус</option>
+                            <option value="3">Новая Почта</option>
+                            <option value="4">Автолюкс</option>
+                            <option value="5">Другое</option>
+                        </select>                       
+                    </div>
+                </div>
+                
+                <div class="form-group" ng-hide="tempOrderInfo.ShippingMethod == 1 || tempOrderInfo.ShippingMethod == null">
+                    <label class="col-lg-4 control-label" for="shipFrom">Место отправки: </label>
+                    <div class="col-lg-8">
+                        <input type="text" placeholder="Откуда..." ng-model="tempOrderInfo.ShipFrom"
+                               class="form-control" id="shipFrom" tabindex="5" />
+                    </div>
+                </div>
+                
+                <div class="form-group" ng-hide="tempOrderInfo.ShippingMethod == 1 || tempOrderInfo.ShippingMethod == null">
+                    <label class="col-lg-4 control-label" for="shipWhere">Адрес доставки: </label>
+                    <div class="col-lg-4">
+                        <input type="text" placeholder="Город..." ng-model="tempOrderInfo.ShippingToCity"
+                               class="form-control" id="shipWhere" tabindex="6" />
+                    </div>
+                    <div class="col-lg-4">
+                        <input type="text" placeholder="Адрес..." ng-model="tempOrderInfo.ShipAddress"
+                               class="form-control" tabindex="7" />
+                    </div>
+                </div>
+
+                <div class="form-group"
+                     ng-show="tempOrderInfo.ShippingMethod != 3 
+                     && tempOrderInfo.ShippingMethod != 4 
+                     && tempOrderInfo.ShippingMethod != null">
+                    <label class="col-lg-4 control-label"> Время отправки: </label>
+                    <div class="col-lg-4">
+                        <input class="form-control" type="datetime-local"
+                               tabindex="8" ng-model="tempOrderInfo.ShipmentDateMin" />
+                    </div>
+                    <div class="col-lg-4">
+                        <input class="form-control" type="datetime-local"
+                               tabindex="9" ng-model="tempOrderInfo.ShipmentDateMax" />
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="col-lg-6">
+
+                <div class="form-group">
+                    <label class="col-lg-3 control-label" for="payMethod">Способ оплаты: </label>
+                    <div class="col-lg-4">
+                        <select class="form-control" id="payMethod" ng-model="tempOrderInfo.PaymentMethod" tabindex="10">
+                            <option value="Наличные">Наличные</option>
+                            <option value="Водитель">Водитель</option>
+                            <option value="Банк">Банк</option>
+                            <option value="Курьер">Курьер</option>
+                            <option value="Денежный перевод">Денежный перевод</option>
+                            <option value="Наложенный платеж">Наложенный платеж</option>
+                        </select>
+                    </div>
+                    <div ng-show="tempOrderInfo.PaymentMethod == 'Водитель' || tempOrderInfo.PaymentMethod == 'Курьер'">
+                        <label class="col-lg-1 control-label" for="payCode">Код: </label>
+                        <div class="col-lg-4">
+                            <input type="text" placeholder="Номер конверта..." ng-model="tempOrderInfo.OrderRecievingCode"
+                                   class="form-control" id="payCode" tabindex="11" />
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-lg-2 control-label" for="orderDescr">Описание:</label>
+                    <div class="col-lg-10">
+                        <textarea class="form-control" ng-model="tempOrderInfo.OrderNotation"
+                                  rows="2" id="orderDescr"></textarea>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <label class="col-lg-3 text-center" for="paid">оплачено: </label>
+                    <label class="col-lg-3 text-center" for="balance">баланс: </label>
+                    <label class="col-lg-2 text-center" for="discount">скидка: </label>
+                    <label class="col-lg-4 text-center" for="sum">сумма: </label>
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-3">
+                        <input type="number" value="0" class="form-control"
+                               id="paid" tabindex="12" ng-model="tempOrderInfo.Paid"/>
+                    </div>
+
+                    <div class="col-lg-3">
+                        <input type="text" disabled value="0" 
+                               class="form-control text-center" id="balance" />
+                    </div>
+
+                    <div class="col-lg-2">
+                        <input type="number" value="0" ng-model="tempOrderInfo.OrderDiscount"
+                               class="form-control" id="discount" tabindex="13  " />
+                    </div>
+                    <div class="col-lg-4">
+                        <input type="text" disabled value="0" ng-model="tempOrderInfo.OrderCost"
+                               class="form-control text-center"
+                               style="font-size:x-large" id="sum" />
+                    </div>
+
+                </div>
+
+                <div class="row">
+                    <br />
+                    <div class="col-lg-offset-8 col-lg-4">
+                        <button class="btn btn-success" ng-click="sell()">Sell</button>
+                    </div>
+                </div>
+
+            </div>            
+        </form>
+    </div>
+    
+</div>

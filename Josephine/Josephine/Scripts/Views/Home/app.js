@@ -2,7 +2,7 @@
 
 app.controller('HomeController', function (dataService, $scope) {
     
-    $scope.orderData = { Data: [], DataNotations: [] };
+    $scope.selected = { Data: [], DataNotations: [] };
     $scope.warehouseData = {};
     $scope.storeData = {};
     $scope.leftTableView = {};
@@ -14,15 +14,16 @@ app.controller('HomeController', function (dataService, $scope) {
         orders: false,
         customers: false,
         employees: false
-    }
+    }   
+    $scope.tempOrder = { OrderInfo: [], OrderProduct: [] };
     $scope.isCreatingNewOrder = false;
-            
+    $scope.tempOrderInfo = {};
 
     $scope.cl = function (text) {        
         console.log(text);
     }    
 
-    $scope.orderProduct = function (p, modelArrByColors) {
+    $scope.selectProduct = function (p, modelArrByColors) {
           
         function indexOfModel(elem) {            
             var index = elem ? elem.length : 0;
@@ -105,9 +106,9 @@ app.controller('HomeController', function (dataService, $scope) {
             }
         }
                 
-        var iM = indexOfModel($scope.orderData.Data);
-        var iC = indexOfColor($scope.orderData.Data[iM]);
-        indexOfProduct($scope.orderData.Data[iM][iC]);
+        var iM = indexOfModel($scope.selected.Data);
+        var iC = indexOfColor($scope.selected.Data[iM]);
+        indexOfProduct($scope.selected.Data[iM][iC]);
         
         p.Quantity--;
         $scope.isGotData.order = true;
@@ -144,6 +145,26 @@ app.controller('HomeController', function (dataService, $scope) {
         });
     }
 
+    //post
+    $scope.sell = function () {        
+
+        for (var i = 0; i < $scope.selected.length; i++) {
+            for (var j = 0; j < $scope.selected[i].length; i++) {
+                for (var k = 0; k < $scope.selected[i][j].length; i++) {
+                    if ($scope.selected[i][j][k].Quantity > 0) {
+                        $scope.tempOrder.OrderProduct.push($scope.selected[i][j][k]);
+                    }
+                }
+            }
+        }  
+        var tO = new OrderInfo($scope.tempOrderInfo);
+        $scope.tempOrder.OrderInfo.push(tO);
+        console.log('BeforeSend');
+        console.log($scope.tempOrder);
+        dataService.postOrder($scope.tempOrder);
+        //$scope.tempOrder = { OrderInfo: {}, OrderProduct: [] };
+    }
+
     function Product(p) {
         this.ProductId = p.ProductId;
         this.ModelNumber = p.ModelNumber;
@@ -153,10 +174,33 @@ app.controller('HomeController', function (dataService, $scope) {
         this.Quantity = p.Quantity;
         this.Price = p.Price;
     }
+    function OrderInfo(oi) {
+        this.OrderId = null;
+        this.EmployeeId = null;
+        this.CustomerId = null;
+
+        this.ShippingMethod = oi.ShippingMethod;
+        this.ShipFrom = oi.ShipFrom;
+        this.ShippingToCity = oi.ShippingToCity;
+        this.ShipAddress = oi.ShipAddress;
+
+        this.OrderDate = oi.OrderDate;
+        this.ShipmentDateMin = oi.ShipmentDateMin;
+        this.ShipmentDateMax = oi.ShipmentDateMax;
+                       
+        this.OrderNotation = oi.OrderNotation;      
+        this.Priority = oi.Priority;
+
+        this.PaymentMethod = oi.PaymentMethod;
+        this.OrderRecievingCode = oi.OrderRecievingCode;
+        this.Paid = oi.Paid;
+        this.OrderDiscount = oi.OrderDiscount;
+        this.OrderCost = oi.OrderCost;
+    }
 
     getStoreData();
     getWarehouseData();    
-    $scope.rightTableView = $scope.orderData;
+    $scope.rightTableView = $scope.selected;
     getOrdersData();
     getCustomersData();
     getEmployeesData();
@@ -199,6 +243,11 @@ app.factory('dataService', function ($http) {
                 return response.data;
             });
             return promise;
+        },
+        postOrder: function (data) {
+            $http.post('/home/processOrder', { d: data })
+                .success(function (data) { console.log(data); })
+                .error(function () { alert('err'); });
         }
     };
 });
@@ -215,38 +264,10 @@ app.directive('rightTable', function () {
         templateUrl: '/home/rightTable'
     };
 });
+app.directive('createOrder', function () {
+    return {
+        restrict: 'E',
+        templateUrl: '/home/createOrder'
+    };
+});
 
-//expiremental directives
-//app.directive('dropdownList', function( $timeout ){
-//    return {
-//        restrict: 'E',
-//        scope: {
-//            itemsList: '=',
-//            placeholder: '@'
-//        },
-//        template: '<input type="text" ng-model="search" placeholder="{{ placeholder }}" />' +
-//                    '<div class="search-item-list"><ul class="list">' +
-//                    '<li ng-repeat="item in itemsList | filter:search" ng-click="chooseItem( item )">{{ item.name }}' +
-//              '<span class="amount">{{ item.amount }}</span>' +
-//                 '</li>' +
-//                    '</ul></div>',
-//        link: function(scope, el, attr){
-//            var $listContainer = angular.element( el[0].querySelectorAll('.search-item-list')[0] );
-//            el.find('input').bind('focus',function(){
-//                $listContainer.addClass('show');
-//            });
-//            el.find('input').bind('blur',function(){
-//                /*
-//                   * 'blur' реагирует быстрее чем ng-click,
-//                   * поэтому без $timeout chooseItem не успеет поймать item до того, как лист исчезнет
-//                   */
-//                $timeout(function(){ $listContainer.removeClass('show') }, 200);
-//            });
-      
-//            scope.chooseItem = function( item ){
-//                scope.search = item.name;
-//                $listContainer.removeClass('show');
-//            }
-//        }
-//    }
-//});

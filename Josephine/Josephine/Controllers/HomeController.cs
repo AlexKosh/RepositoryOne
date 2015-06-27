@@ -148,8 +148,18 @@ namespace Josephine.Controllers
         {
             return PartialView();
         }
+        public PartialViewResult createOrder()
+        {
+            return PartialView();
+        }
 
-        private class DataNotation
+        [HttpPost]
+        public JsonResult processOrder(OrderData d)
+        {            
+            return Json(d, JsonRequestBehavior.AllowGet);
+        }
+
+        public class DataNotation
         {            
             public DataNotation()
             {
@@ -159,7 +169,7 @@ namespace Josephine.Controllers
             public List<List<IEnumerable<Product>>> Data { get; set; }
             public Dictionary<string, Annotation> DataNotations { get; set; }                       
         }
-        private class Annotation
+        public class Annotation
         {
             public Annotation()
             {                
@@ -169,8 +179,13 @@ namespace Josephine.Controllers
             public List<string> Colors { get; set; }
             public List<int> Sizes { get; set; }
         }
-        private class OrderData
+        public class OrderData
         {
+            public OrderData()
+            {
+                OrderInfo = new List<OrderInfo>();
+                OrderProduct = new List<OrderProduct>();
+            }
             public OrderData(IEnumerable<OrderInfo> oi, IEnumerable<OrderProduct> op)
             {
                 OrderInfo = oi;

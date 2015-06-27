@@ -7,7 +7,7 @@
             <input type="radio" ng-model="rightTableView" ng-value="warehouseData">Warehouse</input>
         </label>
         <label class="btn btn-default animate-table-radio" ng-show="isGotData.order">
-            <input type="radio" ng-model="rightTableView" ng-value="orderData">Selected</input>
+            <input type="radio" ng-model="rightTableView" ng-value="selected">Selected</input>
         </label>
         <button class="btn btn-warning animate-table-radio" ng-show="isGotData.order"
                ng-click="isCreatingNewOrder = !isCreatingNewOrder" >Make an Order</button>
@@ -27,7 +27,7 @@
                 {{modelArrByColors[0].Color}}
             </td>
 
-            <td ng-click="orderProduct(product, modelArrByColors)"
+            <td ng-click="selectProduct(product, modelArrByColors)"
                 ng-repeat="product in modelArrByColors"
                 class="btn btn-default btn-tableData">
                 {{product.Quantity}}

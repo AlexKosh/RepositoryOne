@@ -152,6 +152,7 @@
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="Views\Home\leftTable.cshtml" />
     <Content Include="Views\Home\rightTable.cshtml" />
+    <Content Include="Views\Home\createOrder.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
