@@ -18,34 +18,36 @@ namespace Josephine.Controllers
         
         public ActionResult Index()
         {
-            //repository.populate(
-            //    417,
-            //    "Vika",
-            //    new string[] { "Black", "Blue", "Dark Biege", "Pearl" },
-            //    new int[] { 44, 46, 48, 50, 52, 54, 56, 58, 60 },
-            //    680);
+            if (false)
+            {
+                repository.populate(
+                    417,
+                    "Vika",
+                    new string[] { "Black", "Blue", "Dark Biege", "Pearl" },
+                    new int[] { 44, 46, 48, 50, 52, 54, 56, 58, 60 },
+                    680);
 
-            //repository.populate(
-            //    423,
-            //    "Vera",
-            //    new string[] { "Black", "Blue", "Dark Biege", "Pearl" },
-            //    new int[] { 44, 46, 48, 50, 52, 54, 56, 58 },
-            //    710);
+                repository.populate(
+                    423,
+                    "Vera",
+                    new string[] { "Black", "Blue", "Dark Biege", "Pearl" },
+                    new int[] { 44, 46, 48, 50, 52, 54, 56, 58 },
+                    710);
 
-            //repository.populate(
-            //    431,
-            //    "Nadya",
-            //    new string[] { "Blue", "Dark Biege", "Pearl" },
-            //    new int[] { 44, 46, 48, 50, 52, 54 },
-            //    740);
+                repository.populate(
+                    431,
+                    "Nadya",
+                    new string[] { "Blue", "Dark Biege", "Pearl" },
+                    new int[] { 44, 46, 48, 50, 52, 54 },
+                    740);
 
-            //repository.populate(
-            //    403,
-            //    "Nika",
-            //    new string[] { "Main", "BlueBerry", "Terra", "Lilac" },
-            //    new int[] { 48, 50, 52, 54, 56, 58 },
-            //    185);
-
+                repository.populate(
+                    403,
+                    "Nika",
+                    new string[] { "Main", "BlueBerry", "Terra", "Lilac" },
+                    new int[] { 48, 50, 52, 54, 56, 58 },
+                    185);
+            }
             return View();
         }
         public JsonResult Store()
@@ -139,6 +141,10 @@ namespace Josephine.Controllers
         {
             return Json(repository.Employees, JsonRequestBehavior.AllowGet);
         }
+        public JsonResult Prices()
+        {
+            return Json(repository.Prices, JsonRequestBehavior.AllowGet);
+        }
 
         public PartialViewResult leftTable()
         {
@@ -155,7 +161,10 @@ namespace Josephine.Controllers
 
         [HttpPost]
         public JsonResult processOrder(OrderData d)
-        {            
+        {
+            OrderData nd = new OrderData();
+            nd.OrderProduct = d.OrderProduct.Where(x => x.Quantity > 1).Select(x => x);
+            d.OrderProduct = nd.OrderProduct;
             return Json(d, JsonRequestBehavior.AllowGet);
         }
 

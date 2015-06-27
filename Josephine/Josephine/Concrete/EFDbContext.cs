@@ -16,5 +16,6 @@ namespace Josephine.Concrete
         public DbSet<OrderProduct> OrderProduct { get; set; }
         public DbSet<Sale> Sale { get; set; }
         public DbSet<Employee> Employee { get; set; }
+        public DbSet<Prices> Prices { get; set; }
     }
 }

@@ -23,6 +23,7 @@ namespace Josephine.Concrete
         public IEnumerable<Sale> Sale { get { return context.Sale; }}
         public IEnumerable<Customer> Customers { get { return context.Customer; }}
         public IEnumerable<Employee> Employees { get { return context.Employee; }}
+        public IEnumerable<Prices> Prices { get { return context.Prices; }}
 
         public void populate(int mN, string n, string[] c, int[] s, int p)
         {

@@ -63,13 +63,13 @@
                      ng-show="tempOrderInfo.ShippingMethod != 3 
                      && tempOrderInfo.ShippingMethod != 4 
                      && tempOrderInfo.ShippingMethod != null">
-                    <label class="col-lg-4 control-label"> Время отправки: </label>
-                    <div class="col-lg-4">
-                        <input class="form-control" type="datetime-local"
+                    <label class="col-lg-2 control-label"> Время: </label>
+                    <div class="col-lg-5">
+                        <input class="form-control" type="datetime"
                                tabindex="8" ng-model="tempOrderInfo.ShipmentDateMin" />
                     </div>
-                    <div class="col-lg-4">
-                        <input class="form-control" type="datetime-local"
+                    <div class="col-lg-5">
+                        <input class="form-control" type="datetime"
                                tabindex="9" ng-model="tempOrderInfo.ShipmentDateMax" />
                     </div>
                 </div>
@@ -113,7 +113,7 @@
                     <label class="col-lg-4 text-center" for="sum">сумма: </label>
                 </div>
 
-                <div class="row">
+                <div class="row form-group">
                     <div class="col-lg-3">
                         <input type="number" value="0" class="form-control"
                                id="paid" tabindex="12" ng-model="tempOrderInfo.Paid"/>
@@ -129,7 +129,7 @@
                                class="form-control" id="discount" tabindex="13  " />
                     </div>
                     <div class="col-lg-4">
-                        <input type="text" disabled value="0" ng-model="tempOrderInfo.OrderCost"
+                        <input type="text" disabled ng-model="tempOrderInfo.OrderCost"
                                class="form-control text-center"
                                style="font-size:x-large" id="sum" />
                     </div>
@@ -137,9 +137,17 @@
                 </div>
 
                 <div class="row">
-                    <br />
-                    <div class="col-lg-offset-8 col-lg-4">
-                        <button class="btn btn-success" ng-click="sell()">Sell</button>
+                    <div class="form-group">
+                        <label class="col-lg-2 text-center control-label" for="toPay">К оплате: </label>
+                        <div class="col-lg-4">
+                            <input type="text" disabled value="0" ng-value="tempOrderInfo.OrderCost - tempOrderInfo.Paid"
+                                   class="form-control text-center"
+                                   style="font-size:x-large" id="toPay" />
+                        </div>
+
+                        <div class="col-lg-4">
+                            <button class="btn btn-success" style="font-size:x-large; width:60%" ng-click="sell()">Sell</button>
+                        </div>
                     </div>
                 </div>
 

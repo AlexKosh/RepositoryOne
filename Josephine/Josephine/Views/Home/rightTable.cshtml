@@ -6,10 +6,10 @@
         <label class="btn btn-default animate-table-radio" ng-show="isGotData.warehouse">
             <input type="radio" ng-model="rightTableView" ng-value="warehouseData">Warehouse</input>
         </label>
-        <label class="btn btn-default animate-table-radio" ng-show="isGotData.order">
+        <label class="btn btn-default animate-table-radio" ng-show="isGotData.select">
             <input type="radio" ng-model="rightTableView" ng-value="selected">Selected</input>
         </label>
-        <button class="btn btn-warning animate-table-radio" ng-show="isGotData.order"
+        <button class="btn btn-warning animate-table-radio" ng-show="isGotData.select"
                ng-click="isCreatingNewOrder = !isCreatingNewOrder" >Make an Order</button>
     </div>
     <br />

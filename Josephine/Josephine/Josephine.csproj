@@ -136,6 +136,7 @@
     <Compile Include="Models\Employee.cs" />
     <Compile Include="Models\OrderInfo.cs" />
     <Compile Include="Models\OrderProduct.cs" />
+    <Compile Include="Models\Prices.cs" />
     <Compile Include="Models\Product.cs" />
     <Compile Include="Models\Sale.cs" />
     <Compile Include="Models\Store.cs" />

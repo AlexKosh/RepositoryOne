@@ -16,6 +16,7 @@ namespace Josephine.Abstract
         IEnumerable<Sale> Sale { get; }
         IEnumerable<Customer> Customers { get; }
         IEnumerable<Employee> Employees { get; }
+        IEnumerable<Prices> Prices { get; }
 
         void populate(int mN, string n, string[] c, int[] s, int p);
     }

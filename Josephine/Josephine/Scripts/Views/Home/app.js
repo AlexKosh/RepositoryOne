@@ -10,14 +10,16 @@ app.controller('HomeController', function (dataService, $scope) {
     $scope.isGotData = {
         store: false,
         warehouse: false,
-        order: false,
+        select: false,
         orders: false,
         customers: false,
-        employees: false
+        employees: false,
+        prices: false
     }   
-    $scope.tempOrder = { OrderInfo: [], OrderProduct: [] };
+    $scope.tempOrderData = { OrderInfo: [], OrderProduct: [] };
+    $scope.tempOrderInfo = { ShipmentDateMin: new Date(), ShipmentDateMax: new Date(), OrderCost: 0 };
     $scope.isCreatingNewOrder = false;
-    $scope.tempOrderInfo = {};
+
 
     $scope.cl = function (text) {        
         console.log(text);
@@ -58,7 +60,7 @@ app.controller('HomeController', function (dataService, $scope) {
 
         function indexOfColor(elem) {
             index = elem ? elem.length : 0;
-            console.log('Index of ColorArr: ' + index);
+            //console.log('Index of ColorArr: ' + index);
             var hasOtherColor = false;
             if (index > 0) {
                 for (var i = 0; i < elem.length; i++) {
@@ -74,13 +76,13 @@ app.controller('HomeController', function (dataService, $scope) {
                 populateColorArray(elem[index]);
             }           
                
-            console.log('Index of Color: ' + index);
+            //console.log('Index of Color: ' + index);
             return index;
         }
 
         function indexOfProduct(elem) {
             index = elem ? elem.length : 0;
-            console.log('Index of ProductArr: ' + index);
+            //console.log('Index of ProductArr: ' + index);
             if (index > 0) {
                 for (var i = 0; i < elem.length; i++) {
                     if (elem[i].ProductId == p.ProductId) {
@@ -91,8 +93,8 @@ app.controller('HomeController', function (dataService, $scope) {
                 }
             } 
             
-            console.log('Index of Product: ' + index);
-            console.log('----------------------------');
+            //console.log('Index of Product: ' + index);
+            //console.log('----------------------------');
             return index;
         }
 
@@ -105,13 +107,44 @@ app.controller('HomeController', function (dataService, $scope) {
                 arr.push(tempProd);
             }
         }
+
+        function findPrice(modelNumber) {            
+            for (var i = ($scope.pricesData.length - 1); i >= 0 ; i--) {
+                if ($scope.pricesData[i].ModelNumber == modelNumber) {
+                    //console.log(modelNumber);
+                    //console.log($scope.pricesData[i].Price);
+                    var pr = $scope.pricesData[i].Price;
+                    break;
+                }
+            }
+            return pr;
+        }
                 
         var iM = indexOfModel($scope.selected.Data);
         var iC = indexOfColor($scope.selected.Data[iM]);
         indexOfProduct($scope.selected.Data[iM][iC]);
         
         p.Quantity--;
-        $scope.isGotData.order = true;
+        $scope.isGotData.select = true;
+        recountOrderCost();
+
+        function recountOrderCost() {
+            $scope.tempOrderInfo.OrderCost = 0;
+            for (var i = 0; i < $scope.selected.Data.length; i++) {
+                for (var j = 0; j < $scope.selected.Data[i].length; j++) {
+                    for (var k = 0; k < $scope.selected.Data[i][j].length; k++) {
+                        if ($scope.selected.Data[i][j][k].Quantity > 0) {
+                            var p = findPrice($scope.selected.Data[i][j][k].ModelNumber);
+                            $scope.tempOrderInfo.OrderCost += (p * $scope.selected.Data[i][j][k].Quantity);
+                            //console.log($scope.selected.Data[i][j][k].ModelNumber);
+                            //console.log($scope.pricesData);
+                            //console.log(p);
+                            //console.log($scope.tempOrderInfo.OrderCost);
+                        }
+                    }
+                }
+            }
+        }
     }
 
     function getStoreData() {
@@ -144,25 +177,36 @@ app.controller('HomeController', function (dataService, $scope) {
             $scope.isGotData.employees = true;
         });
     }
+    function getPrices() {
+        $scope.pricesData = dataService.getPrices().then(function (d) {
+            $scope.pricesData = d;
+            $scope.isGotData.prices = true;
+        })
+    }
 
     //post
-    $scope.sell = function () {        
-
-        for (var i = 0; i < $scope.selected.length; i++) {
-            for (var j = 0; j < $scope.selected[i].length; i++) {
-                for (var k = 0; k < $scope.selected[i][j].length; i++) {
-                    if ($scope.selected[i][j][k].Quantity > 0) {
-                        $scope.tempOrder.OrderProduct.push($scope.selected[i][j][k]);
+    $scope.sell = function () {
+        
+        for (var i = 0; i < $scope.selected.Data.length; i++) {
+            for (var j = 0; j < $scope.selected.Data[i].length; j++) {                
+                for (var k = 0; k < $scope.selected.Data[i][j].length; k++) {
+                    if ($scope.selected.Data[i][j][k].Quantity > 0) {                        
+                        var toP = new OrdProduct($scope.selected.Data[i][j][k]);                        
+                        $scope.tempOrderData.OrderProduct.push(toP);
+                        toP = null;                        
                     }
                 }
             }
-        }  
+        }
+
         var tO = new OrderInfo($scope.tempOrderInfo);
-        $scope.tempOrder.OrderInfo.push(tO);
+        $scope.tempOrderData.OrderInfo.push(tO);
         console.log('BeforeSend');
-        console.log($scope.tempOrder);
-        dataService.postOrder($scope.tempOrder);
-        //$scope.tempOrder = { OrderInfo: {}, OrderProduct: [] };
+        console.log($scope.tempOrderData);
+        dataService.postOrder($scope.tempOrderData);
+        
+        //$scope.isGotData.select = false;
+        //$scope.selected = { Data: [], DataNotations: [] };
     }
 
     function Product(p) {
@@ -184,7 +228,7 @@ app.controller('HomeController', function (dataService, $scope) {
         this.ShippingToCity = oi.ShippingToCity;
         this.ShipAddress = oi.ShipAddress;
 
-        this.OrderDate = oi.OrderDate;
+        this.OrderDate = new Date();
         this.ShipmentDateMin = oi.ShipmentDateMin;
         this.ShipmentDateMax = oi.ShipmentDateMax;
                        
@@ -197,6 +241,13 @@ app.controller('HomeController', function (dataService, $scope) {
         this.OrderDiscount = oi.OrderDiscount;
         this.OrderCost = oi.OrderCost;
     }
+    function OrdProduct(op) {
+        this.OrderId = null;
+        this.ProductId = op.ProductId;
+        this.Quantity = op.Quantity;
+        this.ProductPrice = op.Price;
+        this.ProductDiscount = null;
+    }
 
     getStoreData();
     getWarehouseData();    
@@ -204,6 +255,7 @@ app.controller('HomeController', function (dataService, $scope) {
     getOrdersData();
     getCustomersData();
     getEmployeesData();
+    getPrices();
 
 });
 
@@ -211,42 +263,52 @@ app.factory('dataService', function ($http) {
     return {
         getStore: function () {
             var promise = $http.get('/home/store').then(function (response) {
-                console.log('In factory: ' + response.data);
+                //console.log('In factory: ' + response.data);
                 return response.data;
             });
             return promise;
         },
         getWarehouse: function () {
             var promise = $http.get('/home/warehouse').then(function (response) {
-                console.log('In factory: ' + response.data);
+                //console.log('In factory: ' + response.data);
                 return response.data;
             });
             return promise;
         },
         getOrders: function () {
             var promise = $http.get('/home/orders').then(function (response) {
-                console.log('In factory: ' + response.data);
+                //console.log('In factory: ' + response.data);
                 return response.data;
             });
             return promise;
         },
         getCustomers: function () {
             var promise = $http.get('/home/customers').then(function (response) {
-                console.log('In factory: ' + response.data);
+                //console.log('In factory: ' + response.data);
                 return response.data;
             });
             return promise;
         },
         getEmployees: function () {
             var promise = $http.get('/home/employees').then(function (response) {
-                console.log('In factory: ' + response.data);
+                //console.log('In factory: ' + response.data);
+                return response.data;
+            });
+            return promise;
+        },
+        getPrices: function(){
+            var promise = $http.get('home/prices').then(function (response) {
                 return response.data;
             });
             return promise;
         },
         postOrder: function (data) {
             $http.post('/home/processOrder', { d: data })
-                .success(function (data) { console.log(data); })
+                .success(function (data) {
+                    console.log("-=----=----=-");
+                    console.log(data);
+                    console.log("-=----=----=-");
+                })
                 .error(function () { alert('err'); });
         }
     };
