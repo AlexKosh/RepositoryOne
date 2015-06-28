@@ -1,10 +1,11 @@
-﻿var app = angular.module('Josephine', ['ngAnimate']);
+﻿var app = angular.module('Josephine', ['ngAnimate', 'ui.bootstrap']);
 
 app.controller('HomeController', function (dataService, $scope) {
     
     $scope.selected = { Data: [], DataNotations: [] };
     $scope.warehouseData = {};
     $scope.storeData = {};
+    $scope.customersData = [];
     $scope.leftTableView = {};
     $scope.rightTableView = {};
     $scope.isGotData = {
@@ -17,9 +18,17 @@ app.controller('HomeController', function (dataService, $scope) {
         prices: false
     }   
     $scope.tempOrderData = { OrderInfo: [], OrderProduct: [] };
-    $scope.tempOrderInfo = { ShipmentDateMin: new Date(), ShipmentDateMax: new Date(), OrderCost: 0 };
+    $scope.tempOrderInfo = {
+        ShipmentDateMin: new Date(),
+        ShipmentDateMax: new Date(),
+        OrderDiscount: 0,
+        OrderCost: 0
+    };
     $scope.isCreatingNewOrder = false;
 
+    $scope.getLocation = function (v) {
+        return dataService.getLocations(v);
+    }
 
     $scope.cl = function (text) {        
         console.log(text);
@@ -110,9 +119,7 @@ app.controller('HomeController', function (dataService, $scope) {
 
         function findPrice(modelNumber) {            
             for (var i = ($scope.pricesData.length - 1); i >= 0 ; i--) {
-                if ($scope.pricesData[i].ModelNumber == modelNumber) {
-                    //console.log(modelNumber);
-                    //console.log($scope.pricesData[i].Price);
+                if ($scope.pricesData[i].ModelNumber == modelNumber) {                    
                     var pr = $scope.pricesData[i].Price;
                     break;
                 }
@@ -135,11 +142,8 @@ app.controller('HomeController', function (dataService, $scope) {
                     for (var k = 0; k < $scope.selected.Data[i][j].length; k++) {
                         if ($scope.selected.Data[i][j][k].Quantity > 0) {
                             var p = findPrice($scope.selected.Data[i][j][k].ModelNumber);
-                            $scope.tempOrderInfo.OrderCost += (p * $scope.selected.Data[i][j][k].Quantity);
-                            //console.log($scope.selected.Data[i][j][k].ModelNumber);
-                            //console.log($scope.pricesData);
-                            //console.log(p);
-                            //console.log($scope.tempOrderInfo.OrderCost);
+                            $scope.selected.Data[i][j][k].Price = p;
+                            $scope.tempOrderInfo.OrderCost += (p * $scope.selected.Data[i][j][k].Quantity);                            
                         }
                     }
                 }
@@ -184,25 +188,33 @@ app.controller('HomeController', function (dataService, $scope) {
         })
     }
 
-    //post
-    $scope.sell = function () {
-        
-        for (var i = 0; i < $scope.selected.Data.length; i++) {
-            for (var j = 0; j < $scope.selected.Data[i].length; j++) {                
-                for (var k = 0; k < $scope.selected.Data[i][j].length; k++) {
-                    if ($scope.selected.Data[i][j][k].Quantity > 0) {                        
-                        var toP = new OrdProduct($scope.selected.Data[i][j][k]);                        
-                        $scope.tempOrderData.OrderProduct.push(toP);
-                        toP = null;                        
+    function minificationSelectedArr(arr) {
+        var retArr = [];
+
+        for (var i = 0; i < arr.Data.length; i++) {
+            for (var j = 0; j < arr.Data[i].length; j++) {
+                for (var k = 0; k < arr.Data[i][j].length; k++) {
+                    if (arr.Data[i][j][k].Quantity > 0) {
+                        var toP = new OrdProduct(arr.Data[i][j][k]);
+                        retArr.push(toP);
+                        toP = null;
                     }
                 }
             }
         }
+        return retArr;
+    }
+    //post
+    $scope.sell = function () {
+        
+        $scope.tempOrderData.OrderProduct = minificationSelectedArr($scope.selected);
 
         var tO = new OrderInfo($scope.tempOrderInfo);
         $scope.tempOrderData.OrderInfo.push(tO);
+
         console.log('BeforeSend');
         console.log($scope.tempOrderData);
+
         dataService.postOrder($scope.tempOrderData);
         
         //$scope.isGotData.select = false;
@@ -301,6 +313,18 @@ app.factory('dataService', function ($http) {
                 return response.data;
             });
             return promise;
+        },
+        getLocations: function(val){
+            return $http.get('http://maps.googleapis.com/maps/api/geocode/json', {
+                params: {
+                    address: val,
+                    sensor: false
+                }
+            }).then(function (response) {
+                return response.data.results.map(function (item) {
+                    return item.formatted_address;
+                });
+            });
         },
         postOrder: function (data) {
             $http.post('/home/processOrder', { d: data })

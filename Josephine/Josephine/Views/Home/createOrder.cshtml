@@ -8,21 +8,24 @@
                 <div class="form-group">
                     <label class="col-lg-4 control-label" for="emplName">Заказ принял: </label>
                     <div class="col-lg-8">
-                        <input type="text" placeholder="Имя сотрудника..."
+                        <input type="text" placeholder="Имя сотрудника..." ng-model="tempEmployee"
+                               typeahead="e as e.Surname +' '+ e.Name for e in employeesData | filter:$viewValue | limitTo:8"
                                class="form-control" id="emplName" tabindex="1" />
                     </div>
                 </div>
-
+                
                 <div class="form-group">
                     <label class="col-lg-4 control-label" for="custSurname">ФИО клиента: </label>
-                    <div class="col-lg-4">
-                        <input type="text" placeholder="Фамилия..." 
-                               class="form-control" id="custSurname" tabindex="2" />
+                    <div class="col-lg-8">
+                        <input type="text" placeholder="Фамилия, Имя..." ng-model="tempCustomer"
+                               class="form-control" id="custSurname"
+                               typeahead="c as c.Surname +' '+ c.Name for c in customersData | filter:$viewValue | limitTo:8"
+                               tabindex="2" />
                     </div>
-                    <div class="col-lg-4">
+                    @*<div class="col-lg-4">
                         <input type="text" placeholder="Имя..." 
                                class="form-control" id="custName" tabindex="3" />
-                    </div>
+                    </div>*@
                 </div>
 
                 <div class="form-group row">
@@ -49,16 +52,17 @@
                 
                 <div class="form-group" ng-hide="tempOrderInfo.ShippingMethod == 1 || tempOrderInfo.ShippingMethod == null">
                     <label class="col-lg-4 control-label" for="shipWhere">Адрес доставки: </label>
-                    <div class="col-lg-4">
+                    @*<div class="col-lg-4">
                         <input type="text" placeholder="Город..." ng-model="tempOrderInfo.ShippingToCity"
                                class="form-control" id="shipWhere" tabindex="6" />
-                    </div>
-                    <div class="col-lg-4">
+                    </div>*@
+                    <div class="col-lg-8">
                         <input type="text" placeholder="Адрес..." ng-model="tempOrderInfo.ShipAddress"
-                               class="form-control" tabindex="7" />
+                               typeahead="address for address in getLocation($viewValue)"
+                               typeahead-loading="loadingLocations"
+                               class="form-control" id="shipWhere" tabindex="7" />
                     </div>
-                </div>
-
+                </div>                
                 <div class="form-group"
                      ng-show="tempOrderInfo.ShippingMethod != 3 
                      && tempOrderInfo.ShippingMethod != 4 
@@ -120,8 +124,8 @@
                     </div>
 
                     <div class="col-lg-3">
-                        <input type="text" disabled value="0" 
-                               class="form-control text-center" id="balance" />
+                        <input type="text" disabled value="0" ng-model="tempCustomer.Balance"
+                               class="form-control btn text-center" id="balance" />
                     </div>
 
                     <div class="col-lg-2">
@@ -130,7 +134,7 @@
                     </div>
                     <div class="col-lg-4">
                         <input type="text" disabled ng-model="tempOrderInfo.OrderCost"
-                               class="form-control text-center"
+                               class="form-control btn text-center"
                                style="font-size:x-large" id="sum" />
                     </div>
 
@@ -140,13 +144,15 @@
                     <div class="form-group">
                         <label class="col-lg-2 text-center control-label" for="toPay">К оплате: </label>
                         <div class="col-lg-4">
-                            <input type="text" disabled value="0" ng-value="tempOrderInfo.OrderCost - tempOrderInfo.Paid"
-                                   class="form-control text-center"
+                            <input type="text" disabled value="0"
+                                   ng-value="tempOrderInfo.OrderCost - tempOrderInfo.Paid - tempCustomer.Balance - tempOrderInfo.OrderDiscount"
+                                   class="form-control text-center btn"
                                    style="font-size:x-large" id="toPay" />
                         </div>
 
-                        <div class="col-lg-4">
-                            <button class="btn btn-success" style="font-size:x-large; width:60%" ng-click="sell()">Sell</button>
+                        <div class="col-lg-4  btn-group">
+                            <button class="btn btn-success" ng-click="sell()">Sell</button>
+                            <button class="btn btn-warning"> Order</button>
                         </div>
                     </div>
                 </div>
