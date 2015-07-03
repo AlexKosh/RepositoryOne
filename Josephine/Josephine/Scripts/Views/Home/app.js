@@ -1,6 +1,6 @@
 ﻿var app = angular.module('Josephine', ['ngAnimate', 'ui.bootstrap']);
 
-app.controller('HomeController', function (dataService, $scope) {
+app.controller('HomeController', function (dataService, $scope, $modal) {
     
     $scope.selected = { Data: [], DataNotations: [] };
     $scope.warehouseData = {};
@@ -260,6 +260,17 @@ app.controller('HomeController', function (dataService, $scope) {
         this.ProductPrice = op.Price;
         this.ProductDiscount = null;
     }
+
+    $scope.openCreateClient = function () {
+        var modalInstance = $modal.open({
+            templateUrl: 'createCustomerModal'
+        });
+    };
+    $scope.openCreateWorker= function () {
+        var modalInstance = $modal.open({
+            templateUrl: 'createWorkerModal'
+        });
+    };
 
     getStoreData();
     getWarehouseData();    
