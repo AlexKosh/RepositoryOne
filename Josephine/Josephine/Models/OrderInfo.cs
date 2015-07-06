@@ -14,8 +14,7 @@ namespace Josephine.Models
         public int CustomerId { get; set; }
 
         public string ShippingMethod { get; set; }
-        public string ShipFrom { get; set; }
-        public string ShippingToCity { get; set; }
+        public string ShipFrom { get; set; }        
         public string ShipAddress { get; set; } 
 
         public DateTime OrderDate { get; set; }

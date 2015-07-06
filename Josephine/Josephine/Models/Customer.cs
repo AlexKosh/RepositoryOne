@@ -27,6 +27,7 @@ namespace Josephine.Models
         public string Skype { get; set; }
         public string OtherContact { get; set; }
 
+        public string Speciality { get; set; }
         public DateTime lastPurchase { get; set; }
         public bool isInformed { get; set; }
         public int Balance { get; set; }

@@ -167,6 +167,20 @@ namespace Josephine.Controllers
             d.OrderProduct = nd.OrderProduct;
             return Json(d, JsonRequestBehavior.AllowGet);
         }
+        [HttpPost]
+        public JsonResult newEmployee(Employee d)
+        {
+            repository.AddDataToDb<Employee>(d);
+            Employee data = repository.Employees.First(x => x.HireDate == d.HireDate);
+            return Json(data, JsonRequestBehavior.AllowGet);
+        }
+        [HttpPost]
+        public JsonResult newCustomer(Customer d)
+        {
+            repository.AddDataToDb<Customer>(d);
+            Customer data = repository.Customers.First(x => x.FirstMet == d.FirstMet);
+            return Json(data, JsonRequestBehavior.AllowGet);
+        }
 
         public class DataNotation
         {            

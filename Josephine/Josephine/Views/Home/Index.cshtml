@@ -14,6 +14,18 @@
     <script src="//angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.13.0.js"></script>
     <script src="~/Scripts/Views/Home/app.js" type="text/javascript"></script>
     <title>Products</title>
+   
+</head>
+
+<body ng-controller="HomeController" class="container">
+
+    <create-order></create-order>
+
+    <div class="row">
+        <br />
+        <left-table></left-table>
+        <right-table></right-table>
+    </div>
 
     <script type="text/ng-template" id="createCustomerModal">
 
@@ -29,58 +41,62 @@
                 <form role="form">
                     <div class="form-group">
                         <label class="control-label" for="name">Имя</label>
-                        <input type="text" class="form-control" id="name" placeholder="Введите имя">
+                        <input type="text" class="form-control" id="name" ng-model="tempCustomer.Name" placeholder="Введите имя">
                     </div>
                     <div class="form-group">
                         <label for="last name">Фамилия</label>
-                        <input type="text" class="form-control" id="last name" placeholder="Введите фамилию">
-                    </div>
-                    <div class="form-group">
-                        <label for="dateofBirth">Дата рождения</label>
-                        <input type="text" class="form-control" id="dateofBirth" placeholder="Введите дату рождения">
-                    </div>
-                    <div class="form-group">
-                        <label class="control-label" for="mobilephone"> Контактный телефон</label>
-                        <input type="tel" class="form-control" id="mobilephone" placeholder="Введите номер">
-                    </div>
-                    <div class="form-group">
-                        <label for="additionphone"> Дополнительный номер телефона</label>
-                        <input type="tel" class="form-control" id="additionphone" placeholder="Введите номер">
-                    </div>
-                    <div class="form-group">
-                        <label for="email"> Адрес электронной почты</label>
-                        <input type="email" class="form-control" id="email" placeholder="Введите адрес электронной почты">
-                    </div>
-                    <div class="form-group">
-                        <label for="skype">Skype</label>
-                        <input type="skype" class="form-control" id="skype" placeholder="Введите адрес skype">
-                    </div>
-                    <div class="form-group">
-                        <label for="addwayofcommunication">Дополнительный способ связи</label>
-                        <input type="text" class="form-control" id="addwayofcommucation" placeholder="Введите дополнительную информацию">
+                        <input type="text" class="form-control" id="last name" ng-model="tempCustomer.Surname" placeholder="Введите фамилию">
                     </div>
                     <div class="form-group">
                         <label for="nickname">Ник</label>
-                        <input type="text" class="form-control" id="nickname" placeholder="При необходимости введите ник клинета">
+                        <input type="text" class="form-control" id="nickname" ng-model="tempCustomer.Nickname" placeholder="При необходимости введите ник клинета">
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label" for="mobilephone"> Контактный телефон</label>
+                        <input type="tel" class="form-control" id="mobilephone" ng-model="tempCustomer.PhoneNumber" placeholder="Введите номер">
+                    </div>
+                    <div class="form-group">
+                        <label for="additionphone"> Дополнительный номер телефона</label>
+                        <input type="tel" class="form-control" id="additionphone" ng-model="tempCustomer.AlternatePhone" placeholder="Введите номер">
+                    </div>
+                    <div class="form-group">
+                        <label for="locOfTrade">Адрес работы</label>
+                        <input type="text" class="form-control" id="locOfTrade" ng-model="tempCustomer.locationOfTrade" placeholder="Введите адрес места где вы торгуете">
                     </div>
                     <div class="form-group">
                         <label for="class">Класс</label>
-                        <input type="text" class="form-control" id="class" placeholder="Выберите соответствующий класс">
+                        <input type="text" class="form-control" id="class" ng-model="tempCustomer.Speciality" placeholder="Выберите соответствующий класс">
+                    </div>
+                    <div class="form-group">
+                        <label for="emailo"> Адрес электронной почты</label>
+                        <input type="email" class="form-control" id="emailo" ng-model="tempCustomer.Email" placeholder="Введите адрес электронной почты">
+                    </div>
+                    <div class="form-group">
+                        <label for="skype">Skype</label>
+                        <input type="text" class="form-control" id="skype" ng-model="tempCustomer.Skype" placeholder="Введите адрес skype">
+                    </div>
+                    <div class="form-group">
+                        <label for="addwayofcommunication">Дополнительный способ связи</label>
+                        <input type="text" class="form-control" id="addwayofcommucation" ng-model="tempCustomer.OtherContact" placeholder="Введите дополнительную информацию">
                     </div>
                     <div class="form-group">
                         <label for="addinfo">Примечания</label>
-                        <input type="text" class="form-control" id="addinfo" placeholder="*">
+                        <input type="text" class="form-control" ng-model="tempCustomer.Notations" id="addinfo" placeholder="*">
+                    </div>
+                    <div class="form-group">
+                        <label for="dateofBirth">Дата рождения</label>
+                        <input type="date" class="form-control" id="dateofBirth" ng-model="tempCustomer.Birthday" placeholder="Введите дату рождения">
                     </div>
                     <div class="form-group">
                         <label for="genderCheck">Мужчина</label>
-                        <input type="checkbox" class="checkbox" value="false" id="genderCheck" />
+                        <input type="checkbox" class="checkbox" ng-model="tempCustomer.Gender" value="false" id="genderCheck" />
                     </div>
 
                 </form>
             </div>
             <div class="modal-footer">
-                <button class="btn btn-success">Добавить</button>
-                <button class="btn btn-warning">Отмена</button>
+                <button class="btn btn-success" ng-click="createNewCust()">Добавить</button>
+                <button class="btn btn-warning" ng-click="cancel()">Отмена</button>
             </div>
         </div>
 
@@ -97,67 +113,58 @@
                 <form role="form">
                     <div class="form-group">
                         <label class="control-label" for="name">Имя</label>
-                        <input type="text" class="form-control" id="name" placeholder="Введите имя">
+                        <input type="text" class="form-control" id="name" ng-model="tempWorker.Name" placeholder="Введите имя">
                     </div>
                     <div class="form-group">
                         <label for="last name">Фамилия</label>
-                        <input type="text" class="form-control" id="last name" placeholder="Введите фамилию">
+                        <input type="text" class="form-control" id="last name" ng-model="tempWorker.Surname" placeholder="Введите фамилию">
                     </div>
                     <div class="form-group">
                         <label for="dateofBirth">Дата рождения</label>
-                        <input type="text" class="form-control" id="dateofBirth" placeholder="Введите дату рождения">
+                        <div>
+                            <input type="date" class="form-control" id="dateofBirth" ng-model="tempWorker.Birthday" placeholder="Введите дату рождения">
+                        </div>
                     </div>
                     <div class="form-group">
                         <label class="control-label" for="mobilephone"> Контактный телефон</label>
-                        <input type="tel" class="form-control" id="mobilephone" placeholder="Введите номер">
+                        <input type="tel" class="form-control" id="mobilephone" ng-model="tempWorker.PhoneNumber" placeholder="Введите номер">
                     </div>
                     <div class="form-group">
                         <label for="additionphone"> Дополнительный номер телефона</label>
-                        <input type="tel" class="form-control" id="additionphone" placeholder="Введите номер">
+                        <input type="tel" class="form-control" id="additionphone" ng-model="tempWorker.AlternatePhone" placeholder="Введите номер">
                     </div>
                     <div class="form-group">
                         <label for="email"> Адрес электронной почты</label>
-                        <input type="email" class="form-control" id="email" placeholder="Введите адрес электронной почты">
+                        <input type="email" class="form-control" id="email" ng-model="tempWorker.Email" placeholder="Введите адрес электронной почты">
                     </div>
                     <div class="form-group">
                         <label for="skype">Skype</label>
-                        <input type="skype" class="form-control" id="skype" placeholder="Введите адрес skype">
+                        <input type="text" class="form-control" id="skype" ng-model="tempWorker.Skype" placeholder="Введите адрес skype">
                     </div>
                     <div class="form-group">
-                        <label for="addwayofcommunication">Дополнительный способ связи</label>
-                        <input type="text" class="form-control" id="addwayofcommucation" placeholder="Введите дополнительную информацию">
+                        <label for="addwayofcommunication"> Страничка в социальной сети</label>
+                        <input type="text" class="form-control" id="addwayofcommucation" ng-model="tempWorker.SocialNetwork" placeholder="Введите дополнительную информацию">
                     </div>
                     <div class="form-group">
                         <label for="class">Класс</label>
-                        <input type="text" class="form-control" id="class" placeholder="Выберите соответствующий класс">
+                        <input type="text" class="form-control" id="class" ng-model="tempWorker.Speciality" placeholder="Выберите соответствующий класс">
                     </div>
                     <div class="form-group">
                         <label for="addinfo">Примечания</label>
-                        <input type="text" class="form-control" id="addinfo" placeholder="*">
+                        <input type="text" class="form-control" ng-model="tempWorker.Description" id="addinfo" placeholder="*">
                     </div>
                     <div class="form-group">
                         <label for="genderCheck">Мужчина</label>
-                        <input type="checkbox" class="checkbox" value="false" id="genderCheck"/>
+                        <input type="checkbox" class="checkbox" ng-model="tempWorker.Gender" value="false" id="genderCheck" />
                     </div>
 
                 </form>
             </div>
             <div class="modal-footer">
-                <button class="btn btn-success">Добавить</button>
-                <button class="btn btn-warning">Отмена</button>
+                <button class="btn btn-success" ng-click="createNewEmpl()">Добавить</button>
+                <button class="btn btn-warning" ng-click="cancel()">Отмена</button>
             </div>
         </div>
     </script>
-</head>
-
-<body ng-controller="HomeController" class="container">
-
-    <create-order></create-order>
-
-    <div class="row">
-        <br />
-        <left-table></left-table>
-        <right-table></right-table>
-    </div>
 </body>
 </html>

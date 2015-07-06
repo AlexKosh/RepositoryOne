@@ -110,8 +110,19 @@
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
-    <Content Include="Views\Home\AddCustomerPartial.html" />
     <Content Include="Views\Home\Index.html" />
+    <EmbeddedResource Include="Migrations\201506272051188_InitialCreate.resx">
+      <DependentUpon>201506272051188_InitialCreate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201507040934463_FixEmployee.resx">
+      <DependentUpon>201507040934463_FixEmployee.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201507040941581_EmployeeGender.resx">
+      <DependentUpon>201507040941581_EmployeeGender.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201507050528089_specForCustomer.resx">
+      <DependentUpon>201507050528089_specForCustomer.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Scripts\Views\Home\app.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
@@ -133,6 +144,23 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Infrastructure\NinjectDependencyResolver.cs" />
+    <Compile Include="Migrations\201506272051188_InitialCreate.cs" />
+    <Compile Include="Migrations\201506272051188_InitialCreate.Designer.cs">
+      <DependentUpon>201506272051188_InitialCreate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201507040934463_FixEmployee.cs" />
+    <Compile Include="Migrations\201507040934463_FixEmployee.Designer.cs">
+      <DependentUpon>201507040934463_FixEmployee.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201507040941581_EmployeeGender.cs" />
+    <Compile Include="Migrations\201507040941581_EmployeeGender.Designer.cs">
+      <DependentUpon>201507040941581_EmployeeGender.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201507050528089_specForCustomer.cs" />
+    <Compile Include="Migrations\201507050528089_specForCustomer.Designer.cs">
+      <DependentUpon>201507050528089_specForCustomer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Customer.cs" />
     <Compile Include="Models\Employee.cs" />
     <Compile Include="Models\OrderInfo.cs" />

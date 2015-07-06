@@ -59,5 +59,39 @@ namespace Josephine.Concrete
                 }
             }
         }
+
+        public void AddDataToDb<T>(T d)
+        {               
+            System.Type type = d.GetType();
+            
+
+            switch (type.Name.ToString())
+            {
+                case "Employee":
+                    Employee e = d as Employee;
+                    if (e.EmployeeId == 0)
+                    {
+                        context.Employee.Add(e);
+                    }
+                    break; 
+                case "Customer":
+                    Customer c = d as Customer;
+                    if (c.CustomerId == 0)
+                    {
+                        context.Customer.Add(c);
+                    }
+                    break;
+
+                default:
+                    break;
+            }
+
+            context.SaveChanges();
+        }
+
+        public interface IHasId
+        {
+            int EmployeeId { get; }
+        }
     }
 }

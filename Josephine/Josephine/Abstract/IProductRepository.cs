@@ -19,5 +19,7 @@ namespace Josephine.Abstract
         IEnumerable<Prices> Prices { get; }
 
         void populate(int mN, string n, string[] c, int[] s, int p);
+
+        void AddDataToDb<T>(T d);
     }
 }
