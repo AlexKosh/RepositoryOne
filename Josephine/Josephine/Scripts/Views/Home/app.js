@@ -44,10 +44,15 @@ app.controller('HomeController', function (dataService, $scope, $modal) {
             $scope.isGotData.store = true;
         });           
     }
-    function getWarehouseData() {
-        $scope.warehouseData = dataService.getWarehouse().then(function (d) {
-            $scope.warehouseData = d;
-            $scope.isGotData.warehouse = true;
+    function getWarehouseData(needToSelect) {
+        $scope.warehouseData = dataService.getWarehouse().then(function (d) {            
+            if (needToSelect) {
+                $scope.leftTableView = $scope.warehouseData = d;
+                //console.log(d);
+            } else {
+                $scope.warehouseData = d;
+                $scope.isGotData.warehouse = true;
+            }
         });
     }
     function getOrdersData() {
@@ -162,7 +167,7 @@ app.controller('HomeController', function (dataService, $scope, $modal) {
         }
 
         function populateColorArray(arr) {
-            var notations = $scope.storeData.DataNotations[p.ModelNumber].Sizes;
+            var notations = $scope.warehouseData.DataNotations[p.ModelNumber].Sizes;
             var tempProd;
             for (var i = 0; i < modelArrByColors.length; i++) {
                 tempProd = new Product(modelArrByColors[i]);
@@ -208,16 +213,16 @@ app.controller('HomeController', function (dataService, $scope, $modal) {
     //post, sell this order
     $scope.sell = function () {
         function OrderInfo(oi) {
-            this.OrderId = null;
-            this.EmployeeId = null;
-            this.CustomerId = null;
+            this.OrderId = oi.OrderId || null;
+            this.EmployeeId = oi.EmployeeId || null;
+            this.CustomerId = oi.CustomerId || null;
 
             this.ShippingMethod = oi.ShippingMethod;
             this.ShipFrom = oi.ShipFrom;
             this.ShippingToCity = oi.ShippingToCity;
             this.ShipAddress = oi.ShipAddress;
 
-            this.OrderDate = new Date();
+            this.OrderDate = oi.OrderDate || new Date();
             this.ShipmentDateMin = oi.ShipmentDateMin;
             this.ShipmentDateMax = oi.ShipmentDateMax;
 
@@ -229,10 +234,17 @@ app.controller('HomeController', function (dataService, $scope, $modal) {
             this.Paid = oi.Paid;
             this.OrderDiscount = oi.OrderDiscount;
             this.OrderCost = oi.OrderCost;
+
+            this.isResolved = false;
+            this.isPaid = null;
+            this.isDelivered = null;
         }
         function OrdProduct(op) {
             this.OrderId = null;
             this.ProductId = op.ProductId;
+            this.ModelNumber = op.ModelNumber;
+            this.Color = op.Color;
+            this.Size = op.Size;
             this.Quantity = op.Quantity;
             this.ProductPrice = op.Price;
             this.ProductDiscount = null;
@@ -253,12 +265,35 @@ app.controller('HomeController', function (dataService, $scope, $modal) {
             }
             return retArr;
         }
+        var tempText;
+        function fillIsDelivered(ordInf) {
+            switch (ordInf.ShippingMethod) {
+                case '1': return 'заберут';
+                case '2':
+                case '3':
+                case '4': return 'отнести';
+                case '5': return 'нет информации';
+                default: return 'нет информации';
+            }
+        }
+        function fillIsPaid(ordInf) {
+            if (ordInf.PaymentMethod == 'Водитель') {
+                return 'оплата на месте';
+            } else {
+                return 'не оплачен';
+            }
+        }
 
         $scope.tempOrderData.OrderProduct = minificationSelectedArr($scope.selected);
 
         var tO = new OrderInfo($scope.tempOrderInfo);
         tO.EmployeeId = $scope.tempEmployee.EmployeeId;
         tO.CustomerId = $scope.tempCustomer.CustomerId;
+        tempText = fillIsDelivered(tO);
+        tO.isDelivered = tempText;
+        tempText = fillIsPaid(tO);
+        tO.isPaid = tempText;
+        console.log(tO);
         
         $scope.tempOrderData.OrderInfo.push(tO);
 
@@ -285,17 +320,33 @@ app.controller('HomeController', function (dataService, $scope, $modal) {
             controller: 'ModalNewEmployeeController',
             scope: $scope
         });
+        console.log($scope.warehouseData);
+    };
+    $scope.openAddProductToWh = function () {
+        var modalInstance = $modal.open({
+            templateUrl: 'addProductToWh',
+            controller: 'ModalAddProductToWhController',
+            scope: $scope
+        });
+
+        //console.log($scope.warehouseData.DataNotations);
+        //console.log($scope.warehouseData.DataNotations[417].Colors);
+
+        modalInstance.result.then(function () {
+            getWarehouseData(true);            
+            console.log('good');
+        });
     };
 
     //get all datas
     getStoreData();
-    getWarehouseData();    
+    getWarehouseData(false);    
     $scope.rightTableView = $scope.selected;
     getOrdersData();
     getCustomersData();
     getEmployeesData();
     getPrices();
-
+    
 });
 
 app.controller('ModalNewCustomerController', function (dataService, $modalInstance, $scope, $rootScope) {
@@ -367,6 +418,17 @@ app.controller('ModalNewEmployeeController', function (dataService, $modalInstan
     $scope.cancel = function () {
         $modalInstance.dismiss();
     };
+});
+app.controller('ModalAddProductToWhController', function (dataService, $modalInstance, $scope) {    
+    $scope.modelArr = $scope.$parent.warehouseData.DataNotations;
+    $scope.mNumbers = Object.keys($scope.modelArr);
+    $scope.add = function () {
+        dataService.postNewProd($scope);        
+        $modalInstance.close();
+    }
+    $scope.cancel = function () {
+        $modalInstance.dismiss();
+    }
 });
 
 app.factory('dataService', function ($http) {
@@ -454,6 +516,17 @@ app.factory('dataService', function ($http) {
                     $scope.customersData.push(data);
                 })
                 .error(function () { alert('err in post new customer'); });
+        },
+        postNewProd: function ($scope) {
+            $http.post('/home/newProduct', {
+                d: {
+                    ModelNumber: $scope.ModelNumber,
+                    Name: $scope.Name,
+                    Color: $scope.Color,
+                    Size: $scope.Size,
+                    Quantity: $scope.Quantity
+                }
+            });
         }
     }
 });
@@ -463,7 +536,7 @@ app.directive('leftTable', function () {
         restrict: 'E',
         templateUrl: '/home/leftTable'
     };
-});
+}); 
 app.directive('rightTable', function () {
     return {
         restrict: 'E',
@@ -474,6 +547,12 @@ app.directive('createOrder', function () {
     return {
         restrict: 'E',
         templateUrl: '/home/createOrder'
+    };
+});
+app.directive('navButtons', function () {
+    return {
+        restrict: 'E',
+        templateUrl: '/home/navButtons'
     };
 });
 

@@ -81,17 +81,88 @@ namespace Josephine.Concrete
                         context.Customer.Add(c);
                     }
                     break;
+                case "Warehouse":
+                    Warehouse w = d as Warehouse;
+                    Warehouse itemToEdit = new Warehouse();
 
+                    itemToEdit = context.Warehouse.FirstOrDefault(x => x.ModelNumber == w.ModelNumber && 
+                        x.Color == w.Color && x.Size == w.Size);
+
+                    if (itemToEdit == null)
+                    {
+                        context.Warehouse.Add(w);
+                    }
+                    else
+                    {
+                        itemToEdit.Quantity += w.Quantity;
+                    }                    
+                    break;
+                ////case "OrderInfo":
+                ////    OrderInfo oi = d as OrderInfo;
+                ////    OrderInfo orderToEdit = new OrderInfo();
+
+                ////    orderToEdit = context.OrderInfo.FirstOrDefault(x => x.OrderDate == oi.OrderDate);
+
+                ////    if (orderToEdit == null)
+                ////    {
+                ////        context.OrderInfo.Add(oi);
+                ////    }
+                ////    else
+                ////    {
+                ////        orderToEdit = oi;
+                ////    }
+                ////    break;
                 default:
                     break;
             }
 
             context.SaveChanges();
         }
-
-        public interface IHasId
+        public int AddOrderInfoToDb(OrderInfo oi)
         {
-            int EmployeeId { get; }
+            if (oi.OrderId == 0)
+            {
+                context.OrderInfo.Add(oi);
+                context.SaveChanges();
+                return oi.OrderId;
+            }
+            else
+            {
+                OrderInfo orderToEdit = new OrderInfo();
+                orderToEdit = context.OrderInfo.FirstOrDefault(x => x.OrderId == oi.OrderId);
+                orderToEdit = oi;
+                context.SaveChanges();
+                return orderToEdit.OrderId;
+            }
+        }
+        public void AddOrderProductsToDb(IEnumerable<OrderProduct> op, int oId)
+        {
+            var itemsToRemove = context.OrderProduct.Where(x => x.OrderId == oId).Select(x => x);
+
+            if (itemsToRemove != null)
+            {
+                context.OrderProduct.RemoveRange(itemsToRemove);
+            }
+            using (var tx = context.Database.BeginTransaction())
+            {
+                try
+                {
+                    foreach (var item in op)
+                    {
+                        item.OrderId = oId;
+                        context.OrderProduct.Add(item);
+
+                        var itemFromStore = context.Store.Find(item.ProductId);
+                        itemFromStore.Quantity -= item.Quantity;                                                
+                    }
+                    context.SaveChanges();
+                    tx.Commit();
+                }
+                catch (Exception)
+                {
+                    tx.Rollback();
+                }
+            }               
         }
     }
 }

@@ -29,5 +29,9 @@ namespace Josephine.Models
         public int Paid { get; set; }
         public int OrderDiscount { get; set; }
         public int OrderCost { get; set; }
+
+        public string isDelivered { get; set; }
+        public string isPaid { get; set; }
+        public bool isResolved { get; set; }
     }
 }

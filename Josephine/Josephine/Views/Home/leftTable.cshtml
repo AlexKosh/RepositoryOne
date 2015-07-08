@@ -1,22 +1,47 @@
 ﻿<div class="col-lg-6">
-    <div class="btn-group" data-toogle="buttons">
-        <label class="btn btn-default animate-table-radio" ng-show="isGotData.store">
-            <input type="radio" checked ng-model="leftTableView" ng-value="storeData">Store</input>
-        </label>
-        <label class="btn btn-default animate-table-radio" ng-show="isGotData.warehouse">
-            <input type="radio" ng-model="leftTableView" ng-value="warehouseData">Warehouse</input>
-        </label>
-        <label class="btn btn-default animate-table-radio" ng-show="isGotData.select">
-            <input type="radio" ng-model="leftTableView" ng-value="selected">Selected</input>
-        </label>
-    </div>
+    
+    
     <br />
-    <br />
-    <table ng-repeat="modelArr in leftTableView.Data" class="table animate-table-table">
+    <table class="table">
+        <tr>
+            <td>#1</td>
+            <td>отнести</td>
+            <td>c 10:00</td>
+            <td>до 12:00</td>
+            <td>не упакован</td>
+            <td>оплата на месте</td>
+        </tr>
+        <tr>
+            <td>#2</td>
+            <td>отнести</td>
+            <td>c 11:00</td>
+            <td>до 13:00</td>
+            <td>упакован</td>
+            <td>оплачен</td>
+        </tr>
+        <tr>
+            <td>#3</td>
+            <td>заберут</td>
+            <td>c 8:00</td>
+            <td>до 9:00</td>
+            <td>не упакован</td>
+            <td>оплата на месте</td>
+        </tr>
+    </table>
+    <table class="table" ng-show="isGotData.ordSelect == true">
+        <tr ng-repeat="order in ordersData.OrderInfo">
+            <td>#{{order.OrderId}}</td>
+            <td>{{order.isDelivered}}</td>
+            <td>c {{order.ShipDateMin}}</td>
+            <td>до {{order.ShipDateMax}}</td>
+            <td>{{order.isPaid}}</td>
+        </tr>
+    </table>
+    <table ng-repeat="modelArr in leftTableView.Data" ng-show="isGotData.ordSelect == false" class="table animate-table-table">
         <tr>
             <th class="btn btn-primary btn-header">{{modelArr[0][0].ModelNumber}}</th>
             <th class="btn btn-primary btn-tableData"
-                ng-repeat="size in storeData.DataNotations[modelArr[0][0].ModelNumber].Sizes">
+                ng-repeat="size in warehouseData.DataNotations[modelArr[0][0].ModelNumber].Sizes">
                 {{size}}
             </th>
         </tr>

@@ -13,6 +13,9 @@ namespace Josephine.Models
         public int OrderId { get; set; }
         [Key, Column(Order = 1)]
         public int ProductId { get; set; }
+        public int ModelNumber { get; set; }
+        public string Color { get; set; }
+        public int Size { get; set; }
         public int Quantity { get; set; }
         public int ProductPrice { get; set; }
         public int ProductDiscount { get; set; }

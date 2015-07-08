@@ -123,6 +123,15 @@
     <EmbeddedResource Include="Migrations\201507050528089_specForCustomer.resx">
       <DependentUpon>201507050528089_specForCustomer.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201507071227553_extendedOrderProduct.resx">
+      <DependentUpon>201507071227553_extendedOrderProduct.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201507081244527_AddIsDeliveredAndIsPaidToOrderInfo.resx">
+      <DependentUpon>201507081244527_AddIsDeliveredAndIsPaidToOrderInfo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201507081531512_addIsResolved.resx">
+      <DependentUpon>201507081531512_addIsResolved.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Scripts\Views\Home\app.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
@@ -160,6 +169,18 @@
     <Compile Include="Migrations\201507050528089_specForCustomer.Designer.cs">
       <DependentUpon>201507050528089_specForCustomer.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201507071227553_extendedOrderProduct.cs" />
+    <Compile Include="Migrations\201507071227553_extendedOrderProduct.Designer.cs">
+      <DependentUpon>201507071227553_extendedOrderProduct.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201507081244527_AddIsDeliveredAndIsPaidToOrderInfo.cs" />
+    <Compile Include="Migrations\201507081244527_AddIsDeliveredAndIsPaidToOrderInfo.Designer.cs">
+      <DependentUpon>201507081244527_AddIsDeliveredAndIsPaidToOrderInfo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201507081531512_addIsResolved.cs" />
+    <Compile Include="Migrations\201507081531512_addIsResolved.Designer.cs">
+      <DependentUpon>201507081531512_addIsResolved.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Customer.cs" />
     <Compile Include="Models\Employee.cs" />
@@ -183,6 +204,7 @@
     <Content Include="Views\Home\leftTable.cshtml" />
     <Content Include="Views\Home\rightTable.cshtml" />
     <Content Include="Views\Home\createOrder.cshtml" />
+    <Content Include="Views\Home\navButtons.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

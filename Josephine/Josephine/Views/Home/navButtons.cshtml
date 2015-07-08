@@ -1,0 +1,34 @@
+﻿<div class="row">
+    <div class="col-lg-6">
+        <div class="btn-group" data-toogle="buttons">
+            <label class="btn btn-default animate-table-radio" ng-show="isGotData.store">
+                <input type="radio" checked ng-model="leftTableView" ng-value="storeData" ng-click="isSelected = 'st'">Store</input>
+            </label>
+            <label class="btn btn-default animate-table-radio" ng-show="isGotData.warehouse" ng-click="isSelected = 'wh'">
+                <input type="radio" ng-model="leftTableView" ng-value="warehouseData">Warehouse</input>
+            </label>
+            <label class="btn btn-default animate-table-radio" ng-show="isGotData.select" ng-click="isSelected = 'sel'">
+                <input type="radio" ng-model="leftTableView" ng-value="selected">Selected</input>
+            </label>
+            <button class="btn btn-success animate-table-radio" ng-click="openAddProductToWh()" ng-show="isSelected == 'wh'"> Add products</button>
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="btn-group" data-toogle="buttons">
+            @*<label class="btn btn-default animate-table-radio" ng-show="isGotData.store">
+                    <input type="radio" checked ng-model="rightTableView" ng-value="storeData">Store</input>
+                </label>
+                <label class="btn btn-default animate-table-radio" ng-show="isGotData.warehouse">
+                    <input type="radio" ng-model="rightTableView" ng-value="warehouseData">Warehouse</input>
+                </label>*@
+            <button class="btn btn-default animate-table-radio" ng-click="isGotData.ordSelect = !isGotData.ordSelect">Orders</button>
+            <label class="btn btn-default animate-table-radio" ng-show="isGotData.select">
+                <input type="radio" ng-model="rightTableView" ng-value="selected">Selected</input>
+            </label>
+            <button class="btn btn-warning animate-table-radio" ng-show="isGotData.select"
+                    ng-click="isCreatingNewOrder = !isCreatingNewOrder">
+                Make an Order
+            </button>
+        </div>
+    </div>
+</div>

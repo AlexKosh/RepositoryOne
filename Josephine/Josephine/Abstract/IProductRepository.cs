@@ -21,5 +21,7 @@ namespace Josephine.Abstract
         void populate(int mN, string n, string[] c, int[] s, int p);
 
         void AddDataToDb<T>(T d);
+        int AddOrderInfoToDb(OrderInfo oi);
+        void AddOrderProductsToDb(IEnumerable<OrderProduct> op, int oId);
     }
 }

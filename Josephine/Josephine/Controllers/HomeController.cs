@@ -112,7 +112,7 @@ namespace Josephine.Controllers
 
                 //Collection of collors for this model                
                 notation.Colors = tempModel.Select(x => x.Color).Distinct().OrderBy(x => x).ToList();
-                notation.Sizes = tempModel.Select(x => x.Size).Distinct().ToList();
+                notation.Sizes = tempModel.Select(x => x.Size).Distinct().OrderBy(x => x).ToList();
                 data.DataNotations.Add(model.ToString(), notation);
 
                 foreach (string color in notation.Colors)
@@ -158,13 +158,22 @@ namespace Josephine.Controllers
         {
             return PartialView();
         }
+        public PartialViewResult navButtons()
+        {
+            return PartialView();
+        }
 
         [HttpPost]
         public JsonResult processOrder(OrderData d)
         {
-            OrderData nd = new OrderData();
-            nd.OrderProduct = d.OrderProduct.Where(x => x.Quantity > 1).Select(x => x);
-            d.OrderProduct = nd.OrderProduct;
+            repository.AddDataToDb<OrderInfo>(d.OrderInfo.First());
+
+            int ordId = repository.AddOrderInfoToDb(d.OrderInfo.First());
+
+            repository.AddOrderProductsToDb(d.OrderProduct, ordId);
+            ////OrderData nd = new OrderData();
+            ////nd.OrderProduct = d.OrderProduct.Where(x => x.Quantity > 1).Select(x => x);
+            ////d.OrderProduct = nd.OrderProduct;
             return Json(d, JsonRequestBehavior.AllowGet);
         }
         [HttpPost]
@@ -180,6 +189,11 @@ namespace Josephine.Controllers
             repository.AddDataToDb<Customer>(d);
             Customer data = repository.Customers.First(x => x.FirstMet == d.FirstMet);
             return Json(data, JsonRequestBehavior.AllowGet);
+        }
+        [HttpPost]
+        public void newProduct(Warehouse d)
+        {
+            repository.AddDataToDb<Warehouse>(d);
         }
 
         public class DataNotation
