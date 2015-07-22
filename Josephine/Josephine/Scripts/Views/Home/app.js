@@ -57,7 +57,14 @@ app.controller('HomeController', function (dataService, $scope, $modal) {
     }
     function getOrdersData() {
         $scope.ordersData = dataService.getOrders().then(function (d) {
+            for (var i = 0; i < d.OrderInfo.length; i++) {
+                d.OrderInfo[i].ShipmentDateMin = new Date(parseInt(d.OrderInfo[i].ShipmentDateMin.substring(6, 19)));
+                d.OrderInfo[i].ShipmentDateMax = new Date(parseInt(d.OrderInfo[i].ShipmentDateMax.substring(6, 19)));
+            }
             $scope.ordersData = d;
+            //console.log('OrderData:');
+            //console.log($scope.ordersData);
+            populateOrdersInfoByDatesArr();
             $scope.isGotData.orders = true;
         });
     }
@@ -80,12 +87,59 @@ app.controller('HomeController', function (dataService, $scope, $modal) {
         })
     }
         
+    $scope.ordersInfoByDates = [[]];
     //-------------------------------------------------------
     //=========== ------- initials end ------ ===============
     //=======================================================    
+    $scope.collapseAndSelect = function (order) {
+        order.isCollapsed = !order.isCollapsed;
 
+        var productsInThisOrder = [];
+                
+        for (var i = 0; i < $scope.ordersData.OrderProduct.length; i++) {
+            if (order.OrderId == $scope.ordersData.OrderProduct[i].OrderId) {
+                productsInThisOrder.push($scope.ordersData.OrderProduct[i]);
+            }
+        }
+
+        for (var i = 0; i < productsInThisOrder.length; i++) {
+            $scope.selectProduct(productsInThisOrder[i]);
+        }
+
+    }
+
+    function populateOrdersInfoByDatesArr() {
+        var today = new Date();        
+        var tempDate;
+        var orders = $scope.ordersData.OrderInfo;
+        var sorted = $scope.ordersInfoByDates;
+        var datesArr = [orders[0].ShipmentDateMax.getDate()];
+
+        for (var i = 0; i < orders.length; i++) {
+            orders[i].isCollapsed = true;
+            //console.log(orders[i].ShipmentDateMax.getDate() + ' ' + orders[i].OrderId);
+            for (var j = 0; j < datesArr.length; j++) {
+                tempDate = orders[i].ShipmentDateMax.getDate();
+                if (tempDate == datesArr[j]) {
+                    sorted[j].push(orders[i]);
+                    break;
+                }
+                if (datesArr.length - 1 == j) {
+                    sorted.push([orders[i]]);
+                    datesArr.push(orders[i].ShipmentDateMax.getDate());
+                    break;
+                }
+            }
+        }
+                
+        console.log(sorted);
+    }
+
+    function selectProduct() {
+
+    }
     //add product to selected[]
-    $scope.selectProduct = function (p, modelArrByColors) {
+    $scope.selectProductToOrder = function (p, modelArrByColors) {
         function Product(p) {
             this.ProductId = p.ProductId;
             this.ModelNumber = p.ModelNumber;
@@ -155,7 +209,7 @@ app.controller('HomeController', function (dataService, $scope, $modal) {
                 for (var i = 0; i < elem.length; i++) {
                     if (elem[i].ProductId == p.ProductId) {
                         index = i;
-                        elem[i].Quantity++;
+                        //elem[i].Quantity++;
                         break;
                     }
                 }
@@ -167,7 +221,6 @@ app.controller('HomeController', function (dataService, $scope, $modal) {
         }
 
         function populateColorArray(arr) {
-            var notations = $scope.warehouseData.DataNotations[p.ModelNumber].Sizes;
             var tempProd;
             for (var i = 0; i < modelArrByColors.length; i++) {
                 tempProd = new Product(modelArrByColors[i]);
@@ -188,8 +241,9 @@ app.controller('HomeController', function (dataService, $scope, $modal) {
 
         var iM = indexOfModel($scope.selected.Data);
         var iC = indexOfColor($scope.selected.Data[iM]);
-        indexOfProduct($scope.selected.Data[iM][iC]);
+        var iP = indexOfProduct($scope.selected.Data[iM][iC]);
 
+        $scope.selected.Data[iM][iC][iP].Quantity++;
         p.Quantity--;
         $scope.isGotData.select = true;
         recountOrderCost();
@@ -238,6 +292,7 @@ app.controller('HomeController', function (dataService, $scope, $modal) {
             this.isResolved = false;
             this.isPaid = null;
             this.isDelivered = null;
+            this.isPacked = 'не упакован';
         }
         function OrdProduct(op) {
             this.OrderId = null;
@@ -293,7 +348,7 @@ app.controller('HomeController', function (dataService, $scope, $modal) {
         tO.isDelivered = tempText;
         tempText = fillIsPaid(tO);
         tO.isPaid = tempText;
-        console.log(tO);
+        //console.log(tO);
         
         $scope.tempOrderData.OrderInfo.push(tO);
 
@@ -320,7 +375,7 @@ app.controller('HomeController', function (dataService, $scope, $modal) {
             controller: 'ModalNewEmployeeController',
             scope: $scope
         });
-        console.log($scope.warehouseData);
+        //console.log($scope.warehouseData);
     };
     $scope.openAddProductToWh = function () {
         var modalInstance = $modal.open({

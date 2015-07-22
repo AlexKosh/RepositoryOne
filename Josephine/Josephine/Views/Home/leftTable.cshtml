@@ -1,43 +1,40 @@
 ﻿<div class="col-lg-6">
-    
-    
+
     <br />
-    <table class="table">
-        <tr>
-            <td>#1</td>
-            <td>отнести</td>
-            <td>c 10:00</td>
-            <td>до 12:00</td>
-            <td>не упакован</td>
-            <td>оплата на месте</td>
-        </tr>
-        <tr>
-            <td>#2</td>
-            <td>отнести</td>
-            <td>c 11:00</td>
-            <td>до 13:00</td>
-            <td>упакован</td>
-            <td>оплачен</td>
-        </tr>
-        <tr>
-            <td>#3</td>
-            <td>заберут</td>
-            <td>c 8:00</td>
-            <td>до 9:00</td>
-            <td>не упакован</td>
-            <td>оплата на месте</td>
-        </tr>
-    </table>
-    <table class="table" ng-show="isGotData.ordSelect == true">
-        <tr ng-repeat="order in ordersData.OrderInfo">
-            <td>#{{order.OrderId}}</td>
-            <td>{{order.isDelivered}}</td>
-            <td>c {{order.ShipDateMin}}</td>
-            <td>до {{order.ShipDateMax}}</td>
-            <td>{{order.isPaid}}</td>
-        </tr>
-    </table>
-    <table ng-repeat="modelArr in leftTableView.Data" ng-show="isGotData.ordSelect == false" class="table animate-table-table">
+    <div ng-repeat="ordArr in ordersInfoByDates" ng-show="isSelected == 'ord'">
+        <div class="alert alert-info row" style="margin-bottom: 1px; padding:10px">{{ordArr[0].ShipmentDateMax | date: 'EEEE d MMM y'}}</div>
+        <div ng-repeat="order in ordArr">
+            <div class="alert alert-danger row" ng-click="collapseAndSelect(order)"
+                 style="cursor:pointer; margin-bottom:1px; padding:7.5px">
+                <div class="col-lg-1"><h4 style="margin-bottom:0">#{{order.OrderId}}</h4></div>
+                <div class="col-lg-2">{{order.isDelivered}}</div>
+                <div class="col-lg-2">c {{order.ShipmentDateMin | date: 'HH:mm'}}</div>
+                <div class="col-lg-2">до {{order.ShipmentDateMax | date: 'HH:mm'}}</div>
+                <div class="col-lg-2" style="padding:1px">{{order.isPacked}}</div>
+                <div class="col-lg-3">{{order.isPaid}}</div>
+            </div>
+            <div class="alert alert-warning row animate-table-radio" ng-hide="order.isCollapsed" style="margin-bottom: 1px; padding:5px">
+                417: BLUE 44-2, 46-3, 48-5;
+                <div class="row">
+                    <div class="col-lg-1"></div>
+                    <div class="col-lg-2">
+                        <button class="btn btn-success btn-sm">Отнесли</button>
+                    </div>
+                    <div class="col-lg-2"></div>
+                    <div class="col-lg-2"></div>
+                    <div class="col-lg-2" style="padding:1px">
+                        <button class="btn btn-success btn-sm">Упаковано</button>
+                    </div>
+                    <div class="col-lg-3">
+                        <button class="btn btn-success btn-sm">Оплачено</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br />        
+
+    <table ng-repeat="modelArr in leftTableView.Data" ng-show="isSelected != 'ord'" class="table animate-table-table">
         <tr>
             <th class="btn btn-primary btn-header">{{modelArr[0][0].ModelNumber}}</th>
             <th class="btn btn-primary btn-tableData"

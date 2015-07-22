@@ -32,6 +32,7 @@ namespace Josephine.Models
 
         public string isDelivered { get; set; }
         public string isPaid { get; set; }
+        public string isPacked { get; set; }
         public bool isResolved { get; set; }
     }
 }

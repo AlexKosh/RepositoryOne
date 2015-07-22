@@ -132,6 +132,9 @@
     <EmbeddedResource Include="Migrations\201507081531512_addIsResolved.resx">
       <DependentUpon>201507081531512_addIsResolved.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201507090729434_AddOrderInfoIsPacked.resx">
+      <DependentUpon>201507090729434_AddOrderInfoIsPacked.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Scripts\Views\Home\app.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
@@ -180,6 +183,10 @@
     <Compile Include="Migrations\201507081531512_addIsResolved.cs" />
     <Compile Include="Migrations\201507081531512_addIsResolved.Designer.cs">
       <DependentUpon>201507081531512_addIsResolved.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201507090729434_AddOrderInfoIsPacked.cs" />
+    <Compile Include="Migrations\201507090729434_AddOrderInfoIsPacked.Designer.cs">
+      <DependentUpon>201507090729434_AddOrderInfoIsPacked.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Customer.cs" />
