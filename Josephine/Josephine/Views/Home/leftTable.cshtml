@@ -4,9 +4,9 @@
     <div ng-repeat="ordArr in ordersInfoByDates" ng-show="isSelected == 'ord'">
         <div class="alert alert-info row" style="margin-bottom: 1px; padding:10px">{{ordArr[0].ShipmentDateMax | date: 'EEEE d MMM y'}}</div>
         <div ng-repeat="order in ordArr">
-            <div class="alert alert-danger row" ng-click="collapseAndSelect(order)"
+            <div class="alert row" ng-class="order.colorOfReadiness" ng-click="collapseAndSelect(order)"
                  style="cursor:pointer; margin-bottom:1px; padding:7.5px">
-                <div class="col-lg-1"><h4 style="margin-bottom:0">#{{order.OrderId}}</h4></div>
+                <div class="col-lg-1"><h4 style="margin-bottom:0; margin-right:10px; margin-left:-10px">#{{order.OrderId}}</h4></div>
                 <div class="col-lg-2">{{order.isDelivered}}</div>
                 <div class="col-lg-2">c {{order.ShipmentDateMin | date: 'HH:mm'}}</div>
                 <div class="col-lg-2">до {{order.ShipmentDateMax | date: 'HH:mm'}}</div>
@@ -14,25 +14,46 @@
                 <div class="col-lg-3">{{order.isPaid}}</div>
             </div>
             <div class="alert alert-warning row animate-table-radio" ng-hide="order.isCollapsed" style="margin-bottom: 1px; padding:5px">
-                417: BLUE 44-2, 46-3, 48-5;
+                <table>
+                    <tr class="row"><td class="col-lg-4">Заказчик:</td><td class="col-lg-8">{{getCustomerNameAndSurname(order.CustomerId)}}</td></tr>
+                    <tr class="row"><td class="col-lg-4">Доставки:</td><td class="col-lg-8">{{shippingMethodToString(order.ShippingMethod)}}</td></trclass>
+                    <tr class="row"><td class="col-lg-4">Откуда:</td><td class="col-lg-8">{{order.ShipFrom}}</td></tr>
+                    <tr class="row"><td class="col-lg-4">Куда:</td><td class="col-lg-8">{{order.ShipAddress}}</td></tr>
+                    <tr> <td><hr style="margin-bottom:5px;margin-top:5px" /></td></tr>
+                    <tr class="row"><td class="col-lg-4">Способ оплаты:</td><td class="col-lg-8">{{order.PaymentMethod}}</td></tr>
+                    <tr class="row"><td class="col-lg-4">Код конверта:</td><td class="col-lg-8">{{order.OrderRecievingCode + ''}}</td></tr>
+                    <tr class="row"><td class="col-lg-4">Описание:</td><td class="col-lg-8">{{order.OrderNotation}}</td></tr>
+                    <tr> <td><hr style="margin-bottom:5px;margin-top:5px" /></td></tr>
+                    <tr class="row"><td class="col-lg-4">Стоимость:</td><td class="col-lg-8"> {{order.OrderCost + ' грн.'}}</td></tr>
+                    <tr class="row"><td class="col-lg-4">Уже оплачено:</td><td class="col-lg-8"> {{order.Paid + ' грн.'}}</td></tr>
+                    <tr class="row"><td class="col-lg-4">Баланс:</td><td class="col-lg-8">{{getCustomerBalance(order.CustomerId) + ' грн.'}}</td></tr>
+                    <tr class="row"><td class="col-lg-4">Скидка:</td><td class="col-lg-8">{{order.OrderDiscount + ' грн.'}}</td></tr>
+                    <tr class="row"><td class="col-lg-4">К оплате:</td><td class="col-lg-8">{{getPaymentAmount(order) + ' грн.'}}</td></tr>
+                </table>
+                <hr style="margin-bottom:10px; margin-top:10px" />
                 <div class="row">
                     <div class="col-lg-1"></div>
                     <div class="col-lg-2">
-                        <button class="btn btn-success btn-sm">Отнесли</button>
+                        <button class="btn btn-warning btn-sm" ng-click="setOrderDelivered(order)">Отнесли</button>
                     </div>
-                    <div class="col-lg-2"></div>
-                    <div class="col-lg-2"></div>
+                    <div class="col-lg-4">
+                        <div class="input-group">
+                            <input type="number" value="0" ng-model="order.Paid" class="form-control input-sm" />
+                            <span class="input-group-btn">
+                                <button class="btn btn-warning btn-sm" ng-click="setOrderIsPaid(order)">Оплачено</button>
+                            </span>
+                        </div>
+                    </div>
                     <div class="col-lg-2" style="padding:1px">
-                        <button class="btn btn-success btn-sm">Упаковано</button>
+                        <button class="btn btn-warning btn-sm" ng-click="setOrderPacked(order)">Упаковано</button>
                     </div>
                     <div class="col-lg-3">
-                        <button class="btn btn-success btn-sm">Оплачено</button>
+                        <button class="btn btn-success btn-sm" ng-click="setOrderResolved(order)">Готово</button>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <br />        
 
     <table ng-repeat="modelArr in leftTableView.Data" ng-show="isSelected != 'ord'" class="table animate-table-table">
         <tr>
@@ -47,12 +68,11 @@
                 {{modelArrByColors[0].Color}}
             </td>
 
-            <td ng-click="selectProduct(product, modelArrByColors)"
+            <td ng-click="selectProductToOrder(product, modelArrByColors)"
                 ng-repeat="product in modelArrByColors"
                 class="btn btn-default btn-tableData">
                 {{product.Quantity}}
             </td>
         </tr>
-
     </table>
 </div>

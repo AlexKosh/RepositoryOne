@@ -5,6 +5,10 @@
                 width: 42px;
         }
 
+.resolved {
+    border:double;
+}
+
 .animate-table-radio{            
             opacity: 1;
             line-height: 20px;                  

@@ -19,12 +19,19 @@
     <div class="col-lg-6">
         <div class="btn-group" data-toogle="buttons">
             <label class="btn btn-default animate-table-radio" ng-show="isGotData.select">
-                <input type="radio" ng-model="rightTableView" ng-value="selected">Selected</input>
+                <input type="radio" ng-model="rightTableView" ng-value="selected" ng-click="isSelectedRight = 'sel'">Selected</input>
             </label>
             <button class="btn btn-warning animate-table-radio" ng-show="isGotData.select"
                     ng-click="isCreatingNewOrder = !isCreatingNewOrder">
-                Make an Order
+                Make an order
             </button>
+            <button class="btn btn-danger animate-table-radio" ng-show="isGotData.select"
+                    ng-click="selected = {Data: []}; rightTableView = selected; isGotData.select = false; isSelectedRight = null">
+                Clear order
+            </button>
+            <label class="btn btn-default animate-table-radio" ng-show="isGotData.orderSelected">
+                <input type="radio" ng-model="rightTableView" ng-value="selectedOrder" ng-click="isSelectedRight = 'ordSel'">Selected order</input>
+            </label>
         </div>
     </div>
 </div>

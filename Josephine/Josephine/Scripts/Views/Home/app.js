@@ -12,6 +12,7 @@ app.controller('HomeController', function (dataService, $scope, $modal) {
     $scope.customersData = [];
     $scope.leftTableView = {};
     $scope.rightTableView = {};
+    $scope.selectedOrder = { Data: [] };
     $scope.isGotData = {
         store: false,
         warehouse: false,
@@ -19,14 +20,16 @@ app.controller('HomeController', function (dataService, $scope, $modal) {
         orders: false,
         customers: false,
         employees: false,
-        prices: false
+        prices: false,
+        orderSelected: false
     }   
     $scope.tempOrderData = { OrderInfo: [], OrderProduct: [] };
     $scope.tempOrderInfo = {
         ShipmentDateMin: new Date(),
         ShipmentDateMax: new Date(),
         OrderDiscount: 0,
-        OrderCost: 0
+        OrderCost: 0,
+        needPack: true
     };
     $scope.isCreatingNewOrder = false;      
 
@@ -48,7 +51,7 @@ app.controller('HomeController', function (dataService, $scope, $modal) {
         $scope.warehouseData = dataService.getWarehouse().then(function (d) {            
             if (needToSelect) {
                 $scope.leftTableView = $scope.warehouseData = d;
-                //console.log(d);
+                
             } else {
                 $scope.warehouseData = d;
                 $scope.isGotData.warehouse = true;
@@ -60,10 +63,10 @@ app.controller('HomeController', function (dataService, $scope, $modal) {
             for (var i = 0; i < d.OrderInfo.length; i++) {
                 d.OrderInfo[i].ShipmentDateMin = new Date(parseInt(d.OrderInfo[i].ShipmentDateMin.substring(6, 19)));
                 d.OrderInfo[i].ShipmentDateMax = new Date(parseInt(d.OrderInfo[i].ShipmentDateMax.substring(6, 19)));
+                d.OrderInfo[i].colorOfReadiness = setColorOfReadinessForOrder(d.OrderInfo[i]);
             }
             $scope.ordersData = d;
-            //console.log('OrderData:');
-            //console.log($scope.ordersData);
+            
             populateOrdersInfoByDatesArr();
             $scope.isGotData.orders = true;
         });
@@ -88,28 +91,9 @@ app.controller('HomeController', function (dataService, $scope, $modal) {
     }
         
     $scope.ordersInfoByDates = [[]];
-    //-------------------------------------------------------
-    //=========== ------- initials end ------ ===============
-    //=======================================================    
-    $scope.collapseAndSelect = function (order) {
-        order.isCollapsed = !order.isCollapsed;
-
-        var productsInThisOrder = [];
-                
-        for (var i = 0; i < $scope.ordersData.OrderProduct.length; i++) {
-            if (order.OrderId == $scope.ordersData.OrderProduct[i].OrderId) {
-                productsInThisOrder.push($scope.ordersData.OrderProduct[i]);
-            }
-        }
-
-        for (var i = 0; i < productsInThisOrder.length; i++) {
-            $scope.selectProduct(productsInThisOrder[i]);
-        }
-
-    }
 
     function populateOrdersInfoByDatesArr() {
-        var today = new Date();        
+        var today = new Date();
         var tempDate;
         var orders = $scope.ordersData.OrderInfo;
         var sorted = $scope.ordersInfoByDates;
@@ -117,7 +101,7 @@ app.controller('HomeController', function (dataService, $scope, $modal) {
 
         for (var i = 0; i < orders.length; i++) {
             orders[i].isCollapsed = true;
-            //console.log(orders[i].ShipmentDateMax.getDate() + ' ' + orders[i].OrderId);
+            
             for (var j = 0; j < datesArr.length; j++) {
                 tempDate = orders[i].ShipmentDateMax.getDate();
                 if (tempDate == datesArr[j]) {
@@ -131,15 +115,12 @@ app.controller('HomeController', function (dataService, $scope, $modal) {
                 }
             }
         }
-                
-        console.log(sorted);
+
+        //console.log(sorted);
     }
 
-    function selectProduct() {
+    function selectProduct(p, array) {
 
-    }
-    //add product to selected[]
-    $scope.selectProductToOrder = function (p, modelArrByColors) {
         function Product(p) {
             this.ProductId = p.ProductId;
             this.ModelNumber = p.ModelNumber;
@@ -148,6 +129,21 @@ app.controller('HomeController', function (dataService, $scope, $modal) {
             this.Size = p.Size;
             this.Quantity = p.Quantity;
             this.Price = p.Price;
+        }
+
+        function getModelArrByColors(p) {
+            for (var i = 0; i < $scope.warehouseData.Data.length; i++) {
+
+                if ($scope.warehouseData.Data[i][0][0].ModelNumber == p.ModelNumber) {
+
+                    for (var j = 0; j < $scope.warehouseData.Data[i][j].length; j++) {
+                        if ($scope.warehouseData.Data[i][j][0].Color == p.Color) {
+                            //console.log($scope.warehouseData.Data[i][j]);
+                            return $scope.warehouseData.Data[i][j];
+                        }
+                    }
+                }
+            }
         }
 
         function indexOfModel(elem) {
@@ -222,6 +218,8 @@ app.controller('HomeController', function (dataService, $scope, $modal) {
 
         function populateColorArray(arr) {
             var tempProd;
+            var modelArrByColors = getModelArrByColors(p);
+
             for (var i = 0; i < modelArrByColors.length; i++) {
                 tempProd = new Product(modelArrByColors[i]);
                 tempProd.Quantity = 0;
@@ -229,6 +227,60 @@ app.controller('HomeController', function (dataService, $scope, $modal) {
             }
         }
 
+        var iM = indexOfModel(array);
+        var iC = indexOfColor(array[iM]);
+        var iP = indexOfProduct(array[iM][iC]);
+
+        return array[iM][iC][iP];
+    }
+    //-------------------------------------------------------
+    //=========== ------- initials end ------ ===============
+    //=======================================================    
+    $scope.collapseAndSelect = function (order) {        
+        
+        var productsInThisOrder = [];
+        $scope.selectedOrder = { Data: [], OrderId: null };
+                
+        for (var i = 0; i < $scope.ordersData.OrderProduct.length; i++) {
+            if (order.OrderId == $scope.ordersData.OrderProduct[i].OrderId) {
+                productsInThisOrder.push($scope.ordersData.OrderProduct[i]);
+            }
+        }
+
+        for (var i = 0; i < productsInThisOrder.length; i++) {
+            var prod = selectProduct(productsInThisOrder[i], $scope.selectedOrder.Data);
+            prod.Quantity = productsInThisOrder[i].Quantity;
+        }
+
+        var isAllOrdersCollapsed = true;
+
+        for (var i = 0; i < $scope.ordersData.OrderInfo.length; i++) {
+            
+            if ($scope.ordersData.OrderInfo[i].OrderId == order.OrderId) {
+                $scope.ordersData.OrderInfo[i].isCollapsed = !($scope.ordersData.OrderInfo[i].isCollapsed);
+            } else {
+                $scope.ordersData.OrderInfo[i].isCollapsed = true;
+            }
+            if ($scope.ordersData.OrderInfo[i].isCollapsed == false) {
+                isAllOrdersCollapsed = false;
+            }
+        }        
+
+        if (isAllOrdersCollapsed == true) {
+            $scope.selectedOrder = { Data: [], OrderId: null };
+            $scope.isGotData.orderSelected = false;
+        } else {            
+            $scope.isGotData.orderSelected = true;
+            $scope.selectedOrder.OrderId = order.OrderId;
+        }
+
+        $scope.rightTableView = $scope.selectedOrder;
+        $scope.isSelectedRight = 'ordSel';
+    }
+        
+    //add product to selected[]
+    $scope.selectProductToOrder = function (p, modelArrByColors) {
+        
         function findPrice(modelNumber) {
             for (var i = ($scope.pricesData.length - 1) ; i >= 0 ; i--) {
                 if ($scope.pricesData[i].ModelNumber == modelNumber) {
@@ -238,16 +290,6 @@ app.controller('HomeController', function (dataService, $scope, $modal) {
             }
             return pr;
         }
-
-        var iM = indexOfModel($scope.selected.Data);
-        var iC = indexOfColor($scope.selected.Data[iM]);
-        var iP = indexOfProduct($scope.selected.Data[iM][iC]);
-
-        $scope.selected.Data[iM][iC][iP].Quantity++;
-        p.Quantity--;
-        $scope.isGotData.select = true;
-        recountOrderCost();
-
         function recountOrderCost() {
             $scope.tempOrderInfo.OrderCost = 0;
             for (var i = 0; i < $scope.selected.Data.length; i++) {
@@ -262,8 +304,107 @@ app.controller('HomeController', function (dataService, $scope, $modal) {
                 }
             }
         }
+               
+        var productToOrder = selectProduct(p, $scope.selected.Data);
+
+        productToOrder.Quantity++;
+        p.Quantity--;
+        $scope.isGotData.select = true;
+        $scope.rightTableView = $scope.selected;
+        $scope.isSelectedRight = 'sel';
+        recountOrderCost();        
+    }
+
+    $scope.getCustomerById = function (id) {
+        for (var i = 0; i < $scope.customersData.length; i++) {
+            if ($scope.customersData[i].CustomerId == id) {
+                return $scope.customersData[i];
+            }
+        }
+        return null;
     }
         
+    $scope.getCustomerNameAndSurname = function(id){
+        var c = $scope.getCustomerById(id);
+        var text = c.Name + ' ' + c.Surname;
+        return text;
+    }
+    $scope.getCustomerBalance = function (id) {
+        var c = $scope.getCustomerById(id);
+        return c.Balance;
+    }
+    $scope.getPaymentAmount = function (ord) {
+        return (ord.OrderCost - ord.Paid - ord.OrderDiscount - $scope.getCustomerBalance(ord.CustomerId));
+    }
+    $scope.shippingMethodToString = function (m) {
+        switch (m) {
+            case '1': return 'Самовывоз';
+            case '2': return 'Автобус';
+            case '3': return 'Новая Почта';
+            case '4': return 'Автолюкс';
+            case '5': return 'Другое';
+            default: return 'Нет информации';
+        }
+    }
+    $scope.setOrderPacked = function (ord) {
+        if (ord.isPacked == 'упакован') {
+            ord.isPacked = 'не упакован';
+        } else {
+            ord.isPacked = 'упакован';
+        }
+        ord.colorOfReadiness = setColorOfReadinessForOrder(ord);
+    }
+    $scope.setOrderDelivered = function (ord) {
+        if (ord.isDelivered == 'доставлен') {
+            switch (ord.ShippingMethod) {
+                case '1': ord.isDelivered = 'заберут';
+                    break;
+                case '2':
+                case '3':
+                case '4': ord.isDelivered = 'отнести';
+                    break;
+                case '5': ord.isDelivered = 'нет информации';
+                    break;
+                default: ord.isDelivered = 'нет информации';
+            }
+        } else {
+            ord.isDelivered = 'доставлен';
+        }
+        ord.colorOfReadiness = setColorOfReadinessForOrder(ord);
+    }
+    $scope.setOrderResolved = function (ord) {
+        ord.isResolved = !ord.isResolved;
+        ord.colorOfReadiness = setColorOfReadinessForOrder(ord);
+    }
+    $scope.setOrderIsPaid = function (ord) {
+        if (ord.isPaid == 'оплачен' || ord.isPaid == 'оплата на месте') {
+            ord.isPaid = 'не оплачен';
+        } else {
+            ord.isPaid = 'оплачен';
+        }
+        ord.colorOfReadiness = setColorOfReadinessForOrder(ord);
+    }
+    function setColorOfReadinessForOrder(ord) {
+        if (ord.isPacked == 'не упакован') {
+            return 'alert-danger';
+        }
+        if ((ord.isPacked == 'без упаковки' || ord.isPacked == 'упакован')
+            && (ord.isDelivered == 'отнести' || ord.isDelivered == 'заберут')
+            && ord.isPaid == 'не оплачен') {
+            return 'alert-warning';
+        }
+        if ((ord.isPacked == 'без упаковки' || ord.isPacked == 'упакован')
+            && ord.isDelivered == 'отнести'
+            && (ord.isPaid == 'оплачен' || ord.isPaid == 'оплата на месте')) {
+            return 'alert-success';
+        }
+        if ((ord.isPacked == 'без упаковки' || ord.isPacked == 'упакован')
+            && (ord.isDelivered == 'доставлен' || ord.isDelivered == 'заберут')
+            && ord.isPaid == 'оплачен') {
+            return 'alert-success resolved';
+        }
+    }
+
     //post, sell this order
     $scope.sell = function () {
         function OrderInfo(oi) {
@@ -292,7 +433,16 @@ app.controller('HomeController', function (dataService, $scope, $modal) {
             this.isResolved = false;
             this.isPaid = null;
             this.isDelivered = null;
-            this.isPacked = 'не упакован';
+            this.needPack = oi.needPack;
+            this.isPacked = needPackOrNot();
+
+            function needPackOrNot() {
+                if (oi.needPack) {
+                    return 'не упакован';
+                } else {
+                    return 'без упаковки';
+                }
+            }
         }
         function OrdProduct(op) {
             this.OrderId = null;
@@ -320,7 +470,7 @@ app.controller('HomeController', function (dataService, $scope, $modal) {
             }
             return retArr;
         }
-        var tempText;
+        
         function fillIsDelivered(ordInf) {
             switch (ordInf.ShippingMethod) {
                 case '1': return 'заберут';
@@ -344,10 +494,9 @@ app.controller('HomeController', function (dataService, $scope, $modal) {
         var tO = new OrderInfo($scope.tempOrderInfo);
         tO.EmployeeId = $scope.tempEmployee.EmployeeId;
         tO.CustomerId = $scope.tempCustomer.CustomerId;
-        tempText = fillIsDelivered(tO);
-        tO.isDelivered = tempText;
-        tempText = fillIsPaid(tO);
-        tO.isPaid = tempText;
+        
+        tO.isDelivered = fillIsDelivered(tO);        
+        tO.isPaid = fillIsPaid(tO);
         //console.log(tO);
         
         $scope.tempOrderData.OrderInfo.push(tO);
@@ -374,8 +523,7 @@ app.controller('HomeController', function (dataService, $scope, $modal) {
             templateUrl: 'createWorkerModal',
             controller: 'ModalNewEmployeeController',
             scope: $scope
-        });
-        //console.log($scope.warehouseData);
+        });        
     };
     $scope.openAddProductToWh = function () {
         var modalInstance = $modal.open({
@@ -383,10 +531,7 @@ app.controller('HomeController', function (dataService, $scope, $modal) {
             controller: 'ModalAddProductToWhController',
             scope: $scope
         });
-
-        //console.log($scope.warehouseData.DataNotations);
-        //console.log($scope.warehouseData.DataNotations[417].Colors);
-
+        
         modalInstance.result.then(function () {
             getWarehouseData(true);            
             console.log('good');

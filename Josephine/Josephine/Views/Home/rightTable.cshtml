@@ -1,8 +1,9 @@
 ﻿<div class="col-lg-6">        
     <br />
-    <table ng-repeat="modelArr in rightTableView.Data" class="table animate-table-table">
+    <h2 ng-show="isGotData.orderSelected && isSelectedRight == 'ordSel'" style="margin-top:1px">Заказ #{{rightTableView.OrderId}}</h2>
+    <table ng-repeat="modelArr in rightTableView.Data" class="table animate-table-table">          
         <tr>
-            <th class="btn btn-primary btn-header">{{modelArr[0][0].ModelNumber}}</th>
+            <th class="btn btn-primary btn-header" ng-click="cl(rightTableView.Data[0][0][0])">{{modelArr[0][0].ModelNumber}}</th>
             <th class="btn btn-primary btn-tableData"
                 ng-repeat="size in warehouseData.DataNotations[modelArr[0][0].ModelNumber].Sizes">
                 {{size}}
