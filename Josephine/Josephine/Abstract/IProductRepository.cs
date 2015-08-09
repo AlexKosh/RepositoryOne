@@ -23,5 +23,6 @@ namespace Josephine.Abstract
         void AddDataToDb<T>(T d);
         int AddOrderInfoToDb(OrderInfo oi);
         void AddOrderProductsToDb(IEnumerable<OrderProduct> op, int oId);
+        void AddSoldProductsToDb(IEnumerable<OrderProduct> op, int customerId, int employeeId, int orderId);
     }
 }

@@ -129,8 +129,24 @@ namespace Josephine.Controllers
             return Json(data, JsonRequestBehavior.AllowGet);
         }
         public JsonResult Orders()
-        {
-            OrderData data = new OrderData(repository.OrderInfo, repository.OrderProduct);
+        {            
+            OrderData data = new OrderData();
+            
+            DateTime today = DateTime.Now;            
+            today = new DateTime(today.Year, today.Month, today.Day);
+            data.OrderInfo = repository.OrderInfo.Where(x => x.ShipmentDateMax > today).Select(x => x);
+                        
+            List<OrderProduct> result = new List<OrderProduct>();
+            var orders = data.OrderInfo.ToList();
+            for (int i = 0; i < orders.Count; i++)
+            {
+                var temp = repository.OrderProduct.Where(x => x.OrderId == orders[i].OrderId).Select(x => x);
+                result.AddRange(temp);
+            }
+            
+            data.OrderProduct = result;
+            
+
             return Json(data, JsonRequestBehavior.AllowGet);
         }
         public JsonResult Customers()
@@ -144,6 +160,10 @@ namespace Josephine.Controllers
         public JsonResult Prices()
         {
             return Json(repository.Prices, JsonRequestBehavior.AllowGet);
+        }
+        public JsonResult Sales()
+        {
+            return Json(repository.Sale, JsonRequestBehavior.AllowGet);
         }
 
         public PartialViewResult leftTable()
@@ -166,14 +186,10 @@ namespace Josephine.Controllers
         [HttpPost]
         public JsonResult processOrder(OrderData d)
         {
-            repository.AddDataToDb<OrderInfo>(d.OrderInfo.First());
-
             int ordId = repository.AddOrderInfoToDb(d.OrderInfo.First());
 
             repository.AddOrderProductsToDb(d.OrderProduct, ordId);
-            ////OrderData nd = new OrderData();
-            ////nd.OrderProduct = d.OrderProduct.Where(x => x.Quantity > 1).Select(x => x);
-            ////d.OrderProduct = nd.OrderProduct;
+            
             return Json(d, JsonRequestBehavior.AllowGet);
         }
         [HttpPost]
@@ -195,7 +211,35 @@ namespace Josephine.Controllers
         {
             repository.AddDataToDb<Warehouse>(d);
         }
+        [HttpPost]
+        public JsonResult sale(OrderData d)
+        {
+            OrderInfo orderInfo = d.OrderInfo.First();
+            int custId = orderInfo.CustomerId;
+            int empId = orderInfo.EmployeeId;
+            int ordId = repository.AddOrderInfoToDb(orderInfo);            
 
+            repository.AddOrderProductsToDb(d.OrderProduct, ordId);
+
+            repository.AddSoldProductsToDb(d.OrderProduct, custId, empId, ordId);
+
+            return Json(repository.Sale, JsonRequestBehavior.AllowGet);
+        }
+        [HttpPost]
+        public JsonResult getSalesData(DateForSalesData d) {
+            d.minDate = new DateTime(d.minDate.Year, d.minDate.Month, d.minDate.Day);
+            d.maxDate = new DateTime(d.maxDate.Year, d.maxDate.Month, d.maxDate.Day);
+
+            var salesData = repository.Sale.Where(x => x.SaleDate > d.minDate && x.SaleDate < d.maxDate);
+            
+            return Json(salesData, JsonRequestBehavior.AllowGet);
+        }
+
+        public class DateForSalesData
+        {
+            public DateTime minDate { get; set; }
+            public DateTime maxDate { get; set; }
+        }
         public class DataNotation
         {            
             public DataNotation()

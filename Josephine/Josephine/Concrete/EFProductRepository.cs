@@ -164,5 +164,25 @@ namespace Josephine.Concrete
                 }
             }               
         }
+        public void AddSoldProductsToDb(IEnumerable<OrderProduct> op, int customerId, int employeeId, int orderId)
+        {             
+            using (var tx = context.Database.BeginTransaction())
+            {
+                try
+                {
+                    foreach (var p in op)
+                    {
+                        Sale s = new Sale(p, customerId, employeeId, orderId);
+                        context.Sale.Add(s);                    
+                    }
+                    context.SaveChanges();
+                    tx.Commit();
+                }
+                catch (Exception)
+                {
+                    tx.Rollback();
+                }
+            }            
+        }        
     }
 }

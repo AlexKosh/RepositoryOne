@@ -9,6 +9,16 @@
     border:double;
 }
 
+.custInfo {
+    border:dotted;
+    border-color:ActiveCaption;
+    margin-left:-10px; 
+    margin-right:-10px; 
+    margin-top:4px;
+    margin-bottom:4px;
+    border-radius: 4px;
+    padding: 15px;
+}
 .animate-table-radio{            
             opacity: 1;
             line-height: 20px;                  

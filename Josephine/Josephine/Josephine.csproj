@@ -135,6 +135,12 @@
     <EmbeddedResource Include="Migrations\201507090729434_AddOrderInfoIsPacked.resx">
       <DependentUpon>201507090729434_AddOrderInfoIsPacked.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201508051520101_saleNewProp.resx">
+      <DependentUpon>201508051520101_saleNewProp.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201508071246119_addEmployeeIdToSale.resx">
+      <DependentUpon>201508071246119_addEmployeeIdToSale.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Scripts\Views\Home\app.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
@@ -187,6 +193,14 @@
     <Compile Include="Migrations\201507090729434_AddOrderInfoIsPacked.cs" />
     <Compile Include="Migrations\201507090729434_AddOrderInfoIsPacked.Designer.cs">
       <DependentUpon>201507090729434_AddOrderInfoIsPacked.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201508051520101_saleNewProp.cs" />
+    <Compile Include="Migrations\201508051520101_saleNewProp.Designer.cs">
+      <DependentUpon>201508051520101_saleNewProp.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201508071246119_addEmployeeIdToSale.cs" />
+    <Compile Include="Migrations\201508071246119_addEmployeeIdToSale.Designer.cs">
+      <DependentUpon>201508071246119_addEmployeeIdToSale.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Customer.cs" />

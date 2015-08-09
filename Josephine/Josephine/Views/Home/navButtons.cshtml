@@ -12,7 +12,13 @@
             </label>*@
             <button class="btn btn-success animate-table-radio" ng-click="openAddProductToWh()" ng-show="isSelected == 'wh'"> Add products</button>
             <label class="btn btn-default animate-table-radio" ng-show="isGotData.orders" ng-click="isSelected = 'ord'">
-                <input type="radio" ng-model="leftTableView">Orders</input>
+                <input type="radio" ng-model="leftTableView" ng-value="1">Orders</input>
+            </label>
+            <label class="btn btn-default animate-table-radio" ng-show="isGotData.customers" ng-click="isSelected = 'cust'">
+                <input type="radio" ng-model="leftTableView" ng-value="2">Customers</input>
+            </label>
+            <label class="btn btn-default animate-table-radio" ng-show="isGotData.sales" ng-click="isSelected = 'sales'">
+                <input type="radio" ng-model="leftTableView" ng-value="3">Sales</input>
             </label>
         </div>
     </div>
