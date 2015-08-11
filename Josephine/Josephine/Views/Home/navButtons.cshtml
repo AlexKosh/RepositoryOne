@@ -22,7 +22,7 @@
             </label>
         </div>
     </div>
-    <div class="col-lg-6">
+    <div class="col-lg-6" ng-show="isSelected != 'sales'">
         <div class="btn-group" data-toogle="buttons">
             <label class="btn btn-default animate-table-radio" ng-show="isGotData.select">
                 <input type="radio" ng-model="rightTableView" ng-value="selected" ng-click="isSelectedRight = 'sel'">Selected</input>

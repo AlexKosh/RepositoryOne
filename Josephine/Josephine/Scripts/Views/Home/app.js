@@ -46,6 +46,7 @@ app.controller('HomeController', function (dataService, $scope, $modal) {
         dataService.getStore().then(function (d) {
             $scope.storeData = d;
             $scope.isGotData.store = true;
+            getTodaySales();
         });           
     }
     function getWarehouseData(needToSelect) {
@@ -93,10 +94,11 @@ app.controller('HomeController', function (dataService, $scope, $modal) {
             $scope.pricesData = d;
             $scope.isGotData.prices = true;
         })
-    }
+    }    
     function getTodaySales() {
-        $scope.salesData = dataService.getTodaySales().then(function (d) {
-            $scope.salesData = d;
+        $scope.salesData = dataService.getTodaySales().success(function (d) {
+            console.log(d);
+            $scope.salesData = dataService.formattingByModelNumberAndQuantity(d, $scope.storeData);
             $scope.isGotData.sales = true;
         })
     }
@@ -461,7 +463,6 @@ app.controller('HomeController', function (dataService, $scope, $modal) {
     getCustomersData();
     getEmployeesData();
     getPrices();
-    getTodaySales();
 });
 
 app.controller('ModalNewCustomerController', function (dataService, $modalInstance, $scope, $rootScope) {
@@ -700,64 +701,35 @@ app.controller('CustomersViewController', function ($scope) {
         return s.substring(6, 19);
     }
 });
-app.controller('DatepickerDemoController', function ($scope, dataService) {
+app.controller('DatepickerDemoController', function ($scope, dataService) {   
 
     $scope.minDate = new Date();
     $scope.maxDate = new Date();
+    $scope.showHelpAdviseAlert = true;
+
     $scope.openMin = function () {
         $scope.openedMin = true;
     };
     $scope.openMax = function () {
         $scope.openedMax = true;
-    };    
-    $scope.getSalesData = function () {        
+    };
+
+    $scope.getSalesData = function () {
+        $scope.showHelpAdviseAlert = false;
         dataService.getSalesData($scope)
             .success(function (d) {                
                 console.log('in getSalesData:');
                 console.log(d);
-                $scope.salesData = formattingByModelNumberAndQuantity(d);
+                $scope.salesData = dataService.formattingByModelNumberAndQuantity(d, $scope.$parent.storeData);
             }).error(function () { alert('err in getSalesData'); });;
-    };    
-    $scope.salesData = [];
-
-    $scope.getModelsName = function (numb) {
-        for (var i = 0; i < $scope.$parent.storeData.Data.length; i++) {
-            if ($scope.$parent.storeData.Data[i][0][0].ModelNumber == numb) {
-                return $scope.$parent.storeData.Data[i][0][0].Name;
-            }
-        }
     };
-    function formattingByModelNumberAndQuantity(d) {
-        var r = [];
-        for (var i = 0; i < d.length; i++) {
-            d[i].SaleDate = d[i].SaleDate.substring(6, 19);
 
-            if (i == 0) {
-                r.push({
-                    ModelNumber: d[i].ModelNumber,
-                    Name: $scope.getModelsName(d[i].ModelNumber),
-                    Quantity: d[i].Quantity
-                });
-                continue;
-            } else {
-                for (var j = 0; j < r.length; j++)  {
-                    if (r[j].ModelNumber == d[i].ModelNumber) {
-                        r[j].Quantity += d[i].Quantity;
-                        break;
-                    }
-                    if (j == (r.length - 1)) {
-                        r.push({
-                            ModelNumber: d[i].ModelNumber,
-                            Name: $scope.getModelsName(d[i].ModelNumber),
-                            Quantity: d[i].Quantity
-                        });
-                        break;
-                    }
-                }
-            }
-        }
-        return r;
-    }
+    $scope.getQuantitySum = function () {
+        
+    };
+    $scope.getCostSum = function () {
+
+    };
 });
 
 app.factory('dataService', function ($http) {
@@ -804,10 +776,10 @@ app.factory('dataService', function ($http) {
             return promise;
         },
         getTodaySales: function(){
-            var promise = $http.get('home/sales').then(function (response) {
-                return response.data;
-            });
-            return promise;
+            var promise = $http.get('home/sales').success(function (d) {
+                var promise = d;
+            }).error(function () { alert('err in getTodaySales'); });
+            return promise;            
         },
         getLocations: function (val) {
             return $http.get('http://maps.googleapis.com/maps/api/geocode/json', {
@@ -880,6 +852,50 @@ app.factory('dataService', function ($http) {
                 maxDate: $scope.maxDate
             });
             return promise;
+        },
+        formattingByModelNumberAndQuantity: function (d, storeData) {
+
+            function getModelsName(numb, arr) {
+                for (var i = 0; i < arr.length; i++) {
+                    if (arr[i][0][0].ModelNumber == numb) {
+                        return arr[i][0][0].Name;
+                    }
+                }
+            };
+
+            var r = [];
+
+            r.push({
+                ModelNumber: d[0].ModelNumber,
+                Name: getModelsName(d[0].ModelNumber, storeData.Data),
+                Price: d[0].ProductPrice,
+                Quantity: d[0].Quantity
+            });
+
+            for (var i = 1; i < d.length; i++) {
+                d[i].SaleDate = d[i].SaleDate.substring(6, 19);
+
+                if (i == 0) {
+                    continue;
+                } else {
+                    for (var j = 0; j < r.length; j++) {
+                        if (r[j].ModelNumber == d[i].ModelNumber) {
+                            r[j].Quantity += d[i].Quantity;
+                            break;
+                        }
+                        if (j == (r.length - 1)) {
+                            r.push({
+                                ModelNumber: d[i].ModelNumber,
+                                Name: getModelsName(d[i].ModelNumber, storeData.Data),
+                                Price: d[i].ProductPrice,
+                                Quantity: d[i].Quantity
+                            });
+                            break;
+                        }
+                    }
+                }
+            }
+            return r;
         }
     }
 });
@@ -908,4 +924,10 @@ app.directive('navButtons', function () {
         templateUrl: '/home/navButtons'
     };
 });
+app.directive('salesReportView', function () {
+    return {
+        restrict: 'E',
+        templateUrl: 'salesReportView'        
+    };
+})
 

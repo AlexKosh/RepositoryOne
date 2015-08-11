@@ -23,66 +23,7 @@
     <create-order></create-order>
     <br />
     <nav-buttons></nav-buttons>
-
-
-    <div ng-controller="DatepickerDemoController">
-
-        <div class="row navbar-btn">
-            <div class="col-lg-8">
-                <h3> Продажи с {{minDate | date: "d MMM yyyy"}} по {{maxDate | date: "d MMM yyyy"}}</h3>
-                <div ng-repeat="r in salesData">
-                    <div class="row">
-                        <div class="col-lg-1">{{r.ModelNumber}}</div>
-                        <div class="col-lg-3">{{r.Name}}</div>
-                        <div class="col-lg-2">{{r.Quantity}}</div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-4">
-                <div class="row">
-                    <button class="btn btn-info">Сегодня</button>
-                    <button class="btn btn-info">Эта неделя</button>
-                    <div class="btn-group">
-                        <button type="submit" class="btn btn-success" ng-click="getSalesData()">
-                            <span class="glyphicon glyphicon-refresh">
-                            </span>
-                            Получить данные
-                        </button>
-                    </div>
-                </div>
-                <div class="row">
-                    <h3 class="alert alert-info">Создать отчет за какой промежуток времени?</h3>
-                    <h5>начальная дата:</h5>
-                    <p class="input-group">
-                        <input type="text" class="form-control" datepicker-popup="EEEE d MMMM yy"
-                               datepicker-options="{ startingDay:1 }" ng-model="minDate" is-open="openedMin" />
-                        <span class="input-group-btn">
-                            <button type="button" class="btn btn-default" ng-click="openMin()">
-                                <i class="glyphicon glyphicon-calendar"></i>
-                            </button>
-                        </span>
-                    </p>
-
-                </div>
-                <div class="row">
-                    <h5>конечная дата:</h5>
-                    <p class="input-group">
-                        <input type="text" class="form-control" datepicker-popup="EEEE d MMMM yy"
-                               datepicker-options="{ startingDay:1 }" ng-model="maxDate" is-open="openedMax" />
-                        <span class="input-group-btn">
-                            <button type="button" class="btn btn-default" ng-click="openMax()">
-                                <i class="glyphicon glyphicon-calendar"></i>
-                            </button>
-                        </span>
-                    </p>
-
-                </div>
-            </div>
-        </div>
-    </div>
-
-
-
+    <sales-report-view></sales-report-view>
 
     <div class="row">
         <left-table></left-table>
@@ -268,6 +209,98 @@
                 <button class="btn btn-default" ng-click="cancel()"> Отмена</button>
             </div>
         </div>
+    </script>
+    <script type="text/ng-template" id="salesReportView">
+        <div ng-controller="DatepickerDemoController" ng-show="$parent.isSelected == 'sales'">
+
+            <div class="row navbar-btn">
+                <div class="col-lg-8">
+                    <div>
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h1 class="text-center"> Продажи </h1>                                
+                                <h5 class="text-center">{{minDate | date: "d MMM yyyy"}} - {{maxDate | date: "d MMM yyyy"}}</h5>                                
+                            </div>
+                            <div class="modal-body">
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th >#</th>
+                                            <th >имя</th>
+                                            <th >кол-во</th>
+                                            <th >цена</th>
+                                            <th >сумма</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="r in salesData">
+                                            <td >{{r.ModelNumber}}</td>
+                                            <td >{{r.Name}}</td>
+                                            <td >{{r.Quantity}}</td>
+                                            <td >{{r.Price}}</td>
+                                            <td >{{r.Quantity * r.Price + ' грн.'}}</td>
+                                        </tr>
+                                    </tbody>
+                                    <tfoot>
+                                        <tr>
+                                            <th></th>
+                                            <th></th>
+                                            <th>{{getQuantitySum()}}</th>
+                                            <th></th>
+                                            <th>{{getCostSum()}}</th>
+                                        </tr>
+                                    </tfoot>
+                                </table>                                
+                            </div>
+                            <div class="modal-footer">                                
+                                <button class="btn btn-success text-left"><span class="glyphicon glyphicon-print"></span>Печать</button>
+                            </div>
+                        </div>                        
+                    </div>                    
+                </div>
+                <div class="col-lg-4">
+                    <div class="row">
+                        <button class="btn btn-info">Сегодня</button>
+                        <button class="btn btn-info">Эта неделя</button>
+                        <div class="btn-group">
+                            <button type="submit" class="btn btn-success" ng-click="getSalesData()">
+                                <span class="glyphicon glyphicon-refresh">
+                                </span>
+                                Получить данные
+                            </button>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <h3 class="alert alert-info" ng-show="showHelpAdviseAlert">Создать отчет за какой промежуток времени?</h3>
+                        <h5>начальная дата:</h5>
+                        <p class="input-group">
+                            <input type="text" class="form-control" datepicker-popup="EEEE d MMMM yy"
+                                   datepicker-options="{ startingDay:1 }" ng-model="minDate" is-open="openedMin" />
+                            <span class="input-group-btn">
+                                <button type="button" class="btn btn-default" ng-click="openMin()">
+                                    <i class="glyphicon glyphicon-calendar"></i>
+                                </button>
+                            </span>
+                        </p>
+
+                    </div>
+                    <div class="row">
+                        <h5>конечная дата:</h5>
+                        <p class="input-group">
+                            <input type="text" class="form-control" datepicker-popup="EEEE d MMMM yy"
+                                   datepicker-options="{ startingDay:1 }" ng-model="maxDate" is-open="openedMax" />
+                            <span class="input-group-btn">
+                                <button type="button" class="btn btn-default" ng-click="openMax()">
+                                    <i class="glyphicon glyphicon-calendar"></i>
+                                </button>
+                            </span>
+                        </p>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </script>
 </body>
 </html>
