@@ -13,6 +13,7 @@ app.controller('HomeController', function (dataService, $scope, $modal) {
     $scope.leftTableView = {};
     $scope.rightTableView = {};
     $scope.selectedOrder = { Data: [] };
+    $scope.salesData = { Data: [], DataNotations: {} };
     $scope.isGotData = {
         store: false,
         warehouse: false,
@@ -96,11 +97,12 @@ app.controller('HomeController', function (dataService, $scope, $modal) {
         })
     }    
     function getTodaySales() {
-        $scope.salesData = dataService.getTodaySales().success(function (d) {
+        dataService.getTodaySales().success(function (d) {
+            console.log('in getTodaySales().success');
             console.log(d);
             $scope.salesData = dataService.formattingByModelNumberAndQuantity(d, $scope.storeData);
             $scope.isGotData.sales = true;
-        })
+        });
     }
         
     $scope.ordersInfoByDates = [[]];
@@ -722,13 +724,13 @@ app.controller('DatepickerDemoController', function ($scope, dataService) {
                 console.log(d);
                 $scope.salesData = dataService.formattingByModelNumberAndQuantity(d, $scope.$parent.storeData);
             }).error(function () { alert('err in getSalesData'); });;
-    };
+    };    
 
     $scope.getQuantitySum = function () {
-        
+        return $scope.salesData.DataNotations.qSum;
     };
     $scope.getCostSum = function () {
-
+        return $scope.salesData.DataNotations.cSum + ' грн.';
     };
 });
 
@@ -863,28 +865,33 @@ app.factory('dataService', function ($http) {
                 }
             };
 
-            var r = [];
+            var r = { Data: [], DataNotations: {qSum: 0, cSum: 0} };
 
-            r.push({
+            r.Data.push({
                 ModelNumber: d[0].ModelNumber,
                 Name: getModelsName(d[0].ModelNumber, storeData.Data),
                 Price: d[0].ProductPrice,
                 Quantity: d[0].Quantity
             });
 
+            r.DataNotations.qSum += r.Data[0].Quantity;
+            r.DataNotations.cSum += r.Data[0].Price * r.Data[0].Quantity;
+
             for (var i = 1; i < d.length; i++) {
                 d[i].SaleDate = d[i].SaleDate.substring(6, 19);
+                r.DataNotations.qSum += d[i].Quantity;
+                r.DataNotations.cSum += d[i].ProductPrice * d[i].Quantity;                  
 
                 if (i == 0) {
                     continue;
                 } else {
-                    for (var j = 0; j < r.length; j++) {
-                        if (r[j].ModelNumber == d[i].ModelNumber) {
-                            r[j].Quantity += d[i].Quantity;
+                    for (var j = 0; j < r.Data.length; j++) {
+                        if (r.Data[j].ModelNumber == d[i].ModelNumber && r.Data[j].Price == d[i].ProductPrice) {
+                            r.Data[j].Quantity += d[i].Quantity;
                             break;
                         }
-                        if (j == (r.length - 1)) {
-                            r.push({
+                        if (j == (r.Data.length - 1)) {
+                            r.Data.push({
                                 ModelNumber: d[i].ModelNumber,
                                 Name: getModelsName(d[i].ModelNumber, storeData.Data),
                                 Price: d[i].ProductPrice,
