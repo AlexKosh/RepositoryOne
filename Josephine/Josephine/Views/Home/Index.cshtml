@@ -25,11 +25,32 @@
     <nav-buttons></nav-buttons>
     <sales-report-view></sales-report-view>
 
-    <div class="row">
+    <filt-panel></filt-panel>
+    <div class="row">        
         <left-table></left-table>
         <right-table></right-table>
     </div>
 
+    <script id="filtPanel" type="text/ng-template">
+        <div class="row" style="padding-top:7px; padding-bottom:7px">
+            <div class="col-lg-6 form-group row" style="margin-bottom:0">
+                <div class="col-lg-offset-4 col-lg-6" style="padding-right:0">
+                    <div class="input-group">
+                        <input class="form-control input-sm" />
+                        <span class="input-group-btn">
+                            <button class="btn btn-default btn-sm"><i class="glyphicon glyphicon-filter"></i></button>
+                        </span>
+                    </div>
+                </div>
+                <div class="col-lg-2">
+                    <input type="number" class="form-control input-sm" value="1" />
+                </div>
+            </div>
+            <div class="col-lg-6">
+
+            </div>
+        </div>
+    </script>
     <script type="text/ng-template" id="createCustomerModal">
 
         <div class="modal-content">
@@ -218,49 +239,56 @@
                     <div>
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h1 class="text-center"> Продажи </h1>                                
-                                <h5 class="text-center">{{minDate | date: "d MMM yyyy"}} - {{maxDate | date: "d MMM yyyy"}}</h5>                                
+                                <h1 class="text-center"> Продажи </h1>
+                                <h5 class="text-center">{{minDate | date: "d MMM yyyy"}} - {{maxDate | date: "d MMM yyyy"}}</h5>
                             </div>
                             <div class="modal-body">
-                                <table class="table table-striped">
+                                <table class="table">
                                     <thead>
                                         <tr>
-                                            <th >#</th>
-                                            <th >имя</th>
-                                            <th >кол-во</th>
-                                            <th >цена</th>
-                                            <th >сумма</th>
+                                            <th>#</th>
+                                            <th>имя</th>
+                                            <th>кол-во</th>
+                                            <th>цена</th>
+                                            <th>сумма</th>
                                         </tr>
                                     </thead>
-                                    <tbody>
-                                        <tr ng-repeat="r in salesData.Data">
-                                            <td>{{r.ModelNumber}}</td>
-                                            <td>{{r.Name}}</td>
-                                            <td>{{r.Quantity}}</td>
-                                            <td>{{r.Price}}</td>
-                                            <td>{{r.Quantity * r.Price + ' грн.'}}</td>
-                                        </tr>                                        
+                                    <tbody ng-repeat="model in salesData.Data">
+                                        <tr ng-class="getClass(model.length)" ng-click="model.show = !model.show && model.length != 1">
+                                            <th>{{model[0].ModelNumber}}</th>
+                                            <th>{{model[0].Name}}</th>
+                                            <th>{{getQuantitySum(model)}}</th>
+                                            <th>{{getPrice(model)}}</th>
+                                            <th>{{getCostSum(model)}}</th>
+                                        </tr>
+                                        <tr ng-repeat="mByPrice in model" ng-show="model.show" style="background-color:aliceblue">
+                                            <td>{{mByPrice.ModelNumber}}</td>
+                                            <td>{{mByPrice.Name}}</td>
+                                            <td>{{mByPrice.Quantity}}</td>
+                                            <td>{{mByPrice.Price + ' грн.'}}</td>
+                                            <td>{{mByPrice.Quantity * mByPrice.Price + ' грн.'}}</td>
+                                        </tr>
                                     </tbody>
                                     <tfoot>
                                         <tr>
                                             <th></th>
                                             <th></th>
-                                            <th>{{getQuantitySum()}}</th>
+                                            <th>{{salesData.DataNotations.qSum}}</th>
                                             <th></th>
-                                            <th>{{getCostSum()}}</th>
+                                            <th>{{salesData.DataNotations.cSum + ' грн.'}}</th>
                                         </tr>
                                     </tfoot>
-                                </table>                                
+                                </table>
                             </div>
-                            <div class="modal-footer">                                
+                            <div class="modal-footer">
                                 <button class="btn btn-success text-left"><span class="glyphicon glyphicon-print"></span>Печать</button>
                             </div>
-                        </div>                        
-                    </div>                    
+                        </div>
+                    </div>
                 </div>
                 <div class="col-lg-4">
                     <div class="row">
-                        <button class="btn btn-info">Сегодня</button>
+                        <button class="btn btn-info" ng-click="setToday()">Сегодня</button>
                         <button class="btn btn-info">Эта неделя</button>
                         <div class="btn-group">
                             <button type="submit" class="btn btn-success" ng-click="getSalesData()">
@@ -271,11 +299,11 @@
                         </div>
                     </div>
                     <div class="row">
-                        <h3 class="alert alert-info" ng-show="showHelpAdviseAlert">Создать отчет за какой промежуток времени?</h3>
+                        <h3 class="alert alert-info">Создать отчет за какой промежуток времени?</h3>
                         <h5>начальная дата:</h5>
                         <p class="input-group">
                             <input type="text" class="form-control" datepicker-popup="EEEE d MMMM yy"
-                                   datepicker-options="{ startingDay:1 }" ng-model="minDate" is-open="openedMin" />
+                                   datepicker-options="{ startingDay:1 }" ng-model="selectedMinDate" is-open="openedMin" />
                             <span class="input-group-btn">
                                 <button type="button" class="btn btn-default" ng-click="openMin()">
                                     <i class="glyphicon glyphicon-calendar"></i>
@@ -288,7 +316,7 @@
                         <h5>конечная дата:</h5>
                         <p class="input-group">
                             <input type="text" class="form-control" datepicker-popup="EEEE d MMMM yy"
-                                   datepicker-options="{ startingDay:1 }" ng-model="maxDate" is-open="openedMax" />
+                                   datepicker-options="{ startingDay:1 }" ng-model="selectedMaxDate" is-open="openedMax" />
                             <span class="input-group-btn">
                                 <button type="button" class="btn btn-default" ng-click="openMax()">
                                     <i class="glyphicon glyphicon-calendar"></i>

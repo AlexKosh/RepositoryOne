@@ -1,6 +1,6 @@
 ﻿<div class="col-lg-6">
 
-    <br />
+    
     <div ng-controller="CustomersViewController">
         <div ng-show="$parent.isSelected == 'cust'">
             <div ng-repeat="c in $parent.customersData">
@@ -9,9 +9,9 @@
                     <div class="col-lg-1">
                         <h4 style="margin-bottom:0; margin-right:10px; margin-left:-10px">#{{c.CustomerId}}</h4>
                     </div>
-                    <div class="col-lg-2">{{c.Name + ' ' + c.Surname}}</div>
+                    <div class="col-lg-2">{{c.Name + ' \n' + c.Surname}}</div>                    
+                    <div class="col-lg-3">{{c.PhoneNumber +' \n'+ c.AlternatePhone }}</div>
                     <div class="col-lg-2">{{c.locationOfTrade}}</div>
-                    <div class="col-lg-3">{{c.PhoneNumber + c.AlternatePhone }}</div>
                     <div class="col-lg-2">{{c.Speciality}}</div>
                     <div class="col-lg-2">{{c.Balance}}</div>
                 </div>

@@ -63,7 +63,7 @@ app.controller('HomeController', function (dataService, $scope, $modal) {
     }
     function getOrdersData() {
         $scope.ordersData = dataService.getOrders().then(function (d) {
-            console.log(d);
+            
             for (var i = 0; i < d.OrderInfo.length; i++) {
                 d.OrderInfo[i].ShipmentDateMin = new Date(parseInt(d.OrderInfo[i].ShipmentDateMin.substring(6, 19)));
                 d.OrderInfo[i].ShipmentDateMax = new Date(parseInt(d.OrderInfo[i].ShipmentDateMax.substring(6, 19)));
@@ -97,9 +97,7 @@ app.controller('HomeController', function (dataService, $scope, $modal) {
         })
     }    
     function getTodaySales() {
-        dataService.getTodaySales().success(function (d) {
-            console.log('in getTodaySales().success');
-            console.log(d);
+        dataService.getTodaySales().success(function (d) {            
             $scope.salesData = dataService.formattingByModelNumberAndQuantity(d, $scope.storeData);
             $scope.isGotData.sales = true;
         });
@@ -144,6 +142,7 @@ app.controller('HomeController', function (dataService, $scope, $modal) {
             this.Size = p.Size;
             this.Quantity = p.Quantity;
             this.Price = p.Price;
+            this.from = $scope.isSelected;
         }
 
         function getModelArrByColors(p) {
@@ -245,7 +244,7 @@ app.controller('HomeController', function (dataService, $scope, $modal) {
         var iM = indexOfModel(array);
         var iC = indexOfColor(array[iM]);
         var iP = indexOfProduct(array[iM][iC]);
-
+        
         return array[iM][iC][iP];
     }
     //-------------------------------------------------------
@@ -280,6 +279,13 @@ app.controller('HomeController', function (dataService, $scope, $modal) {
     //add product to selected[]
     $scope.selectProductToOrder = function (p, modelArrByColors) {
 
+        if ($scope.selected.Data.length > 0) {
+            if ($scope.isSelected != $scope.selected.Data[0][0][0].from) {
+                alert('Сначала очистите заказ');
+                return;
+            }
+        }
+
         function findPrice(modelNumber) {
             for (var i = ($scope.pricesData.length - 1) ; i >= 0 ; i--) {
                 if ($scope.pricesData[i].ModelNumber == modelNumber) {
@@ -312,7 +318,37 @@ app.controller('HomeController', function (dataService, $scope, $modal) {
         $scope.rightTableView = $scope.selected;
         $scope.isSelectedRight = 'sel';
         recountOrderCost();
-    }
+    };
+    $scope.moveProductFromSelected = function (p) {
+        if (p.Quantity == 0) {
+            return;
+        }
+
+        var from;
+        if (p.from == 'st') {
+            from = $scope.storeData.Data;
+        } else {
+            from = $scope.warehouseData.Data;
+        }
+        var c = 0;
+        for (var i = 0; i < from.length; i++) {            
+            if (p.ModelNumber != from[i][0][0].ModelNumber) {                
+                continue;
+            }
+            for (var j = 0; j < from[i].length; j++) {                
+                if (p.Color != from[i][j][0].Color) {                    
+                    continue;
+                }
+                for (var k = 0; k < from[i][j].length; k++) {                    
+                    if (p.ProductId == from[i][j][k].ProductId) {
+                        from[i][j][k].Quantity += p.Quantity;
+                        p.Quantity = 0;                           
+                        return;
+                    }
+                }
+            }
+        }
+    };
     //post, sell this order
     $scope.sell = function (sold) {
         function OrderInfo(oi) {
@@ -392,7 +428,7 @@ app.controller('HomeController', function (dataService, $scope, $modal) {
             }
             return retArr;
         }
-        
+
         function fillIsDelivered(ordInf) {
             switch (ordInf.ShippingMethod) {
                 case '1': return 'заберут';
@@ -416,18 +452,18 @@ app.controller('HomeController', function (dataService, $scope, $modal) {
         var tOi = new OrderInfo($scope.tempOrderInfo);
         tOi.EmployeeId = $scope.tempEmployee.EmployeeId;
         tOi.CustomerId = $scope.tempCustomer.CustomerId;
-        
-        tOi.isDelivered = fillIsDelivered(tOi);        
+
+        tOi.isDelivered = fillIsDelivered(tOi);
         tOi.isPaid = fillIsPaid(tOi);
-        
+
         $scope.tempOrderData.OrderInfo.push(tOi);
 
-        if (sold) {            
+        if (sold) {
             dataService.postSales($scope.tempOrderData);
         } else {
             dataService.postOrder($scope.tempOrderData);
-        }        
-    }   
+        }
+    };
 
     //modals for creating new customer or employee
     $scope.openCreateClient = function () {
@@ -707,7 +743,8 @@ app.controller('DatepickerDemoController', function ($scope, dataService) {
 
     $scope.minDate = new Date();
     $scope.maxDate = new Date();
-    $scope.showHelpAdviseAlert = true;
+    $scope.selectedMinDate = new Date();
+    $scope.selectedMaxDate = new Date();
 
     $scope.openMin = function () {
         $scope.openedMin = true;
@@ -718,20 +755,49 @@ app.controller('DatepickerDemoController', function ($scope, dataService) {
 
     $scope.getSalesData = function () {
         $scope.showHelpAdviseAlert = false;
+        $scope.minDate = $scope.selectedMinDate;
+        $scope.maxDate = $scope.selectedMaxDate;
+
         dataService.getSalesData($scope)
             .success(function (d) {                
-                console.log('in getSalesData:');
-                console.log(d);
-                $scope.salesData = dataService.formattingByModelNumberAndQuantity(d, $scope.$parent.storeData);
+                
+                if (d == 0) {
+                    alert('Продаж за этот период нет.');
+                    return;
+                }
+                $scope.salesData = dataService.formattingByModelNumberAndQuantity(d, $scope.$parent.storeData);                
             }).error(function () { alert('err in getSalesData'); });;
     };    
 
-    $scope.getQuantitySum = function () {
-        return $scope.salesData.DataNotations.qSum;
+    $scope.getQuantitySum = function (arr) {
+
+        var qSum = 0;
+        for (var i = 0; i < arr.length; i++) {
+            qSum += arr[i].Quantity;
+        }
+        return qSum;
     };
-    $scope.getCostSum = function () {
-        return $scope.salesData.DataNotations.cSum + ' грн.';
+    $scope.getCostSum = function (arr) {
+        var cSum = 0;
+        for (var i = 0; i < arr.length; i++) {
+            cSum += arr[i].Price * arr[i].Quantity;
+        }
+        return cSum + ' грн.';
     };
+    $scope.getPrice = function (arr) {
+        if (arr.length == 1) {
+            return arr[0].Price + ' грн.';
+        }
+        return '-';
+    };
+    $scope.getClass = function (l) {
+        return l == 1 ? '' : 'btn-default';
+    };
+
+    $scope.setToday = function () {
+        $scope.selectedMinDate = $scope.selectedMaxDate = new Date();
+        $scope.getSalesData();
+    }
 });
 
 app.factory('dataService', function ($http) {
@@ -867,15 +933,17 @@ app.factory('dataService', function ($http) {
 
             var r = { Data: [], DataNotations: {qSum: 0, cSum: 0} };
 
-            r.Data.push({
+            r.Data.push([{
                 ModelNumber: d[0].ModelNumber,
                 Name: getModelsName(d[0].ModelNumber, storeData.Data),
                 Price: d[0].ProductPrice,
                 Quantity: d[0].Quantity
-            });
+            }]);
 
-            r.DataNotations.qSum += r.Data[0].Quantity;
-            r.DataNotations.cSum += r.Data[0].Price * r.Data[0].Quantity;
+            r.DataNotations.qSum += r.Data[0][0].Quantity;
+            r.DataNotations.cSum += r.Data[0][0].Price * r.Data[0][0].Quantity;
+            //console.log(r);
+            //console.log(r.Data[0][0]);
 
             for (var i = 1; i < d.length; i++) {
                 d[i].SaleDate = d[i].SaleDate.substring(6, 19);
@@ -886,22 +954,39 @@ app.factory('dataService', function ($http) {
                     continue;
                 } else {
                     for (var j = 0; j < r.Data.length; j++) {
-                        if (r.Data[j].ModelNumber == d[i].ModelNumber && r.Data[j].Price == d[i].ProductPrice) {
-                            r.Data[j].Quantity += d[i].Quantity;
+                        if (r.Data[j][0].ModelNumber == d[i].ModelNumber) {
+
+                            for (var k = 0; k < r.Data[j].length; k++) {
+                                if (r.Data[j][k].Price == d[i].ProductPrice) {
+                                    r.Data[j][k].Quantity += d[i].Quantity;
+                                    break;
+                                }
+                                if (k == (r.Data[j].length - 1)) {
+                                    r.Data[j].push({
+                                        ModelNumber: d[i].ModelNumber,
+                                        Name: getModelsName(d[i].ModelNumber, storeData.Data),
+                                        Price: d[i].ProductPrice,
+                                        Quantity: d[i].Quantity
+                                    });
+                                    break;
+                                }
+                            }                           
                             break;
                         }
+
                         if (j == (r.Data.length - 1)) {
-                            r.Data.push({
+                            r.Data.push([{
                                 ModelNumber: d[i].ModelNumber,
                                 Name: getModelsName(d[i].ModelNumber, storeData.Data),
                                 Price: d[i].ProductPrice,
                                 Quantity: d[i].Quantity
-                            });
+                            }]);
                             break;
                         }
                     }
                 }
             }
+            //console.log(r);
             return r;
         }
     }
@@ -934,7 +1019,13 @@ app.directive('navButtons', function () {
 app.directive('salesReportView', function () {
     return {
         restrict: 'E',
-        templateUrl: 'salesReportView'        
+        templateUrl: 'salesReportView'
     };
-})
+});
+app.directive('filtPanel', function () {
+    return {
+        restrict: 'E',
+        templateUrl: 'filtPanel'
+    };
+});
 

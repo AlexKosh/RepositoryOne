@@ -228,10 +228,15 @@ namespace Josephine.Controllers
         [HttpPost]
         public JsonResult getSalesData(DateForSalesData d) {
             d.minDate = new DateTime(d.minDate.Year, d.minDate.Month, d.minDate.Day);
-            d.maxDate = new DateTime(d.maxDate.Year, d.maxDate.Month, d.maxDate.Day);
+            d.maxDate = new DateTime(d.maxDate.Year, d.maxDate.Month, d.maxDate.Day + 1);
 
-            var salesData = repository.Sale.Where(x => x.SaleDate > d.minDate && x.SaleDate < d.maxDate);
-            
+            var salesData = repository.Sale.Where(x => x.SaleDate >= d.minDate && x.SaleDate <= d.maxDate);
+
+            if (salesData.Count() == 0)
+            {
+                return Json(0, JsonRequestBehavior.AllowGet);
+            }
+
             return Json(salesData, JsonRequestBehavior.AllowGet);
         }
 
