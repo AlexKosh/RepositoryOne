@@ -1,118 +1,149 @@
 ﻿<div class="col-lg-6">
 
-    
     <div ng-controller="CustomersViewController">
-        <div ng-show="$parent.isSelected == 'cust'">
-            <div ng-repeat="c in $parent.customersData">
-                <div class="alert alert-info row" style="cursor:pointer; margin-bottom:1px; padding:7.5px"
+        <div ng-show="$parent.isSelected == 'cust'" class="panel-group">
+            <div ng-repeat="c in $parent.customersData | filter: searchText">
+                <div class="panel panel-info" style="cursor:pointer; margin-bottom:7px"
                      ng-click="c.isCollapsed = !c.isCollapsed">
-                    <div class="col-lg-1">
-                        <h4 style="margin-bottom:0; margin-right:10px; margin-left:-10px">#{{c.CustomerId}}</h4>
+                    <div class="panel-heading">
+                        <table class="table" style="margin-bottom:0">
+                            <tr>
+                                <td style="border:none">#{{c.CustomerId}}</td>
+                                <th style="border:none">{{c.Name + ' \n' + c.Surname}}</th>
+                                <td style="border:none">
+                                    <h5 style="margin-top:0">{{c.PhoneNumber}}</h5>
+                                    <h5 style="margin-bottom:0">{{c.AlternatePhone}}</h5>
+                                </td>
+                                <td style="border:none">{{c.locationOfTrade}}</td>
+                                <td style="border:none">{{c.Speciality}}</td>
+                                <td style="border:none">{{c.Balance}}</td>
+                            </tr>
+                        </table>
                     </div>
-                    <div class="col-lg-2">{{c.Name + ' \n' + c.Surname}}</div>                    
-                    <div class="col-lg-3">{{c.PhoneNumber +' \n'+ c.AlternatePhone }}</div>
-                    <div class="col-lg-2">{{c.locationOfTrade}}</div>
-                    <div class="col-lg-2">{{c.Speciality}}</div>
-                    <div class="col-lg-2">{{c.Balance}}</div>
-                </div>
-                <div ng-hide="c.isCollapsed" class="custInfo">
-                    <table>
-                        <tr class="row"><td class="col-lg-4">Фио:</td><td class="col-lg-8">{{getCustomerNameAndSurname(c.CustomerId)}}</td></tr>
-                        <tr class="row"><td class="col-lg-4">Телефон:</td><td class="col-lg-8">{{c.PhoneNumber}}</td></tr>
-                        <tr class="row"><td class="col-lg-4">Доп. Телефон:</td><td class="col-lg-8">{{c.AlternatePhone}}</td></tr>
-                        <tr class="row"><td class="col-lg-4">Последняя покупка:</td><td class="col-lg-8">{{getDate(c.lastPurchase) | date: 'EEEE d MMM y'}}</td></tr>
-                        <tr class="row"><td class="col-lg-4">Баланс:</td><td class="col-lg-8">{{c.Balance}}</td></tr>
-                        <tr> <td><hr style="margin-bottom:5px;margin-top:5px" /></td></tr>
-                        <tr class="row"><td class="col-lg-4">Место работы:</td><td class="col-lg-8">{{c.locationOfTrade}}</td></tr>
-                        <tr class="row"><td class="col-lg-4">Тип:</td><td class="col-lg-8">{{c.Speciality}}</td></tr>
-                        <tr class="row"><td class="col-lg-4">Доход клиента:</td><td class="col-lg-8">{{c.MoneySpent + ' грн.'}}</td></tr>
-                        <tr class="row"><td class="col-lg-4">Уровень:</td><td class="col-lg-8">{{c.Level}}</td></tr>
-                        <tr class="row"><td class="col-lg-4">Первая покупка:</td><td class="col-lg-8"> {{getDate(c.FirstMet) | date}}</td></tr>
-                        <tr class="row"><td class="col-lg-4">Примечания:</td><td class="col-lg-8">{{c.Notations}}</td></tr>
-                        <tr> <td><hr style="margin-bottom:5px;margin-top:5px" /></td></tr>
-                        <tr class="row"><td class="col-lg-4">E-mail:</td><td class="col-lg-8"> {{c.Email}}</td></tr>
-                        <tr class="row"><td class="col-lg-4">Skype:</td><td class="col-lg-8"> {{c.Skype}}</td></tr>
-                        <tr class="row"><td class="col-lg-4">Др. контакт:</td><td class="col-lg-8">{{c.OtherContact}}</td></tr>
-                        <tr class="row"><td class="col-lg-4">Проинформирован:</td><td class="col-lg-8">{{c.isInformed}}</td></tr>                        
-                    </table>
+                    <div ng-hide="c.isCollapsed" class="panel-body">
+                        <table>
+                            <tr class="row"><td class="col-lg-4">Фио:</td><td class="col-lg-8">{{getCustomerNameAndSurname(c.CustomerId)}}</td></tr>
+                            <tr class="row"><td class="col-lg-4">Телефон:</td><td class="col-lg-8">{{c.PhoneNumber}}</td></tr>
+                            <tr class="row"><td class="col-lg-4">Доп. Телефон:</td><td class="col-lg-8">{{c.AlternatePhone}}</td></tr>
+                            <tr class="row"><td class="col-lg-4">Последняя покупка:</td><td class="col-lg-8">{{getDate(c.lastPurchase) | date: 'EEEE d MMM y'}}</td></tr>
+                            <tr class="row"><td class="col-lg-4">Баланс:</td><td class="col-lg-8">{{c.Balance}}</td></tr>
+                            <tr> <td><hr style="margin-bottom:5px;margin-top:5px" /></td></tr>
+                            <tr class="row"><td class="col-lg-4">Место работы:</td><td class="col-lg-8">{{c.locationOfTrade}}</td></tr>
+                            <tr class="row"><td class="col-lg-4">Тип:</td><td class="col-lg-8">{{c.Speciality}}</td></tr>
+                            <tr class="row"><td class="col-lg-4">Доход клиента:</td><td class="col-lg-8">{{c.MoneySpent + ' грн.'}}</td></tr>
+                            <tr class="row"><td class="col-lg-4">Уровень:</td><td class="col-lg-8">{{c.Level}}</td></tr>
+                            <tr class="row"><td class="col-lg-4">Первая покупка:</td><td class="col-lg-8"> {{getDate(c.FirstMet) | date}}</td></tr>
+                            <tr class="row"><td class="col-lg-4">Примечания:</td><td class="col-lg-8">{{c.Notations}}</td></tr>
+                            <tr> <td><hr style="margin-bottom:5px;margin-top:5px" /></td></tr>
+                            <tr class="row"><td class="col-lg-4">E-mail:</td><td class="col-lg-8"> {{c.Email}}</td></tr>
+                            <tr class="row"><td class="col-lg-4">Skype:</td><td class="col-lg-8"> {{c.Skype}}</td></tr>
+                            <tr class="row"><td class="col-lg-4">Др. контакт:</td><td class="col-lg-8">{{c.OtherContact}}</td></tr>
+                            <tr class="row"><td class="col-lg-4">Проинформирован:</td><td class="col-lg-8">{{c.isInformed}}</td></tr>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
     <div ng-controller="OrdersViewController">
-        <div ng-repeat="ordArr in $parent.ordersInfoByDates" ng-show="$parent.isSelected == 'ord'">
-            <div class="alert alert-info row" style="margin-bottom: 1px; padding:10px">{{ordArr[0].ShipmentDateMax | date: 'EEEE d MMM y'}}</div>
-            <div ng-repeat="order in ordArr">
-                <div class="alert row" ng-class="order.colorOfReadiness" ng-click="collapseAndSelect(order)"
-                     style="cursor:pointer; margin-bottom:1px; padding:7.5px">
-                    <div class="col-lg-1"><h4 style="margin-bottom:0; margin-right:10px; margin-left:-10px">#{{order.OrderId}}</h4></div>
-                    <div class="col-lg-2">{{order.isDelivered}}</div>
-                    <div class="col-lg-2">c {{order.ShipmentDateMin | date: 'HH:mm'}}</div>
-                    <div class="col-lg-2">до {{order.ShipmentDateMax | date: 'HH:mm'}}</div>
-                    <div class="col-lg-2" style="padding:1px">{{order.isPacked}}</div>
-                    <div class="col-lg-3">{{order.isPaid}}</div>
+        <div ng-repeat="ordArr in $parent.ordersInfoByDates | filter: searchText" ng-show="$parent.isSelected == 'ord'" 
+             class="panel-group" style="margin-bottom:7px">
+
+            <div class="panel panel-primary">
+                <div class="panel-heading" ng-click="isVisibleDP = !isVisibleDP">
+                    <h4 class="panel-title">
+                        <a>{{ordArr[0].ShipmentDateMax | date: 'EEEE d MMM y'}}</a>
+                    </h4>
                 </div>
-                <div class="alert alert-warning row animate-table-radio" ng-hide="order.isCollapsed" style="margin-bottom: 1px; padding:5px">
-                    <table>
-                        <tr class="row"><td class="col-lg-4">Заказчик:</td><td class="col-lg-8">{{getCustomerNameAndSurname(order.CustomerId)}}</td></tr>
-                        <tr class="row"><td class="col-lg-4">Доставки:</td><td class="col-lg-8">{{shippingMethodToString(order.ShippingMethod)}}</td></trclass>
-                        <tr class="row"><td class="col-lg-4">Откуда:</td><td class="col-lg-8">{{order.ShipFrom}}</td></tr>
-                        <tr class="row"><td class="col-lg-4">Куда:</td><td class="col-lg-8">{{order.ShipAddress}}</td></tr>
-                        <tr> <td><hr style="margin-bottom:5px;margin-top:5px" /></td></tr>
-                        <tr class="row"><td class="col-lg-4">Способ оплаты:</td><td class="col-lg-8">{{order.PaymentMethod}}</td></tr>
-                        <tr class="row"><td class="col-lg-4">Код конверта:</td><td class="col-lg-8">{{order.OrderRecievingCode + ''}}</td></tr>
-                        <tr class="row"><td class="col-lg-4">Описание:</td><td class="col-lg-8">{{order.OrderNotation}}</td></tr>
-                        <tr> <td><hr style="margin-bottom:5px;margin-top:5px" /></td></tr>
-                        <tr class="row"><td class="col-lg-4">Стоимость:</td><td class="col-lg-8"> {{order.OrderCost + ' грн.'}}</td></tr>
-                        <tr class="row"><td class="col-lg-4">Уже оплачено:</td><td class="col-lg-8"> {{order.Paid + ' грн.'}}</td></tr>
-                        <tr class="row"><td class="col-lg-4">Баланс:</td><td class="col-lg-8">{{getCustomerBalance(order.CustomerId) + ' грн.'}}</td></tr>
-                        <tr class="row"><td class="col-lg-4">Скидка:</td><td class="col-lg-8">{{order.OrderDiscount + ' грн.'}}</td></tr>
-                        <tr class="row"><td class="col-lg-4">К оплате:</td><td class="col-lg-8">{{getPaymentAmount(order) + ' грн.'}}</td></tr>
-                    </table>
-                    <hr style="margin-bottom:10px; margin-top:10px" />
-                    <div class="row">
-                        <div class="col-lg-1"></div>
-                        <div class="col-lg-2">
-                            <button class="btn btn-warning btn-sm" ng-click="setOrderDelivered(order)">Отнесли</button>
-                        </div>
-                        <div class="col-lg-4">
-                            <div class="input-group">
-                                <input type="number" value="0" ng-model="order.Paid" class="form-control input-sm" />
-                                <span class="input-group-btn">
-                                    <button class="btn btn-warning btn-sm" ng-click="setOrderIsPaid(order)">Оплачено</button>
-                                </span>
+                <div ng-show="isVisibleDP">
+                    <div class="panel-body">
+                        <div ng-repeat="order in ordArr" class="panel-group" style="margin-bottom:0">
+                            <div class=" panel" ng-class="order.colorOfReadiness">
+                                <div class="panel-heading " ng-click="collapseAndSelect(order)"
+                                     style="cursor:pointer; margin-bottom:1px; padding:7.5px">
+                                    <div class="panel-title">
+                                        <table class="table" style="border:none; margin-bottom:0">
+                                            <tr>
+                                                <th style="border:none">#{{order.OrderId}}</th>
+                                                <td style="border:none">{{order.isDelivered}}</td>
+                                                <th style="border:none">{{order.ShipmentDateMin | date: 'HH:mm'}}</th>
+                                                <th style="border:none">{{order.ShipmentDateMax | date: 'HH:mm'}}</th>
+                                                <td style="border:none">{{order.isPacked}}</td>
+                                                <td style="border:none">{{order.isPaid}}</td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div>
+
+                                <div ng-hide="order.isCollapsed" class="animate-table-radio">
+                                    <div class="panel-body row">
+                                        <table>
+                                            <tr class="row"><td class="col-lg-4">Заказчик:</td><td class="col-lg-8">{{getCustomerNameAndSurname(order.CustomerId)}}</td></tr>
+                                            <tr class="row"><td class="col-lg-4">Доставки:</td><td class="col-lg-8">{{shippingMethodToString(order.ShippingMethod)}}</td></trclass>
+                                            <tr class="row"><td class="col-lg-4">Откуда:</td><td class="col-lg-8">{{order.ShipFrom}}</td></tr>
+                                            <tr class="row"><td class="col-lg-4">Куда:</td><td class="col-lg-8">{{order.ShipAddress}}</td></tr>
+                                            <tr> <td><hr style="margin-bottom:5px;margin-top:5px" /></td></tr>
+                                            <tr class="row"><td class="col-lg-4">Способ оплаты:</td><td class="col-lg-8">{{order.PaymentMethod}}</td></tr>
+                                            <tr class="row"><td class="col-lg-4">Код конверта:</td><td class="col-lg-8">{{order.OrderRecievingCode + ''}}</td></tr>
+                                            <tr class="row"><td class="col-lg-4">Описание:</td><td class="col-lg-8">{{order.OrderNotation}}</td></tr>
+                                            <tr> <td><hr style="margin-bottom:5px;margin-top:5px" /></td></tr>
+                                            <tr class="row"><td class="col-lg-4">Стоимость:</td><td class="col-lg-8"> {{order.OrderCost + ' грн.'}}</td></tr>
+                                            <tr class="row"><td class="col-lg-4">Уже оплачено:</td><td class="col-lg-8"> {{order.Paid + ' грн.'}}</td></tr>
+                                            <tr class="row"><td class="col-lg-4">Баланс:</td><td class="col-lg-8">{{getCustomerBalance(order.CustomerId) + ' грн.'}}</td></tr>
+                                            <tr class="row"><td class="col-lg-4">Скидка:</td><td class="col-lg-8">{{order.OrderDiscount + ' грн.'}}</td></tr>
+                                            <tr class="row"><td class="col-lg-4">К оплате:</td><td class="col-lg-8">{{getPaymentAmount(order) + ' грн.'}}</td></tr>
+                                        </table>
+                                    </div>
+                                    <div class="panel-footer">
+                                        <table class="table" style="border:none; margin-bottom:0">
+                                            <tr>
+                                                <td style="border:none">
+                                                    <button class="btn btn-warning btn-sm" ng-click="setOrderDelivered(order)">Отнесли</button>
+                                                </td>
+                                                <td class="input-group" style="border:none">
+                                                    <input type="number" value="0" ng-model="order.Paid" class="form-control input-sm" />
+                                                    <span class="input-group-btn">
+                                                        <button class="btn btn-warning btn-sm" ng-click="setOrderIsPaid(order)">Оплачено</button>
+                                                    </span>
+                                                </td>
+                                                <td style="border:none">
+                                                    <button class="btn btn-warning btn-sm" ng-click="setOrderPacked(order)">Упаковано</button>
+                                                </td>
+                                                <td style="border:none">
+                                                    <button class="btn btn-success btn-sm" ng-click="setOrderResolved(order)">Готово</button>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-lg-2" style="padding:1px">
-                            <button class="btn btn-warning btn-sm" ng-click="setOrderPacked(order)">Упаковано</button>
-                        </div>
-                        <div class="col-lg-3">
-                            <button class="btn btn-success btn-sm" ng-click="setOrderResolved(order)">Готово</button>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <table ng-repeat="modelArr in leftTableView.Data" ng-show="isSelected != 'ord'" class="table animate-table-table">
-        <tr>
-            <th class="btn btn-primary btn-header">{{modelArr[0][0].ModelNumber}}</th>
-            <th class="btn btn-primary btn-tableData"
-                ng-repeat="size in warehouseData.DataNotations[modelArr[0][0].ModelNumber].Sizes">
-                {{size}}
-            </th>
-        </tr>
-        <tr ng-repeat="modelArrByColors in modelArr">
-            <td class="btn btn-primary btn-header">
-                {{modelArrByColors[0].Color}}
-            </td>
+    <div>
+        <table ng-repeat="modelArr in leftTableView.Data | filter: searchText" ng-show="isSelected != 'ord'" class="table animate-table-table">
+            <tr>
+                <th class="btn btn-primary btn-header">{{modelArr[0][0].ModelNumber}}</th>
+                <th class="btn btn-primary btn-tableData"
+                    ng-repeat="size in warehouseData.DataNotations[modelArr[0][0].ModelNumber].Sizes">
+                    {{size}}
+                </th>
+            </tr>
+            <tr ng-repeat="modelArrByColors in modelArr">
+                <td class="btn btn-primary btn-header">
+                    {{modelArrByColors[0].Color}}
+                </td>
 
-            <td ng-click="selectProductToOrder(product, modelArrByColors)"
-                ng-repeat="product in modelArrByColors"
-                class="btn btn-default btn-tableData">
-                {{product.Quantity}}
-            </td>
-        </tr>
-    </table>
+                <td ng-click="selectProductToOrder(product, modelArrByColors)"
+                    ng-repeat="product in modelArrByColors"
+                    class="btn btn-default btn-tableData">
+                    {{product.Quantity}}
+                </td>
+            </tr>
+        </table>
+    </div>
 </div>

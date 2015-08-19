@@ -252,27 +252,27 @@ app.controller('HomeController', function (dataService, $scope, $modal) {
     //=======================================================    
     $scope.setColorOfReadinessForOrder = function (ord) {
         if (ord.isPacked == 'не упакован') {
-            return 'alert-danger';
+            return 'panel-danger';
         }
         if ((ord.isPacked == 'без упаковки' || ord.isPacked == 'упакован')
             && (ord.isDelivered == 'отнести' || ord.isDelivered == 'заберут')
             && ord.isPaid == 'не оплачен') {
-            return 'alert-warning';
+            return 'panel-warning';
         }
         if ((ord.isPacked == 'без упаковки' || ord.isPacked == 'упакован')
             && (ord.isDelivered == 'отнести' || ord.isDelivered == 'заберут')
             && (ord.isPaid == 'оплачен' || ord.isPaid == 'оплата на месте')) {
-            return 'alert-success';
+            return 'panel-success';
         }
         if ((ord.isPacked == 'без упаковки' || ord.isPacked == 'упакован')
             && ord.isDelivered == 'доставлен'
             && ord.isPaid == 'оплата на месте') {
-            return 'alert-success';
+            return 'panel-success';
         }
         if ((ord.isPacked == 'без упаковки' || ord.isPacked == 'упакован')
             && ord.isDelivered == 'доставлен'
             && ord.isPaid == 'оплачен') {
-            return 'alert-success resolved';
+            return 'panel-success resolved';
         }
     }
     

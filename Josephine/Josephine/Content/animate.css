@@ -6,7 +6,8 @@
         }
 
 .resolved {
-    border:double;
+    border:dashed;    
+    border-color:#3c763d;
 }
 
 .custInfo {
