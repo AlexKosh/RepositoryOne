@@ -18,7 +18,16 @@ namespace Josephine.Abstract
         IEnumerable<Employee> Employees { get; }
         IEnumerable<Prices> Prices { get; }
 
-        void populate(int mN, string n, string[] c, int[] s, int p);
+        void populateWhAndSt(int mN, string n, string[] c, int[] s, int p);
+        void deleteWhAndSt();
+        void populatePrices(int[] mN, int[] p);
+        void deletePrices();
+        void populateCust(Customer[] c);
+        void deleteCust();
+        void populateEmployee(Employee[] e);
+        void deleteEmployee();
+        void populateOrders(OrderInfo[] oi, OrderProduct[] op);
+        void deleteOrders();
 
         void AddDataToDb<T>(T d);
         int AddOrderInfoToDb(OrderInfo oi);

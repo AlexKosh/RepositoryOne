@@ -110,8 +110,20 @@
                                                 <td style="border:none">
                                                     <button class="btn btn-warning btn-sm" ng-click="setOrderPacked(order)">Упаковано</button>
                                                 </td>
-                                                <td style="border:none">
-                                                    <button class="btn btn-success btn-sm" ng-click="setOrderResolved(order)">Готово</button>
+                                                <td style="border:none" nowrap>
+                                                    <div dropdown class="input-group-btn">
+                                                        <button id="split-button{{$index}}" type="button" class="btn btn-success btn-sm" ng-click="setOrderResolved(order)">Готово</button>
+                                                        <button type="button" class="btn btn-success btn-sm" dropdown-toggle>
+                                                            <span class="caret"></span>
+                                                            <span class="sr-only">Split button!</span>
+                                                        </button>
+                                                        <ul class="dropdown-menu" role="menu" aria-labelledby="split-button{{$index}}">
+                                                            <li role="menuitem"><a href="#">Редактировать</a></li>
+                                                            <li role="menuitem"><a href="#">Перенести заказ</a></li>
+                                                            <li class="divider"></li>
+                                                            <li role="menuitem"><a href="#">Отменить заказ</a></li>
+                                                        </ul>
+                                                    </div>
                                                 </td>
                                             </tr>
                                         </table>

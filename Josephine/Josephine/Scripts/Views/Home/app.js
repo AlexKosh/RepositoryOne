@@ -14,6 +14,7 @@ app.controller('HomeController', function (dataService, $scope, $modal) {
     $scope.rightTableView = {};
     $scope.selectedOrder = { Data: [] };
     $scope.salesData = { Data: [], DataNotations: {} };
+    
     $scope.isGotData = {
         store: false,
         warehouse: false,
@@ -24,7 +25,8 @@ app.controller('HomeController', function (dataService, $scope, $modal) {
         prices: false,
         orderSelected: false,
         sales: false
-    }   
+    };
+    
     $scope.tempOrderData = { OrderInfo: [], OrderProduct: [] };
     $scope.tempOrderInfo = {
         ShipmentDateMin: new Date(),
@@ -35,6 +37,8 @@ app.controller('HomeController', function (dataService, $scope, $modal) {
     };
     $scope.isCreatingNewOrder = false;      
 
+    $scope.searchText = "";
+
     $scope.getLocation = function (v) {
         return dataService.getLocations(v);
     }
@@ -44,6 +48,7 @@ app.controller('HomeController', function (dataService, $scope, $modal) {
     }        
 
     function getStoreData() {
+        $scope.isGotData.store = false;
         dataService.getStore().then(function (d) {
             $scope.storeData = d;
             $scope.isGotData.store = true;
@@ -51,10 +56,11 @@ app.controller('HomeController', function (dataService, $scope, $modal) {
         });           
     }
     function getWarehouseData(needToSelect) {
+        $scope.isGotData.warehouse = false;
         $scope.warehouseData = dataService.getWarehouse().then(function (d) {            
             if (needToSelect) {
                 $scope.leftTableView = $scope.warehouseData = d;
-                
+                $scope.isGotData.warehouse = true;
             } else {
                 $scope.warehouseData = d;
                 $scope.isGotData.warehouse = true;
@@ -62,6 +68,7 @@ app.controller('HomeController', function (dataService, $scope, $modal) {
         });
     }
     function getOrdersData() {
+        $scope.isGotData.orders = false;
         $scope.ordersData = dataService.getOrders().then(function (d) {
             
             for (var i = 0; i < d.OrderInfo.length; i++) {
@@ -76,6 +83,7 @@ app.controller('HomeController', function (dataService, $scope, $modal) {
         });
     }
     function getCustomersData() {
+        $scope.isGotData.customers = false;
         $scope.customersData = dataService.getCustomers().then(function (d) {
             for (var i = 0; i < d.length; i++) {
                 d[i].isCollapsed = true;                
@@ -276,15 +284,29 @@ app.controller('HomeController', function (dataService, $scope, $modal) {
         }
     }
     
+    $scope.refreshData = function () {
+        switch ($scope.isSelected) {
+            case "st":
+                getStoreData();
+                break;
+            case "wh":
+                getWarehouseData(true);
+                break;            
+            default:
+                break;
+        };
+    }
     //add product to selected[]
     $scope.selectProductToOrder = function (p, modelArrByColors) {
 
+        //cheks that the product which selects is from same DB which first selected product
         if ($scope.selected.Data.length > 0) {
             if ($scope.isSelected != $scope.selected.Data[0][0][0].from) {
                 alert('Сначала очистите заказ');
                 return;
             }
         }
+        console.log(1);
 
         function findPrice(modelNumber) {
             for (var i = ($scope.pricesData.length - 1) ; i >= 0 ; i--) {
@@ -309,9 +331,9 @@ app.controller('HomeController', function (dataService, $scope, $modal) {
                 }
             }
         }
-
+        console.log(2);
         var productToOrder = $scope.selectProduct(p, $scope.selected.Data);
-
+        console.log(3);
         productToOrder.Quantity++;
         p.Quantity--;
         $scope.isGotData.select = true;
@@ -341,8 +363,8 @@ app.controller('HomeController', function (dataService, $scope, $modal) {
                 }
                 for (var k = 0; k < from[i][j].length; k++) {                    
                     if (p.ProductId == from[i][j][k].ProductId) {
-                        from[i][j][k].Quantity += p.Quantity;
-                        p.Quantity = 0;                           
+                        from[i][j][k].Quantity += 1;
+                        p.Quantity -= 1;                           
                         return;
                     }
                 }
@@ -493,7 +515,7 @@ app.controller('HomeController', function (dataService, $scope, $modal) {
         });
     };
 
-    //get all datas
+    //get all datas from server
     getStoreData();
     getWarehouseData(false);    
     $scope.rightTableView = $scope.selected;

@@ -25,7 +25,7 @@ namespace Josephine.Concrete
         public IEnumerable<Employee> Employees { get { return context.Employee; }}
         public IEnumerable<Prices> Prices { get { return context.Prices; }}
 
-        public void populate(int mN, string n, string[] c, int[] s, int p)
+        public void populateWhAndSt(int mN, string n, string[] c, int[] s, int p)
         {
             //int[] sizes = { 44, 46, 48, 50, 52, 54 };
             //string name = "Vika";
@@ -59,6 +59,84 @@ namespace Josephine.Concrete
                 }
             }
         }
+        public void deleteWhAndSt()
+        {
+            context.Warehouse.RemoveRange(context.Warehouse);
+            context.Store.RemoveRange(context.Store);
+            context.SaveChanges();
+        }
+
+        public void populatePrices(int[] mN, int[] p)
+        {
+            for (int i = 0; i < mN.Length; i++)
+            {
+                Prices pr = new Prices();
+                pr.ModelNumber = mN[i];
+                pr.Price = p[i];
+                pr.Date = new DateTime(2015, 9, 24, 20, 11, 50);
+
+                context.Prices.Add(pr);
+                
+            }
+
+            context.SaveChanges();
+        }
+        public void deletePrices()
+        {
+            context.Prices.RemoveRange(context.Prices);
+            context.SaveChanges();
+        }
+
+        public void populateCust(Customer[] c)
+        {
+            for (int i = 0; i < c.Length; i++)
+            {
+                context.Customer.Add(c[i]);
+            }
+            context.SaveChanges();
+        }
+        public void deleteCust()
+        {
+            context.Customer.RemoveRange(context.Customer);
+            context.SaveChanges();
+        }
+
+        public void populateEmployee(Employee[] e)
+        {
+            for (int i = 0; i < e.Length; i++)
+            {
+                context.Employee.Add(e[i]);
+            }
+            context.SaveChanges();
+        }
+        public void deleteEmployee()
+        {
+            context.Employee.RemoveRange(context.Employee);
+            context.SaveChanges();
+        }
+
+        public void populateOrders(OrderInfo[] oi, OrderProduct[] op)
+        {
+            context.OrderInfo.AddRange(oi);
+            context.SaveChanges();
+
+            int[] ordersId = context.OrderInfo.Select(x => x.OrderId).ToArray();
+            for (int i = 0; i < 40; i++)
+            {
+                op[i].OrderId = ordersId[i];                
+            }
+            context.OrderProduct.AddRange(op);
+            
+            context.SaveChanges();
+        }
+        public void deleteOrders()
+        {
+            context.OrderInfo.RemoveRange(context.OrderInfo);
+            context.OrderProduct.RemoveRange(context.OrderProduct);
+            context.SaveChanges();
+        }
+
+        
 
         public void AddDataToDb<T>(T d)
         {               
