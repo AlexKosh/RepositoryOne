@@ -29,6 +29,8 @@ namespace Josephine.Controllers
             }                       
         }
 
+        // --------------------------------Demo part
+        //these methods are intended for creating demo-information for this app
         public void pplPrices()
         {
             int[] modelNumbers = {423, 431, 435, 436, 437};
@@ -381,7 +383,6 @@ namespace Josephine.Controllers
             repository.deleteOrders();
         }
 
-
         private bool checkDbForEmpty()
         {
             //{ wh, st, prices, cust, empl, ordInf }
@@ -433,11 +434,11 @@ namespace Josephine.Controllers
             //checkDbForEmpty();
             return Json(Session["isDbsEmpty"], JsonRequestBehavior.AllowGet);
         }
-
         public ActionResult askDemoData()
         {
             return View("AskDemoData");
         }
+        //--------------------------------End of demo part
 
         public JsonResult Store()
         {  
@@ -570,6 +571,25 @@ namespace Josephine.Controllers
         public PartialViewResult navButtons()
         {
             return PartialView();
+        }
+
+        public JsonResult getModelNames()
+        {
+            //int[] modelNumbs = repository.Warehouse.Select(x => x.ModelNumber).Distinct().ToArray();
+            //string[] modelNames = new string[modelNumbs.Length];
+            //for (int i = 0; i < modelNames.Length; i++)
+            //{
+            //    modelNames[i] = repository.Warehouse.Where(x => x.ModelNumber == modelNumbs[i]).Select(x => x.Name).First();
+            //}
+            //Dictionary<int, string> result = new Dictionary<int, string>();
+            //for (int i = 0; i < modelNames.Length; i++)
+            //{
+            //    result.Add(modelNumbs[i], modelNames[i]);
+            //}
+
+            var res = repository.Warehouse.Select(x => new { x.ModelNumber, x.Name}).Distinct();
+
+            return Json(res, JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]

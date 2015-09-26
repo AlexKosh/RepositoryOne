@@ -47,10 +47,14 @@ app.controller('HomeController', function (dataService, $scope, $modal) {
         console.log(text);
     }        
 
-    function getStoreData() {
+    function getStoreData(needToSelect) {
         $scope.isGotData.store = false;
         dataService.getStore().then(function (d) {
-            $scope.storeData = d;
+            if (needToSelect) {
+                $scope.leftTableView = $scope.storeData = d;                                
+            } else {
+                $scope.storeData = d;                
+            }
             $scope.isGotData.store = true;
             getTodaySales();
         });           
@@ -59,12 +63,11 @@ app.controller('HomeController', function (dataService, $scope, $modal) {
         $scope.isGotData.warehouse = false;
         $scope.warehouseData = dataService.getWarehouse().then(function (d) {            
             if (needToSelect) {
-                $scope.leftTableView = $scope.warehouseData = d;
-                $scope.isGotData.warehouse = true;
+                $scope.leftTableView = $scope.warehouseData = d;                
             } else {
-                $scope.warehouseData = d;
-                $scope.isGotData.warehouse = true;
+                $scope.warehouseData = d;                
             }
+            $scope.isGotData.warehouse = true;
         });
     }
     function getOrdersData() {
@@ -287,7 +290,7 @@ app.controller('HomeController', function (dataService, $scope, $modal) {
     $scope.refreshData = function () {
         switch ($scope.isSelected) {
             case "st":
-                getStoreData();
+                getStoreData(true);
                 break;
             case "wh":
                 getWarehouseData(true);
@@ -305,8 +308,7 @@ app.controller('HomeController', function (dataService, $scope, $modal) {
                 alert('Сначала очистите заказ');
                 return;
             }
-        }
-        console.log(1);
+        }       
 
         function findPrice(modelNumber) {
             for (var i = ($scope.pricesData.length - 1) ; i >= 0 ; i--) {
@@ -331,9 +333,9 @@ app.controller('HomeController', function (dataService, $scope, $modal) {
                 }
             }
         }
-        console.log(2);
+        
         var productToOrder = $scope.selectProduct(p, $scope.selected.Data);
-        console.log(3);
+        
         productToOrder.Quantity++;
         p.Quantity--;
         $scope.isGotData.select = true;
@@ -511,12 +513,11 @@ app.controller('HomeController', function (dataService, $scope, $modal) {
         
         modalInstance.result.then(function () {
             getWarehouseData(true);            
-            console.log('good');
         });
     };
 
     //get all datas from server
-    getStoreData();
+    getStoreData(false);
     getWarehouseData(false);    
     $scope.rightTableView = $scope.selected;
     getOrdersData();
@@ -598,13 +599,25 @@ app.controller('ModalNewEmployeeController', function (dataService, $modalInstan
 app.controller('ModalAddProductToWhController', function (dataService, $modalInstance, $scope) {    
     $scope.modelArr = $scope.$parent.warehouseData.DataNotations;
     $scope.mNumbers = Object.keys($scope.modelArr);
+    $scope.mNamesAndNumbsDict = dataService.getModelNamesAndNumbsDictionary().then(function (d) { $scope.mNamesAndNumbsDict = d});
+
+    $scope.getName = function () {        
+        for (var i = 0; i < $scope.mNamesAndNumbsDict.length; i++) {            
+
+            if ($scope.ModelNumber == $scope.mNamesAndNumbsDict[i].ModelNumber) {
+                $scope.Name = $scope.mNamesAndNumbsDict[i].Name;
+                break;
+            }            
+        }        
+    }    
+    
     $scope.add = function () {
         dataService.postNewProd($scope);        
         $modalInstance.close();
     }
     $scope.cancel = function () {
         $modalInstance.dismiss();
-    }
+    }    
 });
 
 app.controller('OrdersViewController', function ($scope) {
@@ -1010,6 +1023,13 @@ app.factory('dataService', function ($http) {
             }
             //console.log(r);
             return r;
+        },
+        getModelNamesAndNumbsDictionary: function () {
+            var promise = $http.get('/home/getModelNames').then(function (response) {
+                
+                return response.data;
+            });            
+            return promise;
         }
     }
 });

@@ -162,6 +162,8 @@ namespace Josephine.Concrete
                 case "Warehouse":
                     Warehouse w = d as Warehouse;
                     Warehouse itemToEdit = new Warehouse();
+                    Store s = w.ToStore();
+                    s.Quantity = 0;
 
                     itemToEdit = context.Warehouse.FirstOrDefault(x => x.ModelNumber == w.ModelNumber && 
                         x.Color == w.Color && x.Size == w.Size);
@@ -169,6 +171,7 @@ namespace Josephine.Concrete
                     if (itemToEdit == null)
                     {
                         context.Warehouse.Add(w);
+                        context.Store.Add(s);
                     }
                     else
                     {
