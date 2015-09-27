@@ -27,7 +27,7 @@
                         <label class="col-lg-4 control-label" for="emplName">Заказ принял: </label>
                         <div class="col-lg-8 input-group">
                             <input type="text" placeholder="Имя сотрудника..." ng-model="tempEmployee"
-                                   typeahead="e as e.Surname +' '+ e.Name for e in employeesData | filter:$viewValue | limitTo:8"
+                                   typeahead="e as e.Name +' '+ e.Surname for e in employeesData | filter:$viewValue | limitTo:8"
                                    class="form-control" id="emplName" tabindex="1" />
                             <span class="input-group-btn">
                                 <button class="btn btn-default" ng-click="openCreateWorker()">Новый</button>
