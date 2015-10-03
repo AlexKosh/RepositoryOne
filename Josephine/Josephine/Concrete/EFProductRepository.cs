@@ -24,6 +24,7 @@ namespace Josephine.Concrete
         public IEnumerable<Customer> Customers { get { return context.Customer; }}
         public IEnumerable<Employee> Employees { get { return context.Employee; }}
         public IEnumerable<Prices> Prices { get { return context.Prices; }}
+        public IEnumerable<MainWarehouse> MainWh { get { return context.MainWh; }}
 
         public void populateWhAndSt(int mN, string n, string[] c, int[] s, int p)
         {
@@ -135,7 +136,6 @@ namespace Josephine.Concrete
             context.OrderProduct.RemoveRange(context.OrderProduct);
             context.SaveChanges();
         }
-
         
 
         public void AddDataToDb<T>(T d)
@@ -264,6 +264,13 @@ namespace Josephine.Concrete
                     tx.Rollback();
                 }
             }            
-        }        
+        }
+
+
+        public void populateMainWh(List<MainWarehouse> mwh)
+        {
+            context.MainWh.AddRange(mwh);
+            context.SaveChanges();
+        }
     }
 }

@@ -2,26 +2,13 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+<div ng-controller="HomeController">
+    <div class="container">
+        <div class="alert text-center col-lg-offset-3 col-lg-6" ng-class="alertClass"
+             role="alert" ng-show="isGotData.alert" ng-click="isGotData.alert = false" style="cursor:pointer">
+            {{alertText}}
+        </div>
 
-
-<html ng-app="Josephine">
-@*<head>
-    <meta name="viewport" content="width=device-width" />
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
-    <link rel="stylesheet" href="~/Content/animate.css" />
-
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.3/angular.js"></script>
-    <script src="https://code.angularjs.org/1.4.3/angular-animate.min.js"></script>
-    <script src="//angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.13.2.js"></script>
-    <script src="~/Scripts/Views/Home/app.js" type="text/javascript"></script>    
-
-    <title>Products</title>  
-   
-</head>*@
-
-<body ng-controller="HomeController">
-   
-    <div>
         <create-order></create-order>
         <br />
         <nav-buttons></nav-buttons>
@@ -306,7 +293,7 @@
                                 </table>
                             </div>
                             <div class="modal-footer">
-                                <button class="btn btn-success text-left"><span class="glyphicon glyphicon-print"></span>Печать</button>
+                                <button class="btn btn-success text-left" ng-click="notSoFast()"><span class="glyphicon glyphicon-print"></span>Печать</button>
                             </div>
                         </div>
                     </div>
@@ -355,5 +342,4 @@
         </div>
 
     </script>
-</body>
-</html>
+</div>

@@ -17,6 +17,7 @@ namespace Josephine.Abstract
         IEnumerable<Customer> Customers { get; }
         IEnumerable<Employee> Employees { get; }
         IEnumerable<Prices> Prices { get; }
+        IEnumerable<MainWarehouse> MainWh { get; }
 
         void populateWhAndSt(int mN, string n, string[] c, int[] s, int p);
         void deleteWhAndSt();
@@ -33,5 +34,8 @@ namespace Josephine.Abstract
         int AddOrderInfoToDb(OrderInfo oi);
         void AddOrderProductsToDb(IEnumerable<OrderProduct> op, int oId);
         void AddSoldProductsToDb(IEnumerable<OrderProduct> op, int customerId, int employeeId, int orderId);
+
+
+        void populateMainWh(List<MainWarehouse> mvh);
     }
 }

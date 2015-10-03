@@ -141,9 +141,13 @@
     <EmbeddedResource Include="Migrations\201508071246119_addEmployeeIdToSale.resx">
       <DependentUpon>201508071246119_addEmployeeIdToSale.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201509291524380_addMainWh.resx">
+      <DependentUpon>201509291524380_addMainWh.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Scripts\Views\Home\app.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
+    <Content Include="Scripts\Views\Home\AskDemo.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -158,6 +162,7 @@
     <Compile Include="Concrete\EFDbContext.cs" />
     <Compile Include="Concrete\EFProductRepository.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\ProductionController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -202,9 +207,14 @@
     <Compile Include="Migrations\201508071246119_addEmployeeIdToSale.Designer.cs">
       <DependentUpon>201508071246119_addEmployeeIdToSale.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201509291524380_addMainWh.cs" />
+    <Compile Include="Migrations\201509291524380_addMainWh.Designer.cs">
+      <DependentUpon>201509291524380_addMainWh.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Customer.cs" />
     <Compile Include="Models\Employee.cs" />
+    <Compile Include="Models\MainWarehouse.cs" />
     <Compile Include="Models\OrderInfo.cs" />
     <Compile Include="Models\OrderProduct.cs" />
     <Compile Include="Models\Prices.cs" />
@@ -228,6 +238,7 @@
     <Content Include="Views\Home\navButtons.cshtml" />
     <Content Include="Views\Home\AskDemoData.cshtml" />
     <Content Include="Views\Shared\_LayoutOrig - Copy.cshtml" />
+    <Content Include="Views\Production\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -1,10 +1,10 @@
-﻿var app = angular.module('Josephine', ['ngAnimate', 'ui.bootstrap']);
+﻿var app = angular.module('Josephine', ['ngAnimate', 'ui.bootstrap', 'Jos.production']);
 
 app.controller('HomeController', function (dataService, $scope, $modal) {
 
     //=======================================================
     //=========== ------- initials start ------ =============
-    //-------------------------------------------------------
+    //-------------------------------------------------------    
 
     $scope.selected = { Data: [], DataNotations: [] };
     $scope.warehouseData = {};
@@ -24,7 +24,8 @@ app.controller('HomeController', function (dataService, $scope, $modal) {
         employees: false,
         prices: false,
         orderSelected: false,
-        sales: false
+        sales: false,
+        alert: false
     };
     
     $scope.tempOrderData = { OrderInfo: [], OrderProduct: [] };
@@ -38,6 +39,8 @@ app.controller('HomeController', function (dataService, $scope, $modal) {
     $scope.isCreatingNewOrder = false;      
 
     $scope.searchText = "";
+    $scope.alertText = "Привет, все хорошо!";
+    $scope.alertClass = "alert-success"
 
     $scope.getLocation = function (v) {
         return dataService.getLocations(v);
@@ -56,7 +59,7 @@ app.controller('HomeController', function (dataService, $scope, $modal) {
                 $scope.storeData = d;                
             }
             $scope.isGotData.store = true;
-            getTodaySales();
+            getTodaySales();            
         });           
     }
     function getWarehouseData(needToSelect) {
@@ -373,7 +376,7 @@ app.controller('HomeController', function (dataService, $scope, $modal) {
             }
         }
     };
-    //post, sell this order
+    //[post] sell or make an order on production from selected[]
     $scope.sell = function (sold) {
         function OrderInfo(oi) {
             this.OrderId = oi.OrderId || null;
@@ -471,6 +474,7 @@ app.controller('HomeController', function (dataService, $scope, $modal) {
             }
         }
 
+        $scope.tempOrderData = { OrderInfo: [], OrderProduct: [] };
         $scope.tempOrderData.OrderProduct = minificationSelectedArr($scope.selected);
 
         var tOi = new OrderInfo($scope.tempOrderInfo);
@@ -483,9 +487,27 @@ app.controller('HomeController', function (dataService, $scope, $modal) {
         $scope.tempOrderData.OrderInfo.push(tOi);
 
         if (sold) {
+            console.log(1);
+            $scope.isGotData.alert = true;
+            console.log(2);
+            $scope.alertText = "Продано";
+            $scope.alertClass = "alert-success";
+            console.log(3);
+            $scope.isCreatingNewOrder = !$scope.isCreatingNewOrder;
+            console.log(4);
             dataService.postSales($scope.tempOrderData);
+            console.log(5);            
         } else {
+            console.log(1);
+            $scope.isGotData.alert = true;
+            console.log(2);
+            $scope.alertText = "Заказ принят";
+            $scope.alertClass = "alert-success";
+            console.log(3);
+            $scope.isCreatingNewOrder = !$scope.isCreatingNewOrder;
+            console.log(4);                        
             dataService.postOrder($scope.tempOrderData);
+            console.log(5);
         }
     };
 
@@ -611,8 +633,11 @@ app.controller('ModalAddProductToWhController', function (dataService, $modalIns
         }        
     }    
     
-    $scope.add = function () {
-        dataService.postNewProd($scope);        
+    $scope.add = function () {        
+        dataService.postNewProd($scope);
+        $scope.$parent.alertText = "Продукция добавлена.";
+        $scope.$parent.alertClass = "alert-success";
+        $scope.$parent.isGotData.alert = true;
         $modalInstance.close();
     }
     $scope.cancel = function () {
@@ -797,12 +822,21 @@ app.controller('DatepickerDemoController', function ($scope, dataService) {
             .success(function (d) {                
                 
                 if (d == 0) {
-                    alert('Продаж за этот период нет.');
+                    $scope.$parent.alertText = "Продаж за этот период нет.";
+                    $scope.$parent.alertClass = "alert-warning";
+                    $scope.$parent.isGotData.alert = true;
+                    $scope.salesData = {};
                     return;
                 }
                 $scope.salesData = dataService.formattingByModelNumberAndQuantity(d, $scope.$parent.storeData);                
             }).error(function () { alert('err in getSalesData'); });;
     };    
+    $scope.notSoFast = function () {
+        document.getElementById('notSoFast').play();
+        $scope.$parent.alertText = "Этот функционал в процессе разработки.";
+        $scope.$parent.alertClass = "alert-danger";
+        $scope.$parent.isGotData.alert = true;
+    }
 
     $scope.getQuantitySum = function (arr) {
 
@@ -872,15 +906,15 @@ app.factory('dataService', function ($http) {
             });
             return promise;
         },
-        getPrices: function () {
-            var promise = $http.get('home/prices').then(function (response) {
+        getPrices: function () {            
+            var promise = $http.get('/home/prices').then(function (response) {
                 return response.data;
             });
             return promise;
         },
         getTodaySales: function(){
-            var promise = $http.get('home/sales').success(function (d) {
-                var promise = d;
+            var promise = $http.get('/home/sales').success(function (d) {
+                promise = d;
             }).error(function () { alert('err in getTodaySales'); });
             return promise;            
         },
@@ -901,8 +935,7 @@ app.factory('dataService', function ($http) {
                 .success(function (data) {
                     console.log("-=----=orders=----=-");
                     console.log(data);
-                    console.log("-=----=----=-");
-                    alert('Заказ добавлен');
+                    console.log("-=----=----=-");                    
                 })
                 .error(function () { alert('err in post new order'); });
         },
@@ -942,15 +975,15 @@ app.factory('dataService', function ($http) {
         postSales: function (data) {
             $http.post('/home/sale', { d: data })
             .success(function (data) {
+                console.log(6);
                 console.log("-=----=sales=----=-");
                 console.log(data);
-                console.log("-=----=----=-");
-                alert('Продано');
+                console.log("-=----=----=-");                
             })
             .error(function () { alert('err in post new sale'); });
         },
         getSalesData: function($scope) {
-            var promise = $http.post('home/getSalesData', {
+            var promise = $http.post('/home/getSalesData', {
                 minDate: $scope.minDate,
                 maxDate: $scope.maxDate
             });
@@ -1071,3 +1104,25 @@ app.directive('filtPanel', function () {
     };
 });
 
+angular.module('Jos.production', []);
+angular.module('Jos.production').factory('prodDataService', function ($http) {
+    return {
+        getMainWh: function () {
+            var promise = $http.get('/production/getMainWh').then(function (response) {                
+                return response.data;
+            });            
+            return promise;
+        }
+    };
+});
+angular.module('Jos.production').controller('ProductionController', function ($scope, prodDataService) {    
+    $scope.mainWhData = {};
+
+    function getMainWhData() {        
+        prodDataService.getMainWh().then(function (d) { $scope.mainWhData = d; });       
+        
+    };
+
+
+    getMainWhData();
+});

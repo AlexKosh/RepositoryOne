@@ -1,0 +1,56 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div ng-controller="ProductionController">
+    <nav class="navbar navbar-default" style="margin-top:-20px">
+        <div class="container-fluid">
+            <ul class="nav navbar-nav">
+                <li><a href="#">Склад</a></li>
+                <li><a href="#">Стежка</a></li>
+                <li><a href="#">Закройка</a></li>
+                <li><a href="#">Настрочницы</a></li>
+                <li><a href="#">Приемка</a></li>
+            </ul>
+        </div>
+    </nav>
+    <div class="container-fluid">
+        <div class="modal-content col-lg-12">
+            <div class="modal-header">
+                <div style="padding-right:0">
+                    <div class="input-group col-lg-push-1 col-lg-5">
+                        <input class="form-control input-sm" ng-model="searchText" />
+                        <span class="input-group-btn">
+                            <button class="btn btn-default btn-sm"><i class="glyphicon glyphicon-filter"></i></button>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div ng-repeat="category in mainWhData | filter: searchText">
+                <h4 class="btn-default">Категория {{$index + 1}}</h4>
+                <div class="modal-body">
+                    <table class="table">
+                        <tr>
+                            <th class="col-lg-1">Id</th>
+                            <th class="col-lg-4">Название</th>
+                            <th class="col-lg-3">Цвет</th>
+                            <th class="col-lg-1">Кол-во</th>
+                            <th class="col-lg-2">Ед. изм.</th>
+                            <th class="col-lg-1">+/-</th>
+                        </tr>
+                        <tr ng-repeat="item in category | filter: searchText">
+                            <td class="col-lg-1">{{item.Id}}</td>
+                            <td class="col-lg-4">{{item.Name}}</td>
+                            <td class="col-lg-3">{{item.Color}}</td>
+                            <td class="col-lg-1">{{item.Quantity}}</td>
+                            <td class="col-lg-2">{{item.UnitOfMeasurement}}</td>
+                            <td class="col-lg-1">+/-</td>                            
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">Футер</div>
+        </div>
+    </div>
+</div>
+
