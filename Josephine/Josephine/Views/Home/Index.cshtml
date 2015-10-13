@@ -3,15 +3,16 @@
 }
 
 <div ng-controller="HomeController">
+    <nav-buttons></nav-buttons>
+
     <div class="container">
         <div class="alert text-center col-lg-offset-3 col-lg-6" ng-class="alertClass"
              role="alert" ng-show="isGotData.alert" ng-click="isGotData.alert = false" style="cursor:pointer">
             {{alertText}}
         </div>
 
-        <create-order></create-order>
-        <br />
-        <nav-buttons></nav-buttons>
+        <create-order></create-order>        
+        
         <sales-report-view></sales-report-view>
 
         <filt-panel></filt-panel>

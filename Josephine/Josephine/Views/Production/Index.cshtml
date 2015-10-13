@@ -26,27 +26,31 @@
                     </div>
                 </div>
             </div>
-            <div ng-repeat="category in mainWhData | filter: searchText">
-                <h4 class="btn-default">Категория {{$index + 1}}</h4>
-                <div class="modal-body">
-                    <table class="table">
-                        <tr>
-                            <th class="col-lg-1">Id</th>
-                            <th class="col-lg-4">Название</th>
-                            <th class="col-lg-3">Цвет</th>
-                            <th class="col-lg-1">Кол-во</th>
-                            <th class="col-lg-2">Ед. изм.</th>
-                            <th class="col-lg-1">+/-</th>
-                        </tr>
-                        <tr ng-repeat="item in category | filter: searchText">
-                            <td class="col-lg-1">{{item.Id}}</td>
-                            <td class="col-lg-4">{{item.Name}}</td>
-                            <td class="col-lg-3">{{item.Color}}</td>
-                            <td class="col-lg-1">{{item.Quantity}}</td>
-                            <td class="col-lg-2">{{item.UnitOfMeasurement}}</td>
-                            <td class="col-lg-1">+/-</td>                            
-                        </tr>
-                    </table>
+            <div ng-repeat="category in mainWhData | filter: searchText" class="panel panel-default">
+                <div class="panel-heading" style="cursor: pointer;">
+                    <h4>Категория {{$index + 1}}</h4>
+                </div>
+                <div class="panel-body">
+                    <div class="modal-body">
+                        <table class="table">
+                            <tr>
+                                <th class="col-lg-1">Id</th>
+                                <th class="col-lg-4">Название</th>
+                                <th class="col-lg-3">Цвет</th>
+                                <th class="col-lg-1">Кол-во</th>
+                                <th class="col-lg-2">Ед. изм.</th>
+                                <th class="col-lg-1">+/-</th>
+                            </tr>
+                            <tr class="btn-default" ng-repeat="item in category | filter: searchText">
+                                <td class="col-lg-1">{{item.Id}}</td>
+                                <td class="col-lg-4">{{item.Name}}</td>
+                                <td class="col-lg-3">{{item.Color}}</td>
+                                <td class="col-lg-1">{{item.Quantity}}</td>
+                                <td class="col-lg-2">{{item.UnitOfMeasurement}}</td>
+                                <td class="col-lg-1">+/-</td>
+                            </tr>
+                        </table>
+                    </div>
                 </div>
             </div>
             <div class="modal-footer">Футер</div>

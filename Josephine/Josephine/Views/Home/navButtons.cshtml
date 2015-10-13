@@ -1,39 +1,90 @@
-﻿<div class="row">
-    <div class="col-lg-6">
-        <div class="btn-group" data-toogle="buttons">
-            <label class="btn btn-default animate-table-radio" ng-show="isGotData.store">
-                <input type="radio" checked ng-model="leftTableView" ng-value="storeData" ng-click="isSelected = 'st'">Store</input>
-            </label>
-            <label class="btn btn-default animate-table-radio" ng-show="isGotData.warehouse" ng-click="isSelected = 'wh'">
-                <input type="radio" ng-model="leftTableView" ng-value="warehouseData">Warehouse</input>
-            </label>                     
-            <label class="btn btn-default animate-table-radio" ng-show="isGotData.orders" ng-click="isSelected = 'ord'">
-                <input type="radio" ng-model="leftTableView" ng-value="1">Orders</input>
-            </label>
-            <label class="btn btn-default animate-table-radio" ng-show="isGotData.customers" ng-click="isSelected = 'cust'">
-                <input type="radio" ng-model="leftTableView" ng-value="2">Customers</input>
-            </label>
-            <label class="btn btn-default animate-table-radio" ng-show="isGotData.sales" ng-click="isSelected = 'sales'">
-                <input type="radio" ng-model="leftTableView" ng-value="3">Sales</input>
-            </label>
+﻿<nav class="navbar navbar-default" style="margin-top:-20px" ng-controller="StoreNavController">
+    <div class="container-fluid">
+        <ul class="nav navbar-nav col-lg-6">
+            <li ng-show="$parent.isGotData.store" 
+                ng-class="{active: numberForActiveClass == 1}" 
+                style="cursor:pointer">
+
+                <a ng-click="storeOnClick()">Магазин</a>
+            </li>
+            <li ng-show="$parent.isGotData.warehouse" 
+                ng-class="{active: numberForActiveClass == 2}" 
+                style="cursor:pointer">
+
+                <a ng-click="whOnClick()">Склад</a>
+            </li>
+            <li ng-show="$parent.isGotData.orders"
+                ng-class="{active: numberForActiveClass == 3}"
+                style="cursor:pointer">
+
+                <a ng-click="ordOnClick()">Заказы</a>
+            </li>
+            <li ng-show="$parent.isGotData.customers" 
+                ng-class="{active: numberForActiveClass == 4}" 
+                style="cursor:pointer">
+
+                <a ng-click="custOnClick()">Клиенты</a>
+            </li>
+            <li ng-show="$parent.isGotData.sales" 
+                ng-class="{active: numberForActiveClass == 5}" 
+                style="cursor:pointer">
+
+                <a ng-click="salesOnClick()">Продажи</a>
+            </li>
+        </ul>
+
+        <ul class="nav navbar-nav col-lg-6">
+            <li ng-show="isGotData.select">
+
+                <a ng-click="isSelectedRight = 'sel'">Выделенные изделия</a>
+            </li>
+            <li ng-show="isGotData.select"><a ng-click="$parent.isCreatingNewOrder = !$parent.isCreatingNewOrder">Сделать заказ</a></li>
+            <li ng-show="isGotData.select">
+                <a ng-click="$parent.selected = {Data: []}; $parent.rightTableView = selected; $parent.isGotData.select = false; $parent.isSelectedRight = null">Очистить заказ</a>
+            </li>
+            <li ng-show="isGotData.orderSelected"><a ng-click="isSelectedRight = 'ordSel'">Выделенный заказ</a></li>
+
+        </ul>
+    </div>
+</nav>
+@*
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="btn-group" data-toogle="buttons">
+                <label class="btn btn-default animate-table-radio" ng-show="isGotData.store">
+                    <input type="radio" checked ng-model="leftTableView" ng-value="storeData" ng-click="isSelected = 'st'">Store</input>
+                </label>
+                <label class="btn btn-default animate-table-radio" ng-show="isGotData.warehouse" ng-click="isSelected = 'wh'">
+                    <input type="radio" ng-model="leftTableView" ng-value="warehouseData">Warehouse</input>
+                </label>
+                <label class="btn btn-default animate-table-radio" ng-show="isGotData.orders" ng-click="isSelected = 'ord'">
+                    <input type="radio" ng-model="leftTableView" ng-value="1">Orders</input>
+                </label>
+                <label class="btn btn-default animate-table-radio" ng-show="isGotData.customers" ng-click="isSelected = 'cust'">
+                    <input type="radio" ng-model="leftTableView" ng-value="2">Customers</input>
+                </label>
+                <label class="btn btn-default animate-table-radio" ng-show="isGotData.sales" ng-click="isSelected = 'sales'">
+                    <input type="radio" ng-model="leftTableView" ng-value="3">Sales</input>
+                </label>
+            </div>
+        </div>
+        <div class="col-lg-6" ng-show="isSelected != 'sales'">
+            <div class="btn-group" data-toogle="buttons">
+                <label class="btn btn-default animate-table-radio" ng-show="isGotData.select">
+                    <input type="radio" ng-model="rightTableView" ng-value="selected" ng-click="isSelectedRight = 'sel'">Selected</input>
+                </label>
+                <button class="btn btn-warning animate-table-radio" ng-show="isGotData.select"
+                        ng-click="isCreatingNewOrder = !isCreatingNewOrder">
+                    Make an order
+                </button>
+                <button class="btn btn-danger animate-table-radio" ng-show="isGotData.select"
+                        ng-click="selected = {Data: []}; rightTableView = selected; isGotData.select = false; isSelectedRight = null">
+                    Clear order
+                </button>
+                <label class="btn btn-default animate-table-radio" ng-show="isGotData.orderSelected">
+                    <input type="radio" ng-model="rightTableView" ng-value="selectedOrder" ng-click="isSelectedRight = 'ordSel'">Selected order</input>
+                </label>
+            </div>
         </div>
     </div>
-    <div class="col-lg-6" ng-show="isSelected != 'sales'">
-        <div class="btn-group" data-toogle="buttons">
-            <label class="btn btn-default animate-table-radio" ng-show="isGotData.select">
-                <input type="radio" ng-model="rightTableView" ng-value="selected" ng-click="isSelectedRight = 'sel'">Selected</input>
-            </label>
-            <button class="btn btn-warning animate-table-radio" ng-show="isGotData.select"
-                    ng-click="isCreatingNewOrder = !isCreatingNewOrder">
-                Make an order
-            </button>
-            <button class="btn btn-danger animate-table-radio" ng-show="isGotData.select"
-                    ng-click="selected = {Data: []}; rightTableView = selected; isGotData.select = false; isSelectedRight = null">
-                Clear order
-            </button>
-            <label class="btn btn-default animate-table-radio" ng-show="isGotData.orderSelected">
-                <input type="radio" ng-model="rightTableView" ng-value="selectedOrder" ng-click="isSelectedRight = 'ordSel'">Selected order</input>
-            </label>
-        </div>
-    </div>
-</div>
+    /*@
