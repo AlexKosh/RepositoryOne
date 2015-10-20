@@ -25,6 +25,7 @@ namespace Josephine.Concrete
         public IEnumerable<Employee> Employees { get { return context.Employee; }}
         public IEnumerable<Prices> Prices { get { return context.Prices; }}
         public IEnumerable<MainWarehouse> MainWh { get { return context.MainWh; }}
+        public IEnumerable<Recipe> Recipes { get { return context.Recipe; }}
 
         public void populateWhAndSt(int mN, string n, string[] c, int[] s, int p)
         {

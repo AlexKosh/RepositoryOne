@@ -19,5 +19,6 @@ namespace Josephine.Concrete
         public DbSet<Prices> Prices { get; set; }
 
         public DbSet<MainWarehouse> MainWh { get; set; }
+        public DbSet<Recipe> Recipe { get; set; }
     }
 }

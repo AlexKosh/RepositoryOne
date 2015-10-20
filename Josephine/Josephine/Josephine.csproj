@@ -144,6 +144,9 @@
     <EmbeddedResource Include="Migrations\201509291524380_addMainWh.resx">
       <DependentUpon>201509291524380_addMainWh.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201510201322111_AddRecipeTable.resx">
+      <DependentUpon>201510201322111_AddRecipeTable.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Scripts\Views\Home\app.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
@@ -211,6 +214,10 @@
     <Compile Include="Migrations\201509291524380_addMainWh.Designer.cs">
       <DependentUpon>201509291524380_addMainWh.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201510201322111_AddRecipeTable.cs" />
+    <Compile Include="Migrations\201510201322111_AddRecipeTable.Designer.cs">
+      <DependentUpon>201510201322111_AddRecipeTable.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Customer.cs" />
     <Compile Include="Models\Employee.cs" />
@@ -219,6 +226,7 @@
     <Compile Include="Models\OrderProduct.cs" />
     <Compile Include="Models\Prices.cs" />
     <Compile Include="Models\Product.cs" />
+    <Compile Include="Models\Recipe.cs" />
     <Compile Include="Models\Sale.cs" />
     <Compile Include="Models\Store.cs" />
     <Compile Include="Models\Warehouse.cs" />

@@ -3,58 +3,207 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <div ng-controller="ProductionController">
-    <nav class="navbar navbar-default" style="margin-top:-20px">
-        <div class="container-fluid">
-            <ul class="nav navbar-nav">
-                <li><a href="#">Склад</a></li>
-                <li><a href="#">Стежка</a></li>
-                <li><a href="#">Закройка</a></li>
-                <li><a href="#">Настрочницы</a></li>
-                <li><a href="#">Приемка</a></li>
-            </ul>
-        </div>
-    </nav>
+    <nav-btns-prod></nav-btns-prod>
     <div class="container-fluid">
-        <div class="modal-content col-lg-12">
-            <div class="modal-header">
+        <div ng-view></div>
+    </div>
+
+    <script type="text/ng-template" id="navBtnsProd">
+        <nav class="navbar navbar-default" style="margin-top:-20px" ng-controller="ProdNavController">
+            <div class="container-fluid">
+                <ul class="nav navbar-nav">
+                    <li ng-class="{active: numberForActiveClass == 1}">
+                        <a href="#/mainWh" ng-click="numberForActiveClass = 1">Склад</a>
+                    </li>
+                    <li ng-class="{active: numberForActiveClass == 2}">
+                        <a href="#/quilting" ng-click="numberForActiveClass = 2">Стежка</a>
+                    </li>
+                    <li ng-class="{active: numberForActiveClass == 3}">
+                        <a href="#" ng-click="numberForActiveClass = 3">Закройка</a>
+                    </li>
+                    <li ng-class="{active: numberForActiveClass == 4}">
+                        <a href="#" ng-click="numberForActiveClass = 4">Настрочницы</a>
+                    </li>
+                    <li ng-class="{active: numberForActiveClass == 5}">
+                        <a href="#" ng-click="numberForActiveClass = 5">Приемка</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </script>
+    <script type="text/ng-template" id="mainWhView">
+        <div class="modal-content">
+            <div class="modal-header" style="border-bottom:none">
                 <div style="padding-right:0">
-                    <div class="input-group col-lg-push-1 col-lg-5">
+                    <div class="col-lg-7" style="padding:0">
+                        <button class="btn btn-default btn-sm">Добавить наименование</button>
+                        <button class="btn btn-default btn-sm">Удалить наименование</button>
+                    </div>
+                    <div class="input-group col-lg-5">
                         <input class="form-control input-sm" ng-model="searchText" />
                         <span class="input-group-btn">
                             <button class="btn btn-default btn-sm"><i class="glyphicon glyphicon-filter"></i></button>
                         </span>
                     </div>
+
                 </div>
             </div>
-            <div ng-repeat="category in mainWhData | filter: searchText" class="panel panel-default">
-                <div class="panel-heading" style="cursor: pointer;">
-                    <h4>Категория {{$index + 1}}</h4>
+
+            <div class="row" style="margin:unset">
+                <div class="col-lg-6">
+                    <main-wh-table></main-wh-table>
                 </div>
-                <div class="panel-body">
-                    <div class="modal-body">
-                        <table class="table">
-                            <tr>
-                                <th class="col-lg-1">Id</th>
-                                <th class="col-lg-4">Название</th>
-                                <th class="col-lg-3">Цвет</th>
-                                <th class="col-lg-1">Кол-во</th>
-                                <th class="col-lg-2">Ед. изм.</th>
-                                <th class="col-lg-1">+/-</th>
-                            </tr>
-                            <tr class="btn-default" ng-repeat="item in category | filter: searchText">
-                                <td class="col-lg-1">{{item.Id}}</td>
-                                <td class="col-lg-4">{{item.Name}}</td>
-                                <td class="col-lg-3">{{item.Color}}</td>
-                                <td class="col-lg-1">{{item.Quantity}}</td>
-                                <td class="col-lg-2">{{item.UnitOfMeasurement}}</td>
-                                <td class="col-lg-1">+/-</td>
-                            </tr>
-                        </table>
+                <div class="col-lg-6">
+                    <div class="panel panel-default">
+                        <div class="panel-heading"><h4>Готовые изделия</h4></div>
+                        <div class="panel-body">
+                            <table ng-repeat="modelArr in endProdData.Data" class="table animate-table-table">
+                                <tr>
+                                    <th class="btn btn-default btn-header" style="background-color:#F8F8F8">{{modelArr[0][0].ModelNumber}}</th>
+                                    <th class="btn btn-default btn-tableData"
+                                        ng-repeat="size in endProdData.DataNotations[modelArr[0][0].ModelNumber].Sizes"
+                                        style="background-color:#F8F8F8">
+                                        {{size}}
+                                    </th>
+                                </tr>
+                                <tr ng-repeat="modelArrByColors in modelArr">
+                                    <td class="btn btn-default btn-header" style="background-color:#F8F8F8">
+                                        {{modelArrByColors[0].Color}}
+                                    </td>
+
+                                    <td ng-repeat="product in modelArrByColors"
+                                        class="btn btn-default btn-tableData">
+                                        {{product.Quantity}}
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+
                     </div>
                 </div>
             </div>
             <div class="modal-footer">Футер</div>
         </div>
-    </div>
+
+    </script>
+    <script id="quiltingView" type="text/ng-template">
+
+        <div class="panel panel-default">
+            <div class="panel-heading row" style="margin:auto">
+                <div class="col-lg-4">
+                    <button class="btn btn-default" ng-click="openNewQuilingTask()">Новое задание</button>
+                </div>
+                <div class="col-lg-8">
+                    <h4>В обработке: Вика синий 300 (м)</h4>
+                    <div class="progress">
+                        <div class="progress-bar progress-bar-striped active" role="progressbar"
+                             aria-valuenow="{{p}}" aria-valuemin="0" aria-valuemax="100" style="width: {{p}}%">
+                            <span>{{p}}% Complete</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel-footer" ng-show="false">
+                <button class="btn btn-default" ng-click="p=50">50</button>
+                <button class="btn btn-default" ng-click="p=25">25</button>
+            </div>
+        </div>
+        <wh-for-quilting></wh-for-quilting>
+    </script>
+    <script type="text/ng-template" id="mainWhTable">
+        <div ng-repeat="category in mainWhData | filter: searchText" class="panel panel-default">
+            <div class="panel-heading" style="cursor: pointer;">
+                <h4>{{getCategoryName($index+1)}}</h4>
+            </div>
+            <div class="panel-body">
+                <div class="modal-body">
+                    <table class="table">
+                        <tr>
+                            <th class="col-lg-1">Id</th>
+                            <th class="col-lg-4">Название</th>
+                            <th class="col-lg-3">Цвет</th>
+                            <th class="col-lg-2">Кол-во</th>
+                            <th class="col-lg-2"></th>
+                        </tr>
+                        <tr class="btn-default" ng-repeat="item in category | filter: searchText">
+                            <td class="col-lg-1">{{item.Id}}</td>
+                            <td class="col-lg-4">{{item.Name}}</td>
+                            <td class="col-lg-3">{{item.Color}}</td>
+                            <td class="col-lg-2">{{item.Quantity +' ('+ item.UnitOfMeasurement + ')'}}</td>
+                            <td class="col-lg-2">
+                                <button class="btn btn-xs btn-default"><span class="glyphicon glyphicon-plus"></span></button>
+                                <button class="btn btn-xs btn-default"><span class="glyphicon glyphicon-edit"></span></button>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </script>
+    <script id="whForQuilting" type="text/ng-template">
+        <div ng-repeat="category in mainWhData" class="panel panel-default" ng-show="$index == 0 || $index == 1 || $index == 3 || $index == 5">
+            <div class="panel-heading" style="cursor: pointer;">
+                <h4>{{getCategoryName($index+1)}}</h4>
+            </div>
+            <div class="panel-body">
+                <div class="modal-body">
+                    <table class="table">
+                        <tr>
+                            <th class="col-lg-1">Id</th>
+                            <th class="col-lg-4">Название</th>
+                            <th class="col-lg-3">Цвет</th>
+                            <th class="col-lg-2">Кол-во</th>
+                            <th class="col-lg-2"></th>
+                        </tr>
+                        <tr class="btn-default" ng-repeat="item in category | filter: searchText">
+                            <td class="col-lg-1">{{item.Id}}</td>
+                            <td class="col-lg-4">{{item.Name}}</td>
+                            <td class="col-lg-3">{{item.Color}}</td>
+                            <td class="col-lg-2">{{item.Quantity +' ('+ item.UnitOfMeasurement + ')'}}</td>
+                            <td class="col-lg-2">
+                                <button class="btn btn-xs btn-default"><span class="glyphicon glyphicon-plus"></span></button>
+                                <button class="btn btn-xs btn-default"><span class="glyphicon glyphicon-edit"></span></button>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </script>
+    <script id="getNewQuilingTask.modal" type="text/ng-template">
+        <div class="modal-content">
+            <div class="modal-header"><h3> Новое задание</h3></div>
+            <div class="modal-body">
+                <div class="panel panel-default">
+                    <div class="panel-heading"><h4>Рецепт: {{rcpId}}</h4></div>
+                    <div class="panel-body">
+                        <p>Выбор рецепта</p>
+                        <input type="text" placeholder="Название..." class="form-control"
+                               typeahead="rcp as rcp.Name for rcp in getRcpNames($viewValue)"
+                               typeahead-loading="loadingRecipes" ng-model="rcpObj"/>
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading"><h4>Материалы:</h4></div>
+                    <div ng-repeat="item in recipe" class="panel-body" style="border-bottom: 1px solid; border-color: #ddd;">
+                        <div><h4 style="margin-bottom:auto">{{$parent.getCategoryName(item.CategoryId) + ':'}}</h4><hr style="margin-top:auto" /></div>
+                        <h4>
+                            <label class="label label-default">{{getItemInfoById(item.Id, item.CategoryId - 1)}}</label>
+                        </h4>
+                        <div>
+                            <input id="{{$index}} + 'nqm'" type="number" class="form-control"
+                                   value="{{item.Quantity}}" ng-model="item.Quantity" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-success" ng-click="ok()"> Ok</button>
+                <button class="btn btn-default" ng-click="cancel()"> Cancel</button>
+            </div>
+        </div>
+    </script>
+
 </div>
 

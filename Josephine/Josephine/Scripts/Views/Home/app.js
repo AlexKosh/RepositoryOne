@@ -38,7 +38,7 @@ app.controller('HomeController', function (dataService, $scope, $modal) {
     };
     $scope.isCreatingNewOrder = false;      
 
-    $scope.searchText = "";
+    $scope.searchText = [];
     $scope.alertText = "Привет, все хорошо!";
     $scope.alertClass = "alert-success"
 
@@ -1135,7 +1135,15 @@ app.directive('filtPanel', function () {
     };
 });
 
-angular.module('Jos.production', []);
+
+angular.module('Jos.production', ['ngRoute']);
+angular.module('Jos.production').config(function ($routeProvider) {
+    $routeProvider.when('/mainWh', {
+        templateUrl: 'mainWhView'    
+    }).when('/quilting', {
+        templateUrl: 'quiltingView'
+    });
+});
 angular.module('Jos.production').factory('prodDataService', function ($http) {
     return {
         getMainWh: function () {
@@ -1143,17 +1151,143 @@ angular.module('Jos.production').factory('prodDataService', function ($http) {
                 return response.data;
             });            
             return promise;
+        },
+        getEndProd: function () {
+            var promise = $http.get('/home/warehouse').then(function (response) {                
+                return response.data;
+            });
+            return promise;
+        },
+        getRecipes: function (val) {
+            return $http.get('/production/getRecipe').then(function (response) {
+                console.log(response.data);
+                return response.data;
+            });            
         }
     };
 });
-angular.module('Jos.production').controller('ProductionController', function ($scope, prodDataService) {    
+
+angular.module('Jos.production').controller('ProductionController', function ($scope, prodDataService, $modal) {    
     $scope.mainWhData = {};
+    $scope.endProdData = { Data: [], DataNotations: [] };
+    $scope.searchText = [];
 
     function getMainWhData() {        
-        prodDataService.getMainWh().then(function (d) { $scope.mainWhData = d; });       
-        
+        prodDataService.getMainWh().then(function (d) { $scope.mainWhData = d; });         
+    };
+    function getEndProdData() {
+        prodDataService.getEndProd().then(function (d) { $scope.endProdData = d; });
     };
 
+    //mainWh region
+    $scope.getCategoryName = function (i) {
+        var result;
+        switch (i) {
+            case 1: result = 'Стеганый материал';
+                break;
+            case 2: result = 'Основной материал';
+                break;
+            case 3: result = 'Подкладочный материал';
+                break;
+            case 4: result = 'Утепляющий прокладочный материал';
+                break;
+            case 5: result = 'Прокладочный материал';
+                break;
+            case 6: result = 'Отделочный материал';
+                break;
+            case 7: result = 'Фурнитура';
+                break;
+            case 8: result = 'Опушка';
+                break;            
+            case 9: result = 'Упаковка';
+                break;
+            default:
+                result = 'Другое';
+        }
+        return result;
+    }
+    
+    //end of mainWh region
+    //quiling region
+    $scope.p = 80;
+
+    $scope.openNewQuilingTask = function () {
+        var modalInstance = $modal.open({
+            templateUrl: 'getNewQuilingTask.modal',
+            controller: 'ModalNewQuilingTaskController',
+            scope: $scope
+        });
+    };    
+
+    $scope.getNewQuilingTask = function () {
+
+    };
+
+    $scope.getItemById = function (id, categoryId) {
+        var result;
+        for (var i = 0; i < $scope.mainWhData[categoryId].length; i++) {
+            if ($scope.mainWhData[categoryId][i].Id == id) {
+                result = $scope.mainWhData[categoryId][i];
+            }
+        }
+        //result = $scope.mainWhData[categoryId][0];
+        return result;
+    };
+
+    //end of quiling region
 
     getMainWhData();
+    getEndProdData();
+});
+angular.module('Jos.production').controller('ProdNavController', function ($scope) {
+    $scope.numberForActiveClass = 0;    
+});
+angular.module('Jos.production').controller('ModalNewQuilingTaskController', function ($scope, $modalInstance, prodDataService) {
+    $scope.recipe = [
+        { CategoryId: 2, Quantity: 1, UnitOfMeasurement: 'м', Id: 53 },
+        { CategoryId: 4, Quantity: 1, UnitOfMeasurement: 'м', Id: 92 },
+        { CategoryId: 5, Quantity: 1, UnitOfMeasurement: 'м', Id: 104 },
+        { CategoryId: 6, Quantity: 6, UnitOfMeasurement: 'м', Id: 76 }];
+
+    $scope.getItemInfoById = function (id, catId) {
+        var text = $scope.$parent.getItemById(id, catId);
+        return text = 'Id: ' + text.Id + ', ' + text.Name + ' ' + text.Color;
+    };
+
+    $scope.rcpObj = '';
+    $scope.getRcpNames = function (v) {
+        return prodDataService.getRecipes(v);
+    }
+    
+    $scope.ok = function () {
+        $modalInstance.close();
+    };
+    $scope.cancel = function () {
+        $modalInstance.dismiss();
+    };    
+});
+
+angular.module('Jos.production').directive('navBtnsProd', function () {
+    return {
+        restrict: 'E',
+        templateUrl: 'navBtnsProd'
+    };
+});
+angular.module('Jos.production').directive('mainWhTable', function () {
+    return {
+        restrict: 'E',
+        templateUrl: 'mainWhTable'
+    };
+});
+angular.module('Jos.production').directive('quiltingView', function () {
+    return {
+        restrict: 'E',
+        templateUrl: 'quiltingView'
+    };
+});
+angular.module('Jos.production').directive('whForQuilting', function () {
+    return {
+        restrict: 'E',
+        templateUrl: 'whForQuilting'
+    };
 });
