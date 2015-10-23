@@ -1142,6 +1142,8 @@ angular.module('Jos.production').config(function ($routeProvider) {
         templateUrl: 'mainWhView'    
     }).when('/quilting', {
         templateUrl: 'quiltingView'
+    }).when('/newQuiltingTask', {
+        templateUrl: 'getNewQuiltingTask.modal'
     });
 });
 angular.module('Jos.production').factory('prodDataService', function ($http) {
@@ -1158,7 +1160,7 @@ angular.module('Jos.production').factory('prodDataService', function ($http) {
             });
             return promise;
         },
-        getRecipes: function (val) {
+        getRecipes: function () {
             return $http.get('/production/getRecipe').then(function (response) {
                 console.log(response.data);
                 return response.data;
@@ -1213,8 +1215,9 @@ angular.module('Jos.production').controller('ProductionController', function ($s
 
     $scope.openNewQuilingTask = function () {
         var modalInstance = $modal.open({
-            templateUrl: 'getNewQuilingTask.modal',
-            controller: 'ModalNewQuilingTaskController',
+            templateUrl: 'getNewQuiltingTask.modal',
+            controller: 'ModalNewQuiltingTaskController',
+            size: 'lg',
             scope: $scope
         });
     };    
@@ -1223,14 +1226,14 @@ angular.module('Jos.production').controller('ProductionController', function ($s
 
     };
 
-    $scope.getItemById = function (id, categoryId) {
+    //returns item from mainWhDb
+    $scope.getItemById = function (id, itemCategory) {
         var result;
-        for (var i = 0; i < $scope.mainWhData[categoryId].length; i++) {
-            if ($scope.mainWhData[categoryId][i].Id == id) {
-                result = $scope.mainWhData[categoryId][i];
+        for (var i = 0; i < $scope.mainWhData[itemCategory].length; i++) {
+            if ($scope.mainWhData[itemCategory][i].Id == id) {
+                result = $scope.mainWhData[itemCategory][i];
             }
-        }
-        //result = $scope.mainWhData[categoryId][0];
+        }        
         return result;
     };
 
@@ -1242,22 +1245,36 @@ angular.module('Jos.production').controller('ProductionController', function ($s
 angular.module('Jos.production').controller('ProdNavController', function ($scope) {
     $scope.numberForActiveClass = 0;    
 });
-angular.module('Jos.production').controller('ModalNewQuilingTaskController', function ($scope, $modalInstance, prodDataService) {
-    $scope.recipe = [
-        { CategoryId: 2, Quantity: 1, UnitOfMeasurement: 'м', Id: 53 },
-        { CategoryId: 4, Quantity: 1, UnitOfMeasurement: 'м', Id: 92 },
-        { CategoryId: 5, Quantity: 1, UnitOfMeasurement: 'м', Id: 104 },
-        { CategoryId: 6, Quantity: 6, UnitOfMeasurement: 'м', Id: 76 }];
+angular.module('Jos.production').controller('ModalNewQuiltingTaskController', function ($scope, $modalInstance, prodDataService) {
+    //$scope.recipe = [
+    //    { ItemCategory: 2, Quantity: 1, UnitOfMeasurement: 'м', Id: 53 },
+    //    { ItemCategory: 4, Quantity: 1, UnitOfMeasurement: 'м', Id: 92 },
+    //    { ItemCategory: 5, Quantity: 1, UnitOfMeasurement: 'м', Id: 104 },
+    //    { ItemCategory: 6, Quantity: 6, UnitOfMeasurement: 'м', Id: 76 }];
+    $scope.recipe = [];
+    $scope.isRecipeSelected = false;
+
+    $scope.multiplier = 1;
 
     $scope.getItemInfoById = function (id, catId) {
         var text = $scope.$parent.getItemById(id, catId);
         return text = 'Id: ' + text.Id + ', ' + text.Name + ' ' + text.Color;
+            //+ ' ' + text.Quantity + ' (' + text.UnitOfMeasurement + ')';
     };
 
-    $scope.rcpObj = '';
-    $scope.getRcpNames = function (v) {
-        return prodDataService.getRecipes(v);
+    $scope.setRecipe = function (r) {
+        $scope.recipe = r;
+        $scope.isRecipeSelected = true;
     }
+    $scope.search = [];
+    //$scope.rcpObj = '';
+    $scope.getRcpNames = function () {
+        return prodDataService.getRecipes();
+    }
+
+    $scope.recipes = $scope.getRcpNames().then(function (d) {
+        $scope.recipes = d; console.log($scope.recipes);
+    });
     
     $scope.ok = function () {
         $modalInstance.close();

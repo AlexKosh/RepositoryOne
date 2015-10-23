@@ -19,6 +19,7 @@ namespace Josephine.Abstract
         IEnumerable<Prices> Prices { get; }
         IEnumerable<MainWarehouse> MainWh { get; }
         IEnumerable<Recipe> Recipes { get; }
+        IEnumerable<ProductionTask> ProductionTasks { get; }
 
         void populateWhAndSt(int mN, string n, string[] c, int[] s, int p);
         void deleteWhAndSt();

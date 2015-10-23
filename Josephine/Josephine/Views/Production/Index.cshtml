@@ -92,6 +92,7 @@
             <div class="panel-heading row" style="margin:auto">
                 <div class="col-lg-4">
                     <button class="btn btn-default" ng-click="openNewQuilingTask()">Новое задание</button>
+                    <a href="#/newQuiltingTask" class="btn btn-default">New task</a>
                 </div>
                 <div class="col-lg-8">
                     <h4>В обработке: Вика синий 300 (м)</h4>
@@ -171,36 +172,98 @@
             </div>
         </div>
     </script>
-    <script id="getNewQuilingTask.modal" type="text/ng-template">
+    <script id="getNewQuiltingTask.modal" type="text/ng-template">
         <div class="modal-content">
             <div class="modal-header"><h3> Новое задание</h3></div>
             <div class="modal-body">
-                <div class="panel panel-default">
-                    <div class="panel-heading"><h4>Рецепт: {{rcpId}}</h4></div>
-                    <div class="panel-body">
-                        <p>Выбор рецепта</p>
-                        <input type="text" placeholder="Название..." class="form-control"
-                               typeahead="rcp as rcp.Name for rcp in getRcpNames($viewValue)"
-                               typeahead-loading="loadingRecipes" ng-model="rcpObj"/>
-                    </div>
-                </div>
-                <div class="panel panel-default">
-                    <div class="panel-heading"><h4>Материалы:</h4></div>
-                    <div ng-repeat="item in recipe" class="panel-body" style="border-bottom: 1px solid; border-color: #ddd;">
-                        <div><h4 style="margin-bottom:auto">{{$parent.getCategoryName(item.CategoryId) + ':'}}</h4><hr style="margin-top:auto" /></div>
-                        <h4>
-                            <label class="label label-default">{{getItemInfoById(item.Id, item.CategoryId - 1)}}</label>
-                        </h4>
-                        <div>
-                            <input id="{{$index}} + 'nqm'" type="number" class="form-control"
-                                   value="{{item.Quantity}}" ng-model="item.Quantity" />
+                <div>                    
+                    <div>
+                        <div class="row">
+
+                            <div class="col-lg-5">                                
+                                <input type="text" placeholder="Поиск..." class="form-control" ng-model="search.Name" />                                
+                                <h5 style="margin-top: 20px;">Рецепты</h5>
+                                <ul class="list-unstyled">
+                                    <li ng-repeat="r in recipes | filter:search">
+                                        <button ng-click="setRecipe(r)" class="btn btn-link">
+                                            <span class="glyphicon glyphicon-check" ng-show="recipe == r"></span>
+                                            {{r[0].Name}}
+                                        </button>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <div class="col-lg-7" ng-show="isRecipeSelected">
+                                <ul class="media-list">
+                                    <li class="media">
+                                        <div class="media-left">
+                                            <a href="#">
+                                                <img src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9InllcyI/PjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB3aWR0aD0iNjQiIGhlaWdodD0iNjQiIHZpZXdCb3g9IjAgMCA2NCA2NCIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+PCEtLQpTb3VyY2UgVVJMOiBob2xkZXIuanMvNjR4NjQKQ3JlYXRlZCB3aXRoIEhvbGRlci5qcyAyLjYuMC4KTGVhcm4gbW9yZSBhdCBodHRwOi8vaG9sZGVyanMuY29tCihjKSAyMDEyLTIwMTUgSXZhbiBNYWxvcGluc2t5IC0gaHR0cDovL2ltc2t5LmNvCi0tPjxkZWZzPjxzdHlsZSB0eXBlPSJ0ZXh0L2NzcyI+PCFbQ0RBVEFbI2hvbGRlcl8xNTA5M2M3ZGIwNSB0ZXh0IHsgZmlsbDojQUFBQUFBO2ZvbnQtd2VpZ2h0OmJvbGQ7Zm9udC1mYW1pbHk6QXJpYWwsIEhlbHZldGljYSwgT3BlbiBTYW5zLCBzYW5zLXNlcmlmLCBtb25vc3BhY2U7Zm9udC1zaXplOjEwcHQgfSBdXT48L3N0eWxlPjwvZGVmcz48ZyBpZD0iaG9sZGVyXzE1MDkzYzdkYjA1Ij48cmVjdCB3aWR0aD0iNjQiIGhlaWdodD0iNjQiIGZpbGw9IiNFRUVFRUUiLz48Zz48dGV4dCB4PSIxMi41IiB5PSIzNi44Ij42NHg2NDwvdGV4dD48L2c+PC9nPjwvc3ZnPg=="
+                                                     alt="64x64" style="width:64px; height:64px;" />
+                                            </a>
+                                        </div>
+                                        <div class="media-body">
+                                            <h4 class="media-heading">
+                                                {{recipe[0].Name}}
+
+                                                <div class="pull-right">
+                                                    <a href="#" ng-click="multiplier = multiplier + 1" class="btn">
+                                                        <span class="glyphicon glyphicon-plus"></span>
+                                                    </a>
+                                                    <a href="#">{{multiplier}}</a>
+                                                    <a href="#" ng-click="multiplier = multiplier - 1" class="btn">
+                                                        <span class="glyphicon glyphicon-minus"></span>
+                                                    </a>
+                                                </div>
+                                            </h4>
+                                            <div ng-repeat="item in recipe" class="media">
+                                                <div class="media-left">
+                                                    <a href="#">
+                                                        <img src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9InllcyI/PjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB3aWR0aD0iNjQiIGhlaWdodD0iNjQiIHZpZXdCb3g9IjAgMCA2NCA2NCIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+PCEtLQpTb3VyY2UgVVJMOiBob2xkZXIuanMvNjR4NjQKQ3JlYXRlZCB3aXRoIEhvbGRlci5qcyAyLjYuMC4KTGVhcm4gbW9yZSBhdCBodHRwOi8vaG9sZGVyanMuY29tCihjKSAyMDEyLTIwMTUgSXZhbiBNYWxvcGluc2t5IC0gaHR0cDovL2ltc2t5LmNvCi0tPjxkZWZzPjxzdHlsZSB0eXBlPSJ0ZXh0L2NzcyI+PCFbQ0RBVEFbI2hvbGRlcl8xNTA5M2M3ZGIwNSB0ZXh0IHsgZmlsbDojQUFBQUFBO2ZvbnQtd2VpZ2h0OmJvbGQ7Zm9udC1mYW1pbHk6QXJpYWwsIEhlbHZldGljYSwgT3BlbiBTYW5zLCBzYW5zLXNlcmlmLCBtb25vc3BhY2U7Zm9udC1zaXplOjEwcHQgfSBdXT48L3N0eWxlPjwvZGVmcz48ZyBpZD0iaG9sZGVyXzE1MDkzYzdkYjA1Ij48cmVjdCB3aWR0aD0iNjQiIGhlaWdodD0iNjQiIGZpbGw9IiNFRUVFRUUiLz48Zz48dGV4dCB4PSIxMi41IiB5PSIzNi44Ij42NHg2NDwvdGV4dD48L2c+PC9nPjwvc3ZnPg=="
+                                                             alt="64x64" style="width:64px; height:64px;" />
+                                                    </a>
+                                                </div>
+                                                <div class="media-body">                                                    
+                                                    <h4>{{$parent.getCategoryName(item.ItemCategory)}}</h4>
+                                                    {{getItemInfoById(item.ItemId, item.ItemCategory - 1)+', '}}
+                                                    <span class="badge">
+                                                        {{item.Quantity * multiplier}}
+                                                    </span>
+                                                    {{' ('+item.UnitsOfMeasurement+')' }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>                                
+                            </div>
                         </div>
                     </div>
                 </div>
+                @*<div class="panel panel-default">
+    <div class="panel-heading"><h4>Материалы:</h4></div>
+    <div class="panel-body">
+        <div ng-repeat="item in recipe | orderBy: 'ItemCategory'"
+             class="panel panel-body col-lg-6" style="border-bottom: 1px solid; border-color: #ddd;">
+            <h4><span class="badge">{{item.ItemCategory}}</span>{{' ' + $parent.getCategoryName(item.ItemCategory)}}</h4>
+            <h5>{{'- ' + getItemInfoById(item.ItemId, item.ItemCategory - 1)}}</h5>
+        </div>
+    </div>
+
+    <div ng-repeat="item in recipe | orderBy: 'ItemCategory'"
+             class="panel-body" style="border-bottom: 1px solid; border-color: #ddd;">
+            <div><h4 style="margin-bottom:auto">{{$parent.getCategoryName(item.ItemCategory) + ':'}}</h4><hr style="margin-top:auto" /></div>
+            <h4>
+                <label class="label label-default">{{getItemInfoById(item.ItemId, item.ItemCategory - 1)}}</label>
+            </h4>
+            <div>
+                <input type="number" class="form-control"
+                       value="{{item.Quantity}}" ng-model="item.Quantity" />
             </div>
-            <div class="modal-footer">
-                <button class="btn btn-success" ng-click="ok()"> Ok</button>
-                <button class="btn btn-default" ng-click="cancel()"> Cancel</button>
+        </div>*@
+                </div>            
+            <div class="modal-footer">                
+                <button class="btn btn-success" ng-click="ok()">Ok</button>
+                <button class="btn btn-default" ng-click="cancel()">Cancel</button>
             </div>
         </div>
     </script>

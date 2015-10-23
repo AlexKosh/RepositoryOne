@@ -14,7 +14,8 @@ namespace Josephine.Models
 
         [Key, Column(Order = 1)]
         public int ItemId { get; set; }
-        public int CategoryId { get; set; }
+        public int ItemCategory { get; set; }
+        public int RecipeCategory { get; set; }
         public string Name { get; set; }
         public int Quantity { get; set; }
         public string UnitsOfMeasurement { get; set; }
@@ -23,10 +24,11 @@ namespace Josephine.Models
         {
 
         }
-        public Recipe(int itemId, int categoryId, string recipeName, int quantity, string unitsOfMeasurement)
+        public Recipe(int itemId, int itemCategory, int recipeCategory, string recipeName, int quantity, string unitsOfMeasurement)
         {
             this.ItemId = itemId;
-            this.CategoryId = categoryId;
+            this.ItemCategory = itemCategory;
+            this.RecipeCategory = recipeCategory;
             this.Name = recipeName;
             this.Quantity = quantity;
             this.UnitsOfMeasurement = unitsOfMeasurement;
