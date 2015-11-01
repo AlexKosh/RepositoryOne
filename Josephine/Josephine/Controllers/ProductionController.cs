@@ -147,47 +147,118 @@ namespace Josephine.Controllers
             rcpList.Add(rcp);
 
             rcp = new Recipe(92, 4, 3, "Пальто Вика синий 100", 1, "м");
-            rcp.Id = 1;
+            rcp.RecipeId = 1;
             rcpList.Add(rcp);
             rcp = new Recipe(53, 2, 3, "Пальто Вика синий 100", 1, "м");
-            rcp.Id = 1;
+            rcp.RecipeId = 1;
             rcpList.Add(rcp);
             rcp = new Recipe(76, 6, 3, "Стежка Вика синий 100", 6, "м");
-            rcp.Id = 1;
+            rcp.RecipeId = 1;
             rcpList.Add(rcp);
             rcp = new Recipe(104, 5, 3, "Пальто Вика синий 100", 1, "м");
-            rcp.Id = 1;
+            rcp.RecipeId = 1;
             rcpList.Add(rcp);
             rcp = new Recipe(57, 3, 3, "Пальто Вика синий 100", 1, "м");
-            rcp.Id = 1;
+            rcp.RecipeId = 1;
             rcpList.Add(rcp);
             rcp = new Recipe(88, 1, 3, "Пальто Вика синий 100", 1, "м");
-            rcp.Id = 1;
+            rcp.RecipeId = 1;
             rcpList.Add(rcp);
             rcp = new Recipe(59, 7, 3, "Пальто Вика синий 100", 2, "шт.");
-            rcp.Id = 1;
+            rcp.RecipeId = 1;
             rcpList.Add(rcp);
             rcp = new Recipe(63, 7, 3, "Пальто Вика синий 100", 1, "шт.");
-            rcp.Id = 1;
+            rcp.RecipeId = 1;
             rcpList.Add(rcp);
             rcp = new Recipe(68, 7, 3, "Пальто Вика синий 100", 1, "шт.");
-            rcp.Id = 1;
+            rcp.RecipeId = 1;
             rcpList.Add(rcp);
             rcp = new Recipe(93, 9, 3, "Пальто Вика синий 100", 1, "шт.");
-            rcp.Id = 1;
+            rcp.RecipeId = 1;
             rcpList.Add(rcp);
             rcp = new Recipe(103, 9, 3, "Пальто Вика синий 100", 1, "шт.");
-            rcp.Id = 1;
+            rcp.RecipeId = 1;
             rcpList.Add(rcp);
 
             var result =
                 from item in rcpList
                 orderby item.ItemCategory
-                group item by item.Id into newGroup
+                group item by item.RecipeId into newGroup
                 orderby newGroup.Key
                 select newGroup;
 
             return Json(result, JsonRequestBehavior.AllowGet);
+        }
+        public JsonResult getRecipesCategories()
+        {
+            int[] array = { 1, 10, 11, 77 };
+
+            return Json(array, JsonRequestBehavior.AllowGet);
+        }
+        public JsonResult getFirstRcpByCategory(int cat)
+        {
+            List<Recipe> rcpList = new List<Recipe>();
+            Recipe rcp = new Recipe(53, 2, 1, "Стежка Вика синий 100", 1, "м");
+            rcpList.Add(rcp);
+            rcp = new Recipe(92, 4, 1, "Стежка Вика синий 100", 1, "м");
+            rcpList.Add(rcp);
+            rcp = new Recipe(104, 5, 1, "Стежка Вика синий 100", 1, "м");
+            rcpList.Add(rcp);
+            rcp = new Recipe(76, 6, 1, "Стежка Вика синий 100", 6, "м");
+            rcpList.Add(rcp);
+
+            rcp = new Recipe(92, 4, 11, "Пальто Вика синий 100", 1, "м");
+            rcp.RecipeId = 1;
+            rcpList.Add(rcp);
+            rcp = new Recipe(53, 2, 11, "Пальто Вика синий 100", 1, "м");
+            rcp.RecipeId = 1;
+            rcpList.Add(rcp);
+            rcp = new Recipe(76, 6, 11, "Стежка Вика синий 100", 6, "м");
+            rcp.RecipeId = 1;
+            rcpList.Add(rcp);
+            rcp = new Recipe(104, 5, 11, "Пальто Вика синий 100", 1, "м");
+            rcp.RecipeId = 1;
+            rcpList.Add(rcp);
+            rcp = new Recipe(57, 3, 11, "Пальто Вика синий 100", 1, "м");
+            rcp.RecipeId = 1;
+            rcpList.Add(rcp);
+            rcp = new Recipe(88, 1, 11, "Пальто Вика синий 100", 1, "м");
+            rcp.RecipeId = 1;
+            rcpList.Add(rcp);
+            rcp = new Recipe(59, 7, 11, "Пальто Вика синий 100", 2, "шт.");
+            rcp.RecipeId = 1;
+            rcpList.Add(rcp);
+            rcp = new Recipe(63, 7, 11, "Пальто Вика синий 100", 1, "шт.");
+            rcp.RecipeId = 1;
+            rcpList.Add(rcp);
+            rcp = new Recipe(68, 7, 11, "Пальто Вика синий 100", 1, "шт.");
+            rcp.RecipeId = 1;
+            rcpList.Add(rcp);
+            rcp = new Recipe(93, 9, 11, "Пальто Вика синий 100", 1, "шт.");
+            rcp.RecipeId = 1;
+            rcpList.Add(rcp);
+            rcp = new Recipe(103, 9, 11, "Пальто Вика синий 100", 1, "шт.");
+            rcp.RecipeId = 1;
+            rcpList.Add(rcp);
+
+            
+            IEnumerable<Recipe> result;          
+
+            try
+            {
+                result = rcpList.Where(x => x.RecipeCategory == cat);
+            }
+            catch (Exception)
+            {
+                
+                throw;
+            }
+            
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+        public void postTaskData(ProductionTask d)
+        {
+            repository.AddProductionTaskToDb(d);
         }
 
         public JsonResult getMainWh()

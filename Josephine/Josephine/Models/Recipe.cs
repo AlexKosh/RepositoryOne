@@ -10,7 +10,7 @@ namespace Josephine.Models
     public class Recipe
     {
         [Key, Column(Order = 0)]
-        public int Id { get; set; }
+        public int RecipeId { get; set; }
 
         [Key, Column(Order = 1)]
         public int ItemId { get; set; }

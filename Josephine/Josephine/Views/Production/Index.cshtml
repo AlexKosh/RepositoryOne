@@ -92,7 +92,7 @@
             <div class="panel-heading row" style="margin:auto">
                 <div class="col-lg-4">
                     <button class="btn btn-default" ng-click="openNewQuilingTask()">Новое задание</button>
-                    <a href="#/newQuiltingTask" class="btn btn-default">New task</a>
+                    <button class="btn btn-default" ng-click="openNewRecipe()">Новый рецепт</button>
                 </div>
                 <div class="col-lg-8">
                     <h4>В обработке: Вика синий 300 (м)</h4>
@@ -176,12 +176,12 @@
         <div class="modal-content">
             <div class="modal-header"><h3> Новое задание</h3></div>
             <div class="modal-body">
-                <div>                    
+                <div>
                     <div>
                         <div class="row">
 
-                            <div class="col-lg-5">                                
-                                <input type="text" placeholder="Поиск..." class="form-control" ng-model="search.Name" />                                
+                            <div class="col-lg-5">
+                                <input type="text" placeholder="Поиск..." class="form-control" ng-model="search.Name" />
                                 <h5 style="margin-top: 20px;">Рецепты</h5>
                                 <ul class="list-unstyled">
                                     <li ng-repeat="r in recipes | filter:search">
@@ -223,7 +223,7 @@
                                                              alt="64x64" style="width:64px; height:64px;" />
                                                     </a>
                                                 </div>
-                                                <div class="media-body">                                                    
+                                                <div class="media-body">
                                                     <h4>{{$parent.getCategoryName(item.ItemCategory)}}</h4>
                                                     {{getItemInfoById(item.ItemId, item.ItemCategory - 1)+', '}}
                                                     <span class="badge">
@@ -234,36 +234,78 @@
                                             </div>
                                         </div>
                                     </li>
-                                </ul>                                
+                                </ul>
                             </div>
                         </div>
                     </div>
                 </div>
                 @*<div class="panel panel-default">
-    <div class="panel-heading"><h4>Материалы:</h4></div>
-    <div class="panel-body">
-        <div ng-repeat="item in recipe | orderBy: 'ItemCategory'"
-             class="panel panel-body col-lg-6" style="border-bottom: 1px solid; border-color: #ddd;">
-            <h4><span class="badge">{{item.ItemCategory}}</span>{{' ' + $parent.getCategoryName(item.ItemCategory)}}</h4>
-            <h5>{{'- ' + getItemInfoById(item.ItemId, item.ItemCategory - 1)}}</h5>
-        </div>
-    </div>
+                    <div class="panel-heading"><h4>Материалы:</h4></div>
+                    <div class="panel-body">
+                        <div ng-repeat="item in recipe | orderBy: 'ItemCategory'"
+                             class="panel panel-body col-lg-6" style="border-bottom: 1px solid; border-color: #ddd;">
+                            <h4><span class="badge">{{item.ItemCategory}}</span>{{' ' + $parent.getCategoryName(item.ItemCategory)}}</h4>
+                            <h5>{{'- ' + getItemInfoById(item.ItemId, item.ItemCategory - 1)}}</h5>
+                        </div>
+                    </div>
 
-    <div ng-repeat="item in recipe | orderBy: 'ItemCategory'"
-             class="panel-body" style="border-bottom: 1px solid; border-color: #ddd;">
-            <div><h4 style="margin-bottom:auto">{{$parent.getCategoryName(item.ItemCategory) + ':'}}</h4><hr style="margin-top:auto" /></div>
-            <h4>
-                <label class="label label-default">{{getItemInfoById(item.ItemId, item.ItemCategory - 1)}}</label>
-            </h4>
-            <div>
-                <input type="number" class="form-control"
-                       value="{{item.Quantity}}" ng-model="item.Quantity" />
+                    <div ng-repeat="item in recipe | orderBy: 'ItemCategory'"
+                             class="panel-body" style="border-bottom: 1px solid; border-color: #ddd;">
+                            <div><h4 style="margin-bottom:auto">{{$parent.getCategoryName(item.ItemCategory) + ':'}}</h4><hr style="margin-top:auto" /></div>
+                            <h4>
+                                <label class="label label-default">{{getItemInfoById(item.ItemId, item.ItemCategory - 1)}}</label>
+                            </h4>
+                            <div>
+                                <input type="number" class="form-control"
+                                       value="{{item.Quantity}}" ng-model="item.Quantity" />
+                            </div>
+                        </div>*@
             </div>
-        </div>*@
-                </div>            
-            <div class="modal-footer">                
+            <div class="modal-footer">
+                <button class="btn btn-default" ng-click="postProductionTaskData()">Push</button>
                 <button class="btn btn-success" ng-click="ok()">Ok</button>
                 <button class="btn btn-default" ng-click="cancel()">Cancel</button>
+            </div>
+        </div>
+    </script>
+    <script id="newRecipe.modal" type="text/ng-template">
+        <div class="modal-content">
+            <div class="modal-header"><h3>Новый рецепт</h3></div>
+            <form novalidate class="modal-body form-modal" name="form">
+                <h4>
+                    <label>Категория:</label>
+                    <select ng-model="selectedCategory"
+                            ng-options="$parent.getCategoryName(c) for c in recipeCategories"
+                            ng-click="selectCategory()"></select>
+                </h4>
+                <ul class="list-unstyled">
+                    <li>
+                        <label>Имя рецепта:</label>
+                        <input type="text" ng-model="recipeName" class="form-control" name="uRecipeName" required />                        
+                    </li>
+                    <li ng-repeat="item in recipe">
+                        <table>
+                            <tr>
+                                <th class="col-lg-9"><label>{{$parent.getCategoryName(item.ItemCategory) + ':'}}</label></th>
+                                <th class="col-lg-3"><label>{{'Кол-во, (' + item.UnitsOfMeasurement + ')'}}</label></th>
+                            </tr>
+                            <tr>
+                                <td class="col-lg-9">
+                                    <input type="text" class="form-control" ng-model="resultRecipe[$index]" validate-new-recipe
+                                           typeahead="e as '#' + e.Id +' '+ e.Name +' '+ e.Color for e in filtByCat(item.ItemCategory) | filter:$viewValue | limitTo:8">
+                                    {{tests(resultRecipe[$index])}}
+                                </td>
+                                <td class="col-lg-3"><input type="number" class="form-control" ng-model="resultRecipe[$index].Quantity" /></td>
+                            </tr>
+                        </table>
+                    </li>
+                </ul>
+                {{resultRecipe}}
+                <button class="btn btn-default" ng-click="recipe.push({ItemCategory: 77}); resultRecipe.push('')">Добавить</button>
+            </form>
+            <div class="modal-footer">
+                <button class="btn btn-primary" ng-click="ok()">Ok</button>
+                <button class="btn btn-warning" ng-click="cancel()">Отмена</button>
             </div>
         </div>
     </script>

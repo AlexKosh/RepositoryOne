@@ -8,35 +8,29 @@ using System.Web;
 namespace Josephine.Models
 {
     public class ProductionTask
-    {   
-        public int Id { get; set; }
-        [Key, Column(Order = 0)]
-        public int ItemId { get; set; }
-        [Key, Column(Order = 1)]
-        public int ItemCategory { get; set; }
-        public int RecipeCategory { get; set; }
-        public int Quantity { get; set; }
+    {
+        [Key]
+        public int TaskId { get; set; }                
         public int isCompleted { get; set; }
         public DateTime StartTime { get; set; }
         public DateTime FinishTime { get; set; }
         public int Priority { get; set; }
 
+        public virtual ICollection<TaskItem> TaskItems { get; set; }
+
         public ProductionTask()
         {
+            this.TaskItems = new List<TaskItem>();
+        }
+        //public ProductionTask(int id, int isCompl, DateTime sTime, DateTime fTime, int priority, List<TaskItem> items)
+        //{
+        //    this.TaskId = id;            
+        //    this.isCompleted = isCompl;
+        //    this.StartTime = sTime;
+        //    this.FinishTime = fTime;
+        //    this.Priority = priority;
 
-        }
-        public ProductionTask(int id, int itemId, int itemCat, int recipeCat, int quantity, 
-            int isCompl, DateTime sTime, DateTime fTime, int priority)
-        {
-            this.Id = id;
-            this.ItemId = itemId;
-            this.ItemCategory = itemCat;
-            this.RecipeCategory = recipeCat;
-            this.Quantity = quantity;
-            this.isCompleted = isCompleted;
-            this.StartTime = sTime;
-            this.FinishTime = fTime;
-            this.Priority = priority;
-        }
+        //    this.TaskItems = items;
+        //}
     }
 }

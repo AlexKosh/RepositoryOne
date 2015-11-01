@@ -153,6 +153,12 @@
     <EmbeddedResource Include="Migrations\201510231952057_AddTask.resx">
       <DependentUpon>201510231952057_AddTask.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201510281833373_AddTaskItem.resx">
+      <DependentUpon>201510281833373_AddTaskItem.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201510301109254_fixTaskAndItems.resx">
+      <DependentUpon>201510301109254_fixTaskAndItems.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Scripts\Views\Home\app.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
@@ -232,6 +238,14 @@
     <Compile Include="Migrations\201510231952057_AddTask.Designer.cs">
       <DependentUpon>201510231952057_AddTask.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201510281833373_AddTaskItem.cs" />
+    <Compile Include="Migrations\201510281833373_AddTaskItem.Designer.cs">
+      <DependentUpon>201510281833373_AddTaskItem.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201510301109254_fixTaskAndItems.cs" />
+    <Compile Include="Migrations\201510301109254_fixTaskAndItems.Designer.cs">
+      <DependentUpon>201510301109254_fixTaskAndItems.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Customer.cs" />
     <Compile Include="Models\Employee.cs" />
@@ -244,6 +258,7 @@
     <Compile Include="Models\Recipe.cs" />
     <Compile Include="Models\Sale.cs" />
     <Compile Include="Models\Store.cs" />
+    <Compile Include="Models\TaskItem.cs" />
     <Compile Include="Models\Warehouse.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

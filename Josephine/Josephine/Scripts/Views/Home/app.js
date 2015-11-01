@@ -1161,10 +1161,29 @@ angular.module('Jos.production').factory('prodDataService', function ($http) {
             return promise;
         },
         getRecipes: function () {
-            return $http.get('/production/getRecipe').then(function (response) {
-                console.log(response.data);
+            return $http.get('/production/getRecipe').then(function (response) {                
                 return response.data;
             });            
+        },
+        getRecipesCategories: function () {
+            return $http.get('/production/getRecipesCategories').then(function (response) {                
+                return response.data;
+            });
+        },
+        getFirstRcpByCategory: function (category) {
+            return $http.post('/production/getFirstRcpByCategory', { cat: category }).then(function (response) {
+                return response.data;
+            });
+        },
+        postProductionTask: function (data) {
+            $http.post('/production/postTaskData', { d: data })
+                .success(function (data) {
+                    console.log("-=----=Tasks=----=-");
+                    console.log(data);
+                    console.log('success!');
+                    console.log("-=----=----=-");                    
+                })
+                .error(function () { alert('err in post new task'); });        
         }
     };
 });
@@ -1203,6 +1222,12 @@ angular.module('Jos.production').controller('ProductionController', function ($s
                 break;            
             case 9: result = 'Упаковка';
                 break;
+            case 10: result = 'Комплект кроя';
+                break;
+            case 11: result = 'Готовое изделие';
+                break;
+            case 77: result = 'Новое';
+                break;
             default:
                 result = 'Другое';
         }
@@ -1220,7 +1245,14 @@ angular.module('Jos.production').controller('ProductionController', function ($s
             size: 'lg',
             scope: $scope
         });
-    };    
+    };
+    $scope.openNewRecipe = function () {
+        var modalInstance = $modal.open({
+            templateUrl: 'newRecipe.modal',
+            controller: 'ModalNewRecipeController',
+            scope: $scope
+        });
+    };
 
     $scope.getNewQuilingTask = function () {
 
@@ -1246,14 +1278,11 @@ angular.module('Jos.production').controller('ProdNavController', function ($scop
     $scope.numberForActiveClass = 0;    
 });
 angular.module('Jos.production').controller('ModalNewQuiltingTaskController', function ($scope, $modalInstance, prodDataService) {
-    //$scope.recipe = [
-    //    { ItemCategory: 2, Quantity: 1, UnitOfMeasurement: 'м', Id: 53 },
-    //    { ItemCategory: 4, Quantity: 1, UnitOfMeasurement: 'м', Id: 92 },
-    //    { ItemCategory: 5, Quantity: 1, UnitOfMeasurement: 'м', Id: 104 },
-    //    { ItemCategory: 6, Quantity: 6, UnitOfMeasurement: 'м', Id: 76 }];
+    
+    //selected recipe
     $scope.recipe = [];
     $scope.isRecipeSelected = false;
-
+    
     $scope.multiplier = 1;
 
     $scope.getItemInfoById = function (id, catId) {
@@ -1267,21 +1296,130 @@ angular.module('Jos.production').controller('ModalNewQuiltingTaskController', fu
         $scope.isRecipeSelected = true;
     }
     $scope.search = [];
-    //$scope.rcpObj = '';
+    
+    //these methods get the array of recipes grouped by .recipeId from the server and return it
     $scope.getRcpNames = function () {
         return prodDataService.getRecipes();
+    }    
+    $scope.recipes = $scope.getRcpNames().then(function (d) {
+        $scope.recipes = d;
+    });
+        
+    //this method posts productionTask and TaskItems on server
+    $scope.postProductionTaskData = function () {
+
+        function ProductionTask(id, isCompl, sTime, fTime, priority) {
+            this.TaskId = id;
+            this.isCompleted = isCompl;
+            this.StartTime = sTime;
+            this.FinishTime = fTime;
+            this.Priority = priority;
+
+            this.TaskItems = [];
+        }
+        function TaskItem(recipeItem) {
+            this.TaskItemId = 0;
+            this.Quantity = recipeItem.Quantity;
+            this.TaskId = 0;
+            this.ItemId = recipeItem.ItemId;
+        }
+        function recipeItemsToTaskItems() {
+            var resultArray = [];
+            
+            for (var i = 0; i < $scope.recipe.length; i++) {                
+                var newTaskItem = new TaskItem($scope.recipe[i]);                
+                resultArray.push(newTaskItem);                
+            }          
+
+            return resultArray;
+        }
+
+        $scope.ProductionTask = new ProductionTask(0, 0, new Date("21 May 1958 10:12"), new Date("28 May 1977 20:34"), 7);
+        $scope.ProductionTask.TaskItems = recipeItemsToTaskItems();
+                
+        console.log($scope.ProductionTask.TaskItems);
+        prodDataService.postProductionTask($scope.ProductionTask);
     }
 
-    $scope.recipes = $scope.getRcpNames().then(function (d) {
-        $scope.recipes = d; console.log($scope.recipes);
-    });
-    
     $scope.ok = function () {
         $modalInstance.close();
     };
     $scope.cancel = function () {
         $modalInstance.dismiss();
     };    
+});
+angular.module('Jos.production').controller('ModalNewRecipeController', function ($scope, $modalInstance, prodDataService) {
+    $scope.selectedCategory = 77;
+    var prevSelectedCat = 77;
+    function mainWhItem(item) {
+        this.Id = item.Id;
+        this.CategoryId = item.CategoryId;
+        this.Name = item.Name;
+        this.Color = item.Color;
+        this.Quantity = item.Quantity;
+        this.UnitOfMeasurement = item.UnitOfMeasurement;
+    };
+    function getCopyOfArray(arr) {
+        var resultArr = [];
+        var tempArr = arr;
+
+        for (var i = 0; i < tempArr.length; i++) {
+            for (var j = 0; j < tempArr[i].length; j++) {
+                var tempVar = new mainWhItem(tempArr[i][j]);
+                resultArr.push(tempVar);
+            }
+        }
+
+        return resultArr;
+    }    
+
+    $scope.tests = function (tItem) {
+        return tItem instanceof mainWhItem;
+    }
+
+    $scope.filtByCat = function (category) {
+        if (category > 9 || $scope.selectedCategory > 9) {            
+            return $scope.filteredArr = getCopyOfArray($scope.$parent.mainWhData);
+        } else {            
+            return $scope.filteredArr = getCopyOfArray([$scope.$parent.mainWhData[category - 1]]);
+        }
+        
+    };
+    $scope.resultRecipe = [];
+    $scope.filteredArr = [];
+
+    $scope.getRcpCategories = function () {
+        return prodDataService.getRecipesCategories();
+    };
+    $scope.recipeCategories = $scope.getRcpCategories().then(function (d) {
+        $scope.recipeCategories = d;
+    });
+
+    $scope.getFirstRcpByCat = function () {
+        return prodDataService.getFirstRcpByCategory($scope.selectedCategory);
+    };
+    $scope.recipe = $scope.getFirstRcpByCat().then(function (d) {
+        $scope.recipe = d;
+    });
+    $scope.selectCategory = function () {
+        
+        if ($scope.selectedCategory == prevSelectedCat) {
+            return;
+        } else {
+            prevSelectedCat = $scope.selectedCategory;
+            $scope.resultRecipe = [];
+        }
+        $scope.recipe = $scope.getFirstRcpByCat().then(function (d) {
+            $scope.recipe = d;
+        });
+    };
+
+    $scope.ok = function () {
+        $modalInstance.close();
+    };
+    $scope.cancel = function () {
+        $modalInstance.dismiss();
+    };
 });
 
 angular.module('Jos.production').directive('navBtnsProd', function () {
@@ -1307,4 +1445,19 @@ angular.module('Jos.production').directive('whForQuilting', function () {
         restrict: 'E',
         templateUrl: 'whForQuilting'
     };
+});
+angular.module('Jos.production').directive('validateNewRecipe', function () {
+    return {
+        restrict: 'A',
+        require: 'ngModel',
+        link: function (scope, ele, attrs, ctrl) {            
+            scope.$watch(attrs.ngModel, function (value) {
+                
+                var isValid = ctrl.$modelValue.hasOwnProperty('Id');                
+                ctrl.$setValidity('invalidTypeOfValue', isValid);
+            });
+
+
+        }
+    }
 });

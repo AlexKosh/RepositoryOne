@@ -74,3 +74,9 @@
             transition-duration: 0s;
         }        
 
+.form-modal input.ng-invalid.ng-dirty{
+    border-color:red;
+}
+.form-modal input.ng-valid.ng-dirty{
+    border-color:forestgreen;
+}
