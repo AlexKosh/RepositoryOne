@@ -1371,11 +1371,7 @@ angular.module('Jos.production').controller('ModalNewRecipeController', function
         }
 
         return resultArr;
-    }    
-
-    $scope.tests = function (tItem) {
-        return tItem instanceof mainWhItem;
-    }
+    };        
 
     $scope.filtByCat = function (category) {
         if (category > 9 || $scope.selectedCategory > 9) {            
@@ -1413,6 +1409,65 @@ angular.module('Jos.production').controller('ModalNewRecipeController', function
             $scope.recipe = d;
         });
     };
+
+    $scope.recipeResultItem = '';
+    function getCopyOfArrayProductionItem(arr) {
+        function Product(p) {
+            this.ProductId = p.ProductId;
+            this.ModelNumber = p.ModelNumber;
+            this.Name = p.Name;
+            this.Color = p.Color;
+            this.Size = p.Size;
+            this.Quantity = p.Quantity;            
+        };
+
+        var resultArr = [];
+        var tempArr = arr;
+
+        for (var i = 0; i < tempArr.length; i++) {
+            for (var j = 0; j < tempArr[i].length; j++) {
+                for (var k = 0; k < tempArr[i][j].length; k++) {
+                    var tempVar = new Product(tempArr[i][j][k]);
+                    resultArr.push(tempVar);
+                }
+            }
+        }
+
+        return resultArr;
+
+    };
+    $scope.filtForResultItem = function (selCat) {
+        console.log(selCat);
+        switch (selCat) {
+            case 1: return getCopyOfArray([$scope.$parent.mainWhData[0]]);
+                break;
+            case 10: console.log('бд для комплектов кроя еще не готова');
+                break;
+            case 11: console.log($scope.$parent.endProdData.Data);
+                console.log(getCopyOfArrayProductionItem($scope.$parent.endProdData.Data));
+                return getCopyOfArrayProductionItem($scope.$parent.endProdData.Data);
+
+                break;
+            case 77: {
+                //console.log($scope.resultRecipe.length > 8);
+                if ($scope.resultRecipe.length > 8) {
+                    return getCopyOfArrayProductionItem($scope.$parent.endProdData.Data);
+                } else {
+                    return getCopyOfArray($scope.$parent.mainWhData);
+                }
+                //console.log($scope.$parent.endProdData.Data);
+                break;
+            }
+            default: return
+        }
+    };
+    $scope.getUoMForRcpResItem = function (item) {
+        if (item.hasOwnProperty('UnitOfMeasurement')) {
+            return item.UnitOfMeasurement;
+        } else {
+            return 'шт.';
+        }
+    }
 
     $scope.ok = function () {
         $modalInstance.close();
@@ -1453,7 +1508,7 @@ angular.module('Jos.production').directive('validateNewRecipe', function () {
         link: function (scope, ele, attrs, ctrl) {            
             scope.$watch(attrs.ngModel, function (value) {
                 
-                var isValid = ctrl.$modelValue.hasOwnProperty('Id');                
+                var isValid = ctrl.$modelValue.hasOwnProperty('Id') || ctrl.$modelValue.hasOwnProperty('ProductId');
                 ctrl.$setValidity('invalidTypeOfValue', isValid);
             });
 

@@ -283,28 +283,50 @@
                         <label>Имя рецепта:</label>
                         <input type="text" ng-model="recipeName" class="form-control" name="uRecipeName" required />                        
                     </li>
+                    <hr />
                     <li ng-repeat="item in recipe">
                         <table>
                             <tr>
                                 <th class="col-lg-9"><label>{{$parent.getCategoryName(item.ItemCategory) + ':'}}</label></th>
-                                <th class="col-lg-3"><label>{{'Кол-во, (' + item.UnitsOfMeasurement + ')'}}</label></th>
+                                <th class="col-lg-3"><label>{{'Кол-во, (' + resultRecipe[$index].UnitOfMeasurement + ')'}}</label></th>                                
                             </tr>
                             <tr>
                                 <td class="col-lg-9">
-                                    <input type="text" class="form-control" ng-model="resultRecipe[$index]" validate-new-recipe
-                                           typeahead="e as '#' + e.Id +' '+ e.Name +' '+ e.Color for e in filtByCat(item.ItemCategory) | filter:$viewValue | limitTo:8">
-                                    {{tests(resultRecipe[$index])}}
+                                    <input type="text" class="form-control" ng-model="resultRecipe[$index]" validate-new-recipe required
+                                           typeahead="e as '#' + e.Id +' '+ e.Name +' '+ e.Color for e in filtByCat(item.ItemCategory) | filter:$viewValue | limitTo:8" />
+                                    
                                 </td>
-                                <td class="col-lg-3"><input type="number" class="form-control" ng-model="resultRecipe[$index].Quantity" /></td>
+                                <td class="col-lg-3">
+                                    <input type="number" class="form-control" ng-model="resultRecipe[$index].Quantity" required />
+                                </td>
                             </tr>
                         </table>
                     </li>
-                </ul>
-                {{resultRecipe}}
-                <button class="btn btn-default" ng-click="recipe.push({ItemCategory: 77}); resultRecipe.push('')">Добавить</button>
+                </ul>                
+                <div class="row">
+                    <button class="btn btn-default col-lg-4 col-lg-push-4" ng-click="recipe.push({ItemCategory: 77}); resultRecipe.push('')">Добавить</button>
+                </div>
+                <hr />
+                <table>
+                    <tr>
+                        <th class="col-lg-9"><label>Результат:</label></th>
+                        <th class="col-lg-3"><label>{{'Кол-во, (' + getUoMForRcpResItem(recipeResultItem) + ')'}}</label></th>
+                    </tr>
+                    <tr>
+                        <td class="col-lg-9">
+                            <input type="text" ng-model="recipeResultItem" class="form-control" name="uRecipeResultItem" validate-new-recipe required
+                                   typeahead="e as '#' + e.Id +' '+ e.Name +' '+ e.Color + ' ' + e.Size for e in filtForResultItem(selectedCategory) | filter:$viewValue | limitTo:8" />
+                        </td>                        
+                        <td class="col-lg-3">
+                            <input type="number" class="form-control" ng-model="recipeResultItem.Quantity" required />
+                        </td>                        
+                    </tr>
+                </table>
+                
+                
             </form>
             <div class="modal-footer">
-                <button class="btn btn-primary" ng-click="ok()">Ok</button>
+                <button class="btn btn-primary" ng-click="ok()" ng-disabled="form.$invalid">Ok</button>
                 <button class="btn btn-warning" ng-click="cancel()">Отмена</button>
             </div>
         </div>
