@@ -9,29 +9,21 @@ namespace Josephine.Models
 {
     public class Recipe
     {
-        [Key, Column(Order = 0)]
-        public int RecipeId { get; set; }
-
-        [Key, Column(Order = 1)]
-        public int ItemId { get; set; }
-        public int ItemCategory { get; set; }
+        [Key]
+        public int RecipeId { get; set; }          
         public int RecipeCategory { get; set; }
         public string Name { get; set; }
-        public int Quantity { get; set; }
+        public int ResultItemId { get; set; }
+        public string ResultName { get; set; }
+        public int ResultQuantity { get; set; }
         public string UnitsOfMeasurement { get; set; }
+
+        public virtual ICollection<RecipeItem> RecipeItems { get; set; }
 
         public Recipe()
         {
-
+            this.RecipeItems = new List<RecipeItem>();
         }
-        public Recipe(int itemId, int itemCategory, int recipeCategory, string recipeName, int quantity, string unitsOfMeasurement)
-        {
-            this.ItemId = itemId;
-            this.ItemCategory = itemCategory;
-            this.RecipeCategory = recipeCategory;
-            this.Name = recipeName;
-            this.Quantity = quantity;
-            this.UnitsOfMeasurement = unitsOfMeasurement;
-        }
+        
     }
 }

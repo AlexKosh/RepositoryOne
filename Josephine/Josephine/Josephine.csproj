@@ -159,6 +159,18 @@
     <EmbeddedResource Include="Migrations\201510301109254_fixTaskAndItems.resx">
       <DependentUpon>201510301109254_fixTaskAndItems.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201511031200503_addRecipeItemsAndFixedRecipe.resx">
+      <DependentUpon>201511031200503_addRecipeItemsAndFixedRecipe.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201511031212192_fixedRecipeItemsKeys.resx">
+      <DependentUpon>201511031212192_fixedRecipeItemsKeys.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201511031452431_fixedRecipeAndItems.resx">
+      <DependentUpon>201511031452431_fixedRecipeAndItems.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201511031844210_fixedRecipeAndItems1.resx">
+      <DependentUpon>201511031844210_fixedRecipeAndItems1.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Scripts\Views\Home\app.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
@@ -246,6 +258,22 @@
     <Compile Include="Migrations\201510301109254_fixTaskAndItems.Designer.cs">
       <DependentUpon>201510301109254_fixTaskAndItems.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201511031200503_addRecipeItemsAndFixedRecipe.cs" />
+    <Compile Include="Migrations\201511031200503_addRecipeItemsAndFixedRecipe.Designer.cs">
+      <DependentUpon>201511031200503_addRecipeItemsAndFixedRecipe.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201511031212192_fixedRecipeItemsKeys.cs" />
+    <Compile Include="Migrations\201511031212192_fixedRecipeItemsKeys.Designer.cs">
+      <DependentUpon>201511031212192_fixedRecipeItemsKeys.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201511031452431_fixedRecipeAndItems.cs" />
+    <Compile Include="Migrations\201511031452431_fixedRecipeAndItems.Designer.cs">
+      <DependentUpon>201511031452431_fixedRecipeAndItems.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201511031844210_fixedRecipeAndItems1.cs" />
+    <Compile Include="Migrations\201511031844210_fixedRecipeAndItems1.Designer.cs">
+      <DependentUpon>201511031844210_fixedRecipeAndItems1.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Customer.cs" />
     <Compile Include="Models\Employee.cs" />
@@ -256,6 +284,7 @@
     <Compile Include="Models\Product.cs" />
     <Compile Include="Models\ProductionTask.cs" />
     <Compile Include="Models\Recipe.cs" />
+    <Compile Include="Models\RecipeItem.cs" />
     <Compile Include="Models\Sale.cs" />
     <Compile Include="Models\Store.cs" />
     <Compile Include="Models\TaskItem.cs" />

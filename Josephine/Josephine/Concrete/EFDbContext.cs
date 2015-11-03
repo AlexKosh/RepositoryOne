@@ -20,6 +20,7 @@ namespace Josephine.Concrete
 
         public DbSet<MainWarehouse> MainWh { get; set; }
         public DbSet<Recipe> Recipe { get; set; }
+        public DbSet<RecipeItem> RecipeItems { get; set; }
         public DbSet<ProductionTask> ProductionTask { get; set; }
         public DbSet<TaskItem> TaskItem { get; set; }
     }

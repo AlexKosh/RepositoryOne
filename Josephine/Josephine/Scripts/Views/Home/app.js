@@ -1161,7 +1161,7 @@ angular.module('Jos.production').factory('prodDataService', function ($http) {
             return promise;
         },
         getRecipes: function () {
-            return $http.get('/production/getRecipe').then(function (response) {                
+            return $http.get('/production/getRecipes').then(function (response) {                
                 return response.data;
             });            
         },
@@ -1169,6 +1169,9 @@ angular.module('Jos.production').factory('prodDataService', function ($http) {
             return $http.get('/production/getRecipesCategories').then(function (response) {                
                 return response.data;
             });
+        },
+        pplRecipe: function () {
+            $http.get('/production/pplRecipe');
         },
         getFirstRcpByCategory: function (category) {
             return $http.post('/production/getFirstRcpByCategory', { cat: category }).then(function (response) {
@@ -1184,6 +1187,16 @@ angular.module('Jos.production').factory('prodDataService', function ($http) {
                     console.log("-=----=----=-");                    
                 })
                 .error(function () { alert('err in post new task'); });        
+        },
+        postRecipe: function (data) {            
+            $http.post('/production/postRecipeData', { d: data })
+                .success(function (data) {
+                    console.log("-=----=Recipe=----=-");
+                    console.log(data);
+                    console.log('success!');
+                    console.log("-=----=----=-");
+                })
+                .error(function () { alert('err in post new recipe'); });            
         }
     };
 });
@@ -1197,6 +1210,7 @@ angular.module('Jos.production').controller('ProductionController', function ($s
         prodDataService.getMainWh().then(function (d) { $scope.mainWhData = d; });         
     };
     function getEndProdData() {
+        
         prodDataService.getEndProd().then(function (d) { $scope.endProdData = d; });
     };
 
@@ -1235,7 +1249,33 @@ angular.module('Jos.production').controller('ProductionController', function ($s
     }
     
     //end of mainWh region
+
     //quiling region
+    $scope.populateRecipe = function () {
+        prodDataService.pplRecipe();
+    };
+    function Recipe(name, recipeCat, recipeId) {
+        this.Name = name;
+        this.RecipeCategory = recipeCat;
+        this.RecipeId = recipeId;
+    };
+    function RecipeItem(itemId, itemCategory, quant, uoF) {
+        this.Id = null;
+        this.RecipeId = null;
+        this.ItemId = itemId;
+        this.ItemCategory = itemCategory;
+        this.Quantity = quant;
+        this.UnitsOfMeasurement = uoF;
+    };    
+    $scope.createTestRecipe = function () {
+        var rcp = new Recipe("Стежка Вика светлый беж 100", 1, null);
+        var rcpItems = [new RecipeItem(54, 2, 1, "м"), new RecipeItem(92, 4, 1, "м")];
+        rcp.RecipeItems = rcpItems;
+
+        prodDataService.postRecipe(rcp);
+    };
+
+
     $scope.p = 80;
 
     $scope.openNewQuilingTask = function () {
@@ -1278,7 +1318,7 @@ angular.module('Jos.production').controller('ProdNavController', function ($scop
     $scope.numberForActiveClass = 0;    
 });
 angular.module('Jos.production').controller('ModalNewQuiltingTaskController', function ($scope, $modalInstance, prodDataService) {
-    
+   
     //selected recipe
     $scope.recipe = [];
     $scope.isRecipeSelected = false;
@@ -1297,13 +1337,14 @@ angular.module('Jos.production').controller('ModalNewQuiltingTaskController', fu
     }
     $scope.search = [];
     
-    //these methods get the array of recipes grouped by .recipeId from the server and return it
-    $scope.getRcpNames = function () {
-        return prodDataService.getRecipes();
-    }    
-    $scope.recipes = $scope.getRcpNames().then(function (d) {
-        $scope.recipes = d;
-    });
+    //these methods get the array of recipes from the server 
+    function getAllRecipes() {
+        prodDataService.getRecipes().then(function(d){
+            $scope.recipes = d;
+        });
+    };
+    $scope.recipes = [];
+    getAllRecipes();    
         
     //this method posts productionTask and TaskItems on server
     $scope.postProductionTaskData = function () {
@@ -1326,8 +1367,8 @@ angular.module('Jos.production').controller('ModalNewQuiltingTaskController', fu
         function recipeItemsToTaskItems() {
             var resultArray = [];
             
-            for (var i = 0; i < $scope.recipe.length; i++) {                
-                var newTaskItem = new TaskItem($scope.recipe[i]);                
+            for (var i = 0; i < $scope.recipe.RecipeItems.length; i++) {                
+                var newTaskItem = new TaskItem($scope.recipe.RecipeItems[i]);                
                 resultArray.push(newTaskItem);                
             }          
 
@@ -1337,7 +1378,7 @@ angular.module('Jos.production').controller('ModalNewQuiltingTaskController', fu
         $scope.ProductionTask = new ProductionTask(0, 0, new Date("21 May 1958 10:12"), new Date("28 May 1977 20:34"), 7);
         $scope.ProductionTask.TaskItems = recipeItemsToTaskItems();
                 
-        console.log($scope.ProductionTask.TaskItems);
+        //console.log($scope.ProductionTask.TaskItems);
         prodDataService.postProductionTask($scope.ProductionTask);
     }
 
@@ -1348,7 +1389,7 @@ angular.module('Jos.production').controller('ModalNewQuiltingTaskController', fu
         $modalInstance.dismiss();
     };    
 });
-angular.module('Jos.production').controller('ModalNewRecipeController', function ($scope, $modalInstance, prodDataService) {
+angular.module('Jos.production').controller('TestModalNewRecipeController', function ($scope, $modalInstance, prodDataService) {
     $scope.selectedCategory = 77;
     var prevSelectedCat = 77;
     function mainWhItem(item) {
@@ -1371,44 +1412,91 @@ angular.module('Jos.production').controller('ModalNewRecipeController', function
         }
 
         return resultArr;
-    };        
+    }; 
 
-    $scope.filtByCat = function (category) {
-        if (category > 9 || $scope.selectedCategory > 9) {            
-            return $scope.filteredArr = getCopyOfArray($scope.$parent.mainWhData);
-        } else {            
-            return $scope.filteredArr = getCopyOfArray([$scope.$parent.mainWhData[category - 1]]);
+    $scope.filtByCat = function (it) {
+        
+        console.log(it.hasOwnProperty("ItemCategory"));
+        if (it == undefined) {
+            console.log("undefined");
+            return getCopyOfArray($scope.$parent.mainWhData);
         }
-        
-    };
-    $scope.resultRecipe = [];
-    $scope.filteredArr = [];
-
-    $scope.getRcpCategories = function () {
-        return prodDataService.getRecipesCategories();
-    };
-    $scope.recipeCategories = $scope.getRcpCategories().then(function (d) {
-        $scope.recipeCategories = d;
-    });
-
-    $scope.getFirstRcpByCat = function () {
-        return prodDataService.getFirstRcpByCategory($scope.selectedCategory);
-    };
-    $scope.recipe = $scope.getFirstRcpByCat().then(function (d) {
-        $scope.recipe = d;
-    });
-    $scope.selectCategory = function () {
-        
-        if ($scope.selectedCategory == prevSelectedCat) {
-            return;
+        if (it.hasOwnProperty("ItemCategory")) {
+            console.log(getCopyOfArray([$scope.$parent.mainWhData[it.ItemCategory - 1]]));
+            return getCopyOfArray([$scope.$parent.mainWhData[it.ItemCategory - 1]]);
         } else {
-            prevSelectedCat = $scope.selectedCategory;
-            $scope.resultRecipe = [];
-        }
-        $scope.recipe = $scope.getFirstRcpByCat().then(function (d) {
-            $scope.recipe = d;
+            console.log(getCopyOfArray($scope.$parent.mainWhData));
+            return getCopyOfArray($scope.$parent.mainWhData);
+        }        
+    };
+    $scope.resultRecipe = [''];
+    $scope.filteredArr = [];
+        
+    $scope.recipeCategories = [1, 10, 11, 77];
+
+    //these methods get the array of recipes from the server 
+    function getAllRecipes() {
+        prodDataService.getRecipes().then(function (d) {
+            $scope.recipes = d;
         });
     };
+    $scope.recipes = [];
+    getAllRecipes();
+
+    $scope.selectedRecipe = '';
+    $scope.RecipeItems = [{ ItemCategory: 77 }];
+
+    $scope.getItemInfoById = function (obj) {
+        console.log("Object:");
+        console.log(obj);
+        console.log("obj.hasownProperty: ItemId");
+        console.log(obj.hasOwnProperty('ItemId'));
+        if (obj.hasOwnProperty('ItemId')) {
+            console.log(obj.ItemId);
+            console.log('asdasd');
+            return 2;
+        } else {
+            var text = $scope.$parent.getItemById(obj.Id, obj.CategoryId);
+            rtext = '#' + text.Id + ' ' + text.Name + ' ' + text.Color;
+            return rtext;
+        }
+
+        
+        
+        //return rtext;
+        //+ ' ' + text.Quantity + ' (' + text.UnitOfMeasurement + ')';
+    };
+
+    $scope.$watch("selectedRecipe", function (val) {
+        if (val.hasOwnProperty("Name")) {
+            $scope.selectedCategory = val.RecipeCategory;
+            $scope.RecipeItems = val.RecipeItems;
+        }
+    });
+    //$scope.getFirstRcpByCat = function () {
+    //    return prodDataService.getFirstRcpByCategory($scope.selectedCategory);        
+    //};
+    //$scope.recipe = $scope.getFirstRcpByCat().then(function (d) {
+    //    $scope.recipe = d;
+    //    if ($scope.recipe.length == 0) {
+    //        $scope.recipe.push({ ItemCategory: 77 });
+    //    }
+    //});
+    //$scope.selectCategory = function () {        
+        //if ($scope.selectedCategory == prevSelectedCat) {
+        //    return;
+        //} else {
+        //    prevSelectedCat = $scope.selectedCategory;
+        //    $scope.resultRecipe = [''];
+        //    $scope.recipeResultItem = '';
+        //}
+        //$scope.recipe = $scope.getFirstRcpByCat().then(function (d) {
+        //    $scope.recipe = d;
+        //    if ($scope.recipe.length == 0) {
+        //        $scope.recipe.push({ ItemCategory: 77 });
+        //    }
+        //});
+    //};
 
     $scope.recipeResultItem = '';
     function getCopyOfArrayProductionItem(arr) {
@@ -1443,10 +1531,7 @@ angular.module('Jos.production').controller('ModalNewRecipeController', function
                 break;
             case 10: console.log('бд для комплектов кроя еще не готова');
                 break;
-            case 11: console.log($scope.$parent.endProdData.Data);
-                console.log(getCopyOfArrayProductionItem($scope.$parent.endProdData.Data));
-                return getCopyOfArrayProductionItem($scope.$parent.endProdData.Data);
-
+            case 11: return getCopyOfArrayProductionItem($scope.$parent.endProdData.Data);
                 break;
             case 77: {
                 //console.log($scope.resultRecipe.length > 8);
@@ -1458,7 +1543,8 @@ angular.module('Jos.production').controller('ModalNewRecipeController', function
                 //console.log($scope.$parent.endProdData.Data);
                 break;
             }
-            default: return
+            default: getCopyOfArray($scope.$parent.mainWhData);
+                return;
         }
     };
     $scope.getUoMForRcpResItem = function (item) {
@@ -1467,6 +1553,141 @@ angular.module('Jos.production').controller('ModalNewRecipeController', function
         } else {
             return 'шт.';
         }
+    }
+
+    $scope.processNewRecipe = function () {
+        function Recipe(itemId, itemCategory, recipeCategory, name, quant, uoF) {
+            this.RecipeId = 0;
+            this.ItemId = itemId;
+            this.ItemCategory = itemCategory;
+            this.RecipeCategory = recipeCategory;
+            this.Name = name;
+            this.Quantity = quant;
+            this.UnitsOfMeasurement = uoF;
+        }
+        var rcp = new Recipe()
+    }
+
+    $scope.ok = function () {
+        $modalInstance.close();
+    };
+    $scope.cancel = function () {
+        $modalInstance.dismiss();
+    };
+});
+angular.module('Jos.production').controller('ModalNewRecipeController', function ($scope, $modalInstance, prodDataService) {
+    $scope.selectedCategory = 77;
+    //this variable contains Recipe object or text of recipe name
+    $scope.selectedRecipe = '';
+    $scope.mainWhDataCopy = []
+    $scope.mainWhDataCopy = getCopyOfArray($scope.$parent.mainWhData);
+    //recipeItems[] keeps the components of recipe and rcpFakeArr[] needs to ng-repeat in <li>
+    $scope.rcpFakeArr = [{ Id: ' ' }];
+    $scope.recipeItems = [];    
+
+    function mainWhItem(item) {
+        this.Id = item.Id;
+        this.CategoryId = item.CategoryId;
+        this.Name = item.Name;
+        this.Color = item.Color;
+        this.Quantity = item.Quantity;
+        this.UnitOfMeasurement = item.UnitOfMeasurement;
+    };
+    function getCopyOfArray(arr) {
+        console.log('have got copy of array');
+        var resultArr = [];
+        var tempArr = arr;
+
+        for (var i = 0; i < tempArr.length; i++) {
+            for (var j = 0; j < tempArr[i].length; j++) {
+                var tempVar = new mainWhItem(tempArr[i][j]);
+                resultArr.push(tempVar);
+            }
+        }
+
+        return resultArr;
+    };
+    function Recipe(rCategory, name, resItemId, resName, resQuant, uoF) {
+        this.RecipeCategory = rCategory;
+        this.Name = name;
+        this.ResultItemId = resItemId;
+        this.ResultName = resName;
+        this.ResultQuantity = resQuant;
+        this.UnitsOfMeasurement = uoF;
+    };
+    function RecipeItem(itemId, iCat, name, quant, uoF) {
+        this.ItemId = itemId;
+        this.ItemCategory = iCat;
+        this.Name = name;
+        this.Quantity = quant;
+        this.UnitsOfMeasurement = uoF;
+    };
+
+    $scope.recipeCategories = [1, 10, 11, 77];
+    
+    //get all Recipes from server and save it in $scope.recipes[]
+    //$scope.recipes[] needs for typeahead in uName <input>
+    function getAllRecipes() {
+        prodDataService.getRecipes().then(function (d) {
+            $scope.recipes = d;
+        });
+    };
+    $scope.recipes = [];
+    getAllRecipes();
+
+    //watcher checks is there a Recipe object in $scope.selectedRecipe variable or just a text
+    //if it is a Recipe object selected, function fills an arrays of RecipeItems
+    $scope.$watch("selectedRecipe", function (val) {        
+        if (val.hasOwnProperty("RecipeItems")) {            
+            $scope.resultItem = new mainWhItem($scope.$parent.getItemById(val.ResultItemId, val.RecipeCategory - 1));
+            $scope.resultItem.Quantity = val.ResultQuantity;
+
+            var l = val.RecipeItems.length;
+            for (var i = 0; i < l; i++) {                                
+                $scope.rcpFakeArr[i] = { Id: ' ' };
+                $scope.recipeItems[i] = new mainWhItem($scope.$parent.getItemById(val.RecipeItems[i].ItemId, val.RecipeItems[i].ItemCategory - 1));
+                $scope.recipeItems[i].Quantity = val.RecipeItems[i].Quantity;
+            }
+        }
+    });
+
+    //resultItem is a mainWarehouse item
+    // 
+    $scope.resultItem = '';           
+
+    $scope.processTheOrder = function () {        
+        var recipe, items, tempRcp;
+
+        console.log($scope.selectedRecipe.hasOwnProperty("Name"));
+        if ($scope.selectedRecipe.hasOwnProperty("Name")) {
+            tempRcp = $scope.selectedRecipe;
+
+            recipe = new Recipe(tempRcp.RecipeCategory,
+                tempRcp.Name,
+                tempRcp.ResultItemId,
+                tempRcp.ResultName,
+                tempRcp.ResultQuantity,
+                tempRcp.UnitsOfMeasurement);            
+        }
+
+        items = function () {
+            var o = $scope.recipeItems;
+            var r = [];
+
+            for (var i = 0; i < o.length; i++) {
+                r[i] = new RecipeItem(o[i].Id,
+                    o[i].CategoryId,
+                    o[i].Name,
+                    o[i].Quantity,
+                    o[i].UnitOfMeasurement);
+            }
+            return r;
+        };
+        
+        recipe.RecipeItems = items();
+
+        console.log(recipe);
+        prodDataService.postRecipe(recipe);
     }
 
     $scope.ok = function () {
@@ -1506,8 +1727,7 @@ angular.module('Jos.production').directive('validateNewRecipe', function () {
         restrict: 'A',
         require: 'ngModel',
         link: function (scope, ele, attrs, ctrl) {            
-            scope.$watch(attrs.ngModel, function (value) {
-                
+            scope.$watch(attrs.ngModel, function (value) {                
                 var isValid = ctrl.$modelValue.hasOwnProperty('Id') || ctrl.$modelValue.hasOwnProperty('ProductId');
                 ctrl.$setValidity('invalidTypeOfValue', isValid);
             });

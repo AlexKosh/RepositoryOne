@@ -26,6 +26,7 @@ namespace Josephine.Concrete
         public IEnumerable<Prices> Prices { get { return context.Prices; }}
         public IEnumerable<MainWarehouse> MainWh { get { return context.MainWh; }}
         public IEnumerable<Recipe> Recipes { get { return context.Recipe; }}
+        public IEnumerable<RecipeItem> RecipeItems { get { return context.RecipeItems; }}
         public IEnumerable<ProductionTask> ProductionTasks { get { return context.ProductionTask; }}
         public IEnumerable<TaskItem> TaskItem { get { return context.TaskItem; }}
 
@@ -278,7 +279,7 @@ namespace Josephine.Concrete
         public void AddProductionTaskToDb(ProductionTask task)
         {
             try
-            {
+            {                
                 context.ProductionTask.Add(task);
                 context.SaveChanges();
             }
@@ -287,5 +288,18 @@ namespace Josephine.Concrete
                 throw ex;
             }            
         }
+        public void AddRecipeToDb(Recipe rcp)
+        {
+            try
+            {
+                context.Recipe.Add(rcp);
+                context.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }        
     }
 }

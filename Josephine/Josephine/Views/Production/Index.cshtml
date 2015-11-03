@@ -93,6 +93,7 @@
                 <div class="col-lg-4">
                     <button class="btn btn-default" ng-click="openNewQuilingTask()">Новое задание</button>
                     <button class="btn btn-default" ng-click="openNewRecipe()">Новый рецепт</button>
+                    @*<button class="btn btn-danger" ng-click="populateRecipe()">pplRcpDb</button>*@
                 </div>
                 <div class="col-lg-8">
                     <h4>В обработке: Вика синий 300 (м)</h4>
@@ -175,7 +176,7 @@
     <script id="getNewQuiltingTask.modal" type="text/ng-template">
         <div class="modal-content">
             <div class="modal-header"><h3> Новое задание</h3></div>
-            <div class="modal-body">
+            <div class="modal-body">                
                 <div>
                     <div>
                         <div class="row">
@@ -187,7 +188,7 @@
                                     <li ng-repeat="r in recipes | filter:search">
                                         <button ng-click="setRecipe(r)" class="btn btn-link">
                                             <span class="glyphicon glyphicon-check" ng-show="recipe == r"></span>
-                                            {{r[0].Name}}
+                                            {{r.Name}}
                                         </button>
                                     </li>
                                 </ul>
@@ -204,7 +205,7 @@
                                         </div>
                                         <div class="media-body">
                                             <h4 class="media-heading">
-                                                {{recipe[0].Name}}
+                                                {{recipe.Name}}
 
                                                 <div class="pull-right">
                                                     <a href="#" ng-click="multiplier = multiplier + 1" class="btn">
@@ -216,7 +217,7 @@
                                                     </a>
                                                 </div>
                                             </h4>
-                                            <div ng-repeat="item in recipe" class="media">
+                                            <div ng-repeat="item in recipe.RecipeItems" class="media">
                                                 <div class="media-left">
                                                     <a href="#">
                                                         <img src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9InllcyI/PjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB3aWR0aD0iNjQiIGhlaWdodD0iNjQiIHZpZXdCb3g9IjAgMCA2NCA2NCIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+PCEtLQpTb3VyY2UgVVJMOiBob2xkZXIuanMvNjR4NjQKQ3JlYXRlZCB3aXRoIEhvbGRlci5qcyAyLjYuMC4KTGVhcm4gbW9yZSBhdCBodHRwOi8vaG9sZGVyanMuY29tCihjKSAyMDEyLTIwMTUgSXZhbiBNYWxvcGluc2t5IC0gaHR0cDovL2ltc2t5LmNvCi0tPjxkZWZzPjxzdHlsZSB0eXBlPSJ0ZXh0L2NzcyI+PCFbQ0RBVEFbI2hvbGRlcl8xNTA5M2M3ZGIwNSB0ZXh0IHsgZmlsbDojQUFBQUFBO2ZvbnQtd2VpZ2h0OmJvbGQ7Zm9udC1mYW1pbHk6QXJpYWwsIEhlbHZldGljYSwgT3BlbiBTYW5zLCBzYW5zLXNlcmlmLCBtb25vc3BhY2U7Zm9udC1zaXplOjEwcHQgfSBdXT48L3N0eWxlPjwvZGVmcz48ZyBpZD0iaG9sZGVyXzE1MDkzYzdkYjA1Ij48cmVjdCB3aWR0aD0iNjQiIGhlaWdodD0iNjQiIGZpbGw9IiNFRUVFRUUiLz48Zz48dGV4dCB4PSIxMi41IiB5PSIzNi44Ij42NHg2NDwvdGV4dD48L2c+PC9nPjwvc3ZnPg=="
@@ -238,28 +239,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
-                @*<div class="panel panel-default">
-                    <div class="panel-heading"><h4>Материалы:</h4></div>
-                    <div class="panel-body">
-                        <div ng-repeat="item in recipe | orderBy: 'ItemCategory'"
-                             class="panel panel-body col-lg-6" style="border-bottom: 1px solid; border-color: #ddd;">
-                            <h4><span class="badge">{{item.ItemCategory}}</span>{{' ' + $parent.getCategoryName(item.ItemCategory)}}</h4>
-                            <h5>{{'- ' + getItemInfoById(item.ItemId, item.ItemCategory - 1)}}</h5>
-                        </div>
-                    </div>
-
-                    <div ng-repeat="item in recipe | orderBy: 'ItemCategory'"
-                             class="panel-body" style="border-bottom: 1px solid; border-color: #ddd;">
-                            <div><h4 style="margin-bottom:auto">{{$parent.getCategoryName(item.ItemCategory) + ':'}}</h4><hr style="margin-top:auto" /></div>
-                            <h4>
-                                <label class="label label-default">{{getItemInfoById(item.ItemId, item.ItemCategory - 1)}}</label>
-                            </h4>
-                            <div>
-                                <input type="number" class="form-control"
-                                       value="{{item.Quantity}}" ng-model="item.Quantity" />
-                            </div>
-                        </div>*@
+                </div>                
             </div>
             <div class="modal-footer">
                 <button class="btn btn-default" ng-click="postProductionTaskData()">Push</button>
@@ -268,62 +248,72 @@
             </div>
         </div>
     </script>
-    <script id="newRecipe.modal" type="text/ng-template">
+    <script id="TestnewRecipe.modal" type="text/ng-template">
         <div class="modal-content">
             <div class="modal-header"><h3>Новый рецепт</h3></div>
             <form novalidate class="modal-body form-modal" name="form">
-                <h4>
-                    <label>Категория:</label>
-                    <select ng-model="selectedCategory"
-                            ng-options="$parent.getCategoryName(c) for c in recipeCategories"
-                            ng-click="selectCategory()"></select>
-                </h4>
+                
                 <ul class="list-unstyled">
-                    <li>
-                        <label>Имя рецепта:</label>
-                        <input type="text" ng-model="recipeName" class="form-control" name="uRecipeName" required />                        
+                    <li class="row">
+                        <div class="col-lg-7">
+                            <label>Имя рецепта:</label>
+                            <input type="text" ng-model="selectedRecipe" class="form-control" name="uRecipeName" required
+                                   typeahead="e as '#' + e.RecipeId +' '+ e.Name for e in recipes | filter:$viewValue | limitTo:8" />
+                        </div>
+                        <div class="col-lg-5">
+                            <label>Результат:</label>
+                            <select ng-model="selectedCategory"
+                                    ng-options="$parent.getCategoryName(c) for c in recipeCategories"></select>
+
+                        </div>
                     </li>
                     <hr />
-                    <li ng-repeat="item in recipe">
+                    {{RecipeItems}}
+                    <li ng-repeat="item in RecipeItems">
                         <table>
                             <tr>
                                 <th class="col-lg-9"><label>{{$parent.getCategoryName(item.ItemCategory) + ':'}}</label></th>
-                                <th class="col-lg-3"><label>{{'Кол-во, (' + resultRecipe[$index].UnitOfMeasurement + ')'}}</label></th>                                
+                                <th class="col-lg-3"><label>{{'Кол-во, (' + item.UnitsOfMeasurement + ')'}}</label></th>
                             </tr>
                             <tr>
                                 <td class="col-lg-9">
-                                    <input type="text" class="form-control" ng-model="resultRecipe[$index]" validate-new-recipe required
-                                           typeahead="e as '#' + e.Id +' '+ e.Name +' '+ e.Color for e in filtByCat(item.ItemCategory) | filter:$viewValue | limitTo:8" />
-                                    
+                                    <input type="text" class="form-control" ng-model="item"
+                                           typeahead="e as getItemInfoById(e) for e in filtByCat(item) | filter:$viewValue | limitTo:8" />
+
                                 </td>
                                 <td class="col-lg-3">
-                                    <input type="number" class="form-control" ng-model="resultRecipe[$index].Quantity" required />
+                                    <input type="number" class="form-control" ng-model="item.Quantity" required />
                                 </td>
                             </tr>
                         </table>
                     </li>
-                </ul>                
-                <div class="row">
-                    <button class="btn btn-default col-lg-4 col-lg-push-4" ng-click="recipe.push({ItemCategory: 77}); resultRecipe.push('')">Добавить</button>
+                </ul>
+                <div>
+                    <div class="row">
+                        <button class="btn btn-default col-lg-4 col-lg-push-4" ng-click="RecipeItems.push({ItemCategory: 77}); resultRecipe.push('')">Добавить</button>
+
+                    </div>
+                    <hr />                    
                 </div>
-                <hr />
-                <table>
-                    <tr>
-                        <th class="col-lg-9"><label>Результат:</label></th>
-                        <th class="col-lg-3"><label>{{'Кол-во, (' + getUoMForRcpResItem(recipeResultItem) + ')'}}</label></th>
-                    </tr>
-                    <tr>
-                        <td class="col-lg-9">
-                            <input type="text" ng-model="recipeResultItem" class="form-control" name="uRecipeResultItem" validate-new-recipe required
-                                   typeahead="e as '#' + e.Id +' '+ e.Name +' '+ e.Color + ' ' + e.Size for e in filtForResultItem(selectedCategory) | filter:$viewValue | limitTo:8" />
-                        </td>                        
-                        <td class="col-lg-3">
-                            <input type="number" class="form-control" ng-model="recipeResultItem.Quantity" required />
-                        </td>                        
-                    </tr>
-                </table>
+                <div >
+                    <table>
+                        <tr>
+                            <th class="col-lg-9"><label>Результат:</label></th>
+                            <th class="col-lg-3"><label>{{'Кол-во, (' + getUoMForRcpResItem(recipeResultItem) + ')'}}</label></th>
+                        </tr>
+                        <tr>
+                            <td class="col-lg-9">
+                                <input type="text" ng-model="recipeResultItem" class="form-control" name="uRecipeResultItem" validate-new-recipe required
+                                       typeahead="e as '#' + e.Id +' '+ e.Name +' '+ e.Color + ' ' + e.Size for e in filtForResultItem(selectedCategory) | filter:$viewValue | limitTo:8" />
+                            </td>
+                            <td class="col-lg-3">
+                                <input type="number" class="form-control" ng-model="recipeResultItem.Quantity" required />
+                            </td>
+                        </tr>
+                    </table>
+                </div>
                 
-                
+
             </form>
             <div class="modal-footer">
                 <button class="btn btn-primary" ng-click="ok()" ng-disabled="form.$invalid">Ok</button>
@@ -331,6 +321,77 @@
             </div>
         </div>
     </script>
+    <script id="newRecipe.modal" type="text/ng-template">
+        <div class="modal-content">
+            <div class="modal-header"><h3>Новый рецепт</h3></div>
+            <form novalidate class="modal-body">                
+                <ul class="list-unstyled">
+                    <li class="row">
+                        <div class="col-lg-7">
+                            <label>Имя рецепта:</label>
+                            <input type="text" ng-model="selectedRecipe" class="form-control"
+                                   typeahead="e as '#' + e.RecipeId +' '+ e.Name for e in recipes | filter:$viewValue | limitTo:8" />
+                        </div>
+                        <div class="col-lg-5">
+                            <label>Результат:</label>
+                            <select ng-model="selectedRecipe.RecipeCategory"
+                                    ng-options="$parent.getCategoryName(c) for c in recipeCategories"></select>
+
+                        </div>
+                    </li>
+                    <h4 class="row">
+                        <table>
+                            <tr>
+                                <th class="col-lg-9"><label>{{$parent.getCategoryName(resultItem.CategoryId) + ':'}}</label></th>
+                                <th class="col-lg-3"><label>{{'Кол-во, (' + resultItem.UnitOfMeasurement + ')'}}</label></th>
+                            </tr>
+                            <tr>
+                                <td class="col-lg-9">
+                                    <input type="text" class="form-control" ng-model="resultItem"
+                                           typeahead="e as e.Id + ' ' + e.Name + ' ' + e.Color for e in mainWhDataCopy | filter:$viewValue | limitTo:8" />
+                                </td>
+                                <td class="col-lg-3">
+                                    <input type="number" class="form-control" ng-model="resultItem.Quantity" />
+                                </td>
+                            </tr>
+                        </table>
+                    </h4>
+                    <hr style="margin-bottom:10px" />
+                    <li ng-repeat="item in rcpFakeArr">
+                        <table>
+                            <tr>
+                                <th class="col-lg-9"><label>{{$parent.getCategoryName(recipeItems[$index].CategoryId) + ':'}}</label></th>
+                                <th class="col-lg-3"><label>{{'Кол-во, (' + recipeItems[$index].UnitOfMeasurement + ')'}}</label></th>
+                            </tr>
+                            <tr>
+                                <td class="col-lg-9">
+                                    <input type="text" class="form-control" ng-model="recipeItems[$index]"
+                                           typeahead="e as e.Id + ' ' + e.Name + ' ' + e.Color for e in mainWhDataCopy | filter:$viewValue | limitTo:8" />
+                                </td>
+                                <td class="col-lg-3">
+                                    <input type="number" class="form-control" ng-model="recipeItems[$index].Quantity" />
+                                </td>{{results}}
+                            </tr>
+                        </table>
+                    </li>
+                </ul>
+                <div class="row">
+                    <div class="col-lg-3 col-lg-offset-3">
+                        <button class="btn btn-default col-lg-12" ng-click="rcpFakeArr.push({Id: ' '}); recipeItems.push('')">Добавить</button>                        
+                    </div>
+                    <div class="col-lg-3">
+                        <button class="btn btn-default col-lg-12" ng-click="rcpFakeArr.pop(); recipeItems.pop()">Удалить</button>
+                    </div>                    
+                </div>                
+            </form>
+            <div class="modal-footer">
+                <button class="btn btn-success" ng-click="processTheOrder()">Push</button>
+                <button class="btn btn-primary" ng-click="ok()">Ok</button>
+                <button class="btn btn-warning" ng-click="cancel()">Отмена</button>
+            </div>
+        </div>
+    </script>
+
 
 </div>
 
