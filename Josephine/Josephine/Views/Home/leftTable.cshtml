@@ -1,6 +1,6 @@
 ﻿<div class="col-lg-6">
 
-    <div ng-controller="CustomersViewController">
+    <div ng-controller="CustomersController">
         <div ng-show="$parent.isSelected == 'cust'" class="panel-group">
             <div ng-repeat="c in $parent.customersData | filter: searchText">
                 <div class="panel panel-info" style="cursor:pointer; margin-bottom:7px"
@@ -46,7 +46,7 @@
         </div>
     </div>
 
-    <div ng-controller="OrdersViewController">
+    <div ng-controller="OrdersController">
         <div ng-repeat="ordArr in $parent.ordersInfoByDates | filter: searchText" ng-show="$parent.isSelected == 'ord'" 
              class="panel-group" style="margin-bottom:7px">
 

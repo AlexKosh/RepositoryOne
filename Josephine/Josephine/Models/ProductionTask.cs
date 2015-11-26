@@ -10,7 +10,10 @@ namespace Josephine.Models
     public class ProductionTask
     {
         [Key]
-        public int TaskId { get; set; }                
+        public int TaskId { get; set; }
+        public int TaskCategory { get; set; }
+        public int ResultItemId { get; set; }
+        public int ResultQuantity { get; set; }
         public int isCompleted { get; set; }
         public DateTime StartTime { get; set; }
         public DateTime FinishTime { get; set; }

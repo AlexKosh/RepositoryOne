@@ -10,6 +10,8 @@ namespace Josephine.Controllers
 {    
     public class ProductionController : Controller
     {
+        private const int QUILTING_CAT = 1;
+
         private IProductRepository repository;
         public ProductionController(IProductRepository repo)
         {
@@ -234,7 +236,15 @@ namespace Josephine.Controllers
         {
             repository.AddRecipeToDb(d);
         }
+        public void postItem(MainWarehouse d)
+        {
 
+            repository.AddMainWhItemToDb(d);
+        }
+        public void postCut(Cut d)
+        {
+            repository.AddCutToDb(d);
+        }
         public JsonResult getMainWh()
         {
             var data =
@@ -244,6 +254,34 @@ namespace Josephine.Controllers
                 select newGroup;
 
             return Json(data, JsonRequestBehavior.AllowGet);
+        }
+        public JsonResult getTasksForQuilting()
+        {
+            List<ProductionTask> result = new List<ProductionTask>();
+
+            ProductionTask runningTask = repository.ProductionTasks.Where(x =>
+                x.TaskCategory == QUILTING_CAT
+                && x.isCompleted == 1)
+                .FirstOrDefault();
+
+            if (runningTask != null)
+            {
+                ProductionTask nextTask = repository.ProductionTasks.Where(x => x.TaskCategory == QUILTING_CAT
+                    && x.isCompleted == 0)
+                    .OrderBy(x => x.Priority)
+                    .First();
+                result.Add(runningTask);
+                result.Add(nextTask);
+            }
+            else
+            {
+                result = repository.ProductionTasks.Where(x => x.TaskCategory == QUILTING_CAT)
+                .OrderBy(x => x.Priority)
+                .Select(x => x).Take(2).ToList();
+            }
+                        
+
+            return Json(result, JsonRequestBehavior.AllowGet);
         }
     }
 }

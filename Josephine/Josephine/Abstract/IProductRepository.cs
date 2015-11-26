@@ -22,6 +22,7 @@ namespace Josephine.Abstract
         IEnumerable<RecipeItem> RecipeItems { get; }
         IEnumerable<ProductionTask> ProductionTasks { get; }
         IEnumerable<TaskItem> TaskItem { get; }
+        IEnumerable<Cut> Cut { get; }
 
         void populateWhAndSt(int mN, string n, string[] c, int[] s, int p);
         void deleteWhAndSt();
@@ -41,7 +42,9 @@ namespace Josephine.Abstract
 
 
         void populateMainWh(List<MainWarehouse> mvh);
+        void AddMainWhItemToDb(MainWarehouse item);
         void AddProductionTaskToDb(ProductionTask task);
         void AddRecipeToDb(Recipe rcp);
+        void AddCutToDb(Cut c);
     }
 }

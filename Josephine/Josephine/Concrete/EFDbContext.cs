@@ -23,5 +23,6 @@ namespace Josephine.Concrete
         public DbSet<RecipeItem> RecipeItems { get; set; }
         public DbSet<ProductionTask> ProductionTask { get; set; }
         public DbSet<TaskItem> TaskItem { get; set; }
+        public DbSet<Cut> Cut { get; set; }
     }
 }

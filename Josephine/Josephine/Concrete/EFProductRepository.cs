@@ -29,6 +29,7 @@ namespace Josephine.Concrete
         public IEnumerable<RecipeItem> RecipeItems { get { return context.RecipeItems; }}
         public IEnumerable<ProductionTask> ProductionTasks { get { return context.ProductionTask; }}
         public IEnumerable<TaskItem> TaskItem { get { return context.TaskItem; }}
+        public IEnumerable<Cut> Cut { get { return context.Cut; }}
 
         public void populateWhAndSt(int mN, string n, string[] c, int[] s, int p)
         {
@@ -271,10 +272,24 @@ namespace Josephine.Concrete
         }
 
 
+        
         public void populateMainWh(List<MainWarehouse> mwh)
         {
             context.MainWh.AddRange(mwh);
             context.SaveChanges();
+        }
+        public void AddMainWhItemToDb(MainWarehouse item)
+        {
+            try
+            {
+                context.MainWh.Add(item);
+                context.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
         }
         public void AddProductionTaskToDb(ProductionTask task)
         {
@@ -300,6 +315,19 @@ namespace Josephine.Concrete
 
                 throw ex;
             }
-        }        
+        }
+        public void AddCutToDb(Cut c)
+        {
+            try
+            {
+                context.Cut.Add(c);
+                context.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
     }
 }

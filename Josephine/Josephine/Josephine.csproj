@@ -105,8 +105,28 @@
     <Content Include="Content\Not so fast.mp3" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
+    <Content Include="Scripts\app\production\controllers\editItem.js" />
+    <Content Include="Scripts\app\production\controllers\newRecipe.js" />
+    <Content Include="Scripts\app\production\controllers\newTask.js" />
+    <Content Include="Scripts\app\production\controllers\prodNav.js" />
+    <Content Include="Scripts\app\production\controllers\production.js" />
+    <Content Include="Scripts\app\production\directives.js" />
+    <Content Include="Scripts\app\production\prodData.service.js" />
+    <Content Include="Scripts\app\production\production.routes.js" />
+    <Content Include="Scripts\app\store\controllers\customers.js" />
+    <Content Include="Scripts\app\store\controllers\modalAddProductToWh.js" />
+    <Content Include="Scripts\app\store\controllers\modalNewCustomer.js" />
+    <Content Include="Scripts\app\store\controllers\modalNewEmployee.js" />
+    <Content Include="Scripts\app\store\controllers\nav.js" />
+    <Content Include="Scripts\app\store\controllers\orders.js" />
+    <Content Include="Scripts\app\store\controllers\sales.js" />
+    <Content Include="Scripts\app\store\controllers\store.js" />
+    <Content Include="Scripts\app\store\data.service.js" />
+    <Content Include="Scripts\app\store\directives.js" />
+    <Content Include="Scripts\app\store\store.module.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Scripts\app\production\production.module.js" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -171,7 +191,16 @@
     <EmbeddedResource Include="Migrations\201511031844210_fixedRecipeAndItems1.resx">
       <DependentUpon>201511031844210_fixedRecipeAndItems1.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Scripts\Views\Home\app.js">
+    <EmbeddedResource Include="Migrations\201511171126027_AddCut.resx">
+      <DependentUpon>201511171126027_AddCut.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201511231530078_AddTaskCategory.resx">
+      <DependentUpon>201511231530078_AddTaskCategory.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201511231857215_AddResultPropsForTask.resx">
+      <DependentUpon>201511231857215_AddResultPropsForTask.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Scripts\app\app.module.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
     <Content Include="Scripts\Views\Home\AskDemo.js" />
@@ -274,8 +303,21 @@
     <Compile Include="Migrations\201511031844210_fixedRecipeAndItems1.Designer.cs">
       <DependentUpon>201511031844210_fixedRecipeAndItems1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201511171126027_AddCut.cs" />
+    <Compile Include="Migrations\201511171126027_AddCut.Designer.cs">
+      <DependentUpon>201511171126027_AddCut.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201511231530078_AddTaskCategory.cs" />
+    <Compile Include="Migrations\201511231530078_AddTaskCategory.Designer.cs">
+      <DependentUpon>201511231530078_AddTaskCategory.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201511231857215_AddResultPropsForTask.cs" />
+    <Compile Include="Migrations\201511231857215_AddResultPropsForTask.Designer.cs">
+      <DependentUpon>201511231857215_AddResultPropsForTask.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Customer.cs" />
+    <Compile Include="Models\Cut.cs" />
     <Compile Include="Models\Employee.cs" />
     <Compile Include="Models\MainWarehouse.cs" />
     <Compile Include="Models\OrderInfo.cs" />

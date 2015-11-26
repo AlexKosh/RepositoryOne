@@ -2,7 +2,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div ng-controller="HomeController">
+<div ng-controller="StoreController">
     <nav-buttons></nav-buttons>
 
     <div class="container">
@@ -245,7 +245,7 @@
         </div>
     </script>
     <script type="text/ng-template" id="salesReportView">
-        <div ng-controller="DatepickerDemoController" ng-show="$parent.isSelected == 'sales'">
+        <div ng-controller="SalesController" ng-show="$parent.isSelected == 'sales'">
 
             <div class="row navbar-btn">
                 <div class="col-lg-8">

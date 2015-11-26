@@ -13,8 +13,5 @@ namespace Josephine.Models
         public int Quantity { get; set; }
         public int TaskId { get; set; }
         public int ItemId { get; set; }
-        public virtual ProductionTask ProductionTask { get; set; }
-
-        
     }
 }
