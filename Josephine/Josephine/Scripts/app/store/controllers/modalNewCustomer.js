@@ -1,46 +1,50 @@
-﻿angular
-    .module('Jos.store')
-    .controller('ModalNewCustomerController', NewCustomerController);
+﻿(function () {
+    'use strict';
 
-NewCustomerController.$inject = ['$rootScope', '$scope', '$modalInstance', 'dataService'];
-function NewCustomerController($rootScope, $scope, $modalInstance, dataService) {
-    {
-        function Customer(c) {
-            this.CustomerId = null;
-            this.Name = c.Name;
-            this.Surname = c.Surname;
-            this.Nickname = c.Nickname;
-            this.Gender = c.Gender;
-            this.Birthday = c.Birthday;
-            this.Age = 0;
+    angular
+        .module('Jos.store')
+        .controller('ModalNewCustomerController', NewCustomerController);
 
-            this.FirstMet = new Date();
+    NewCustomerController.$inject = ['$rootScope', '$scope', '$modalInstance', 'dataService'];
+    function NewCustomerController($rootScope, $scope, $modalInstance, dataService) {
+        {
+            function Customer(c) {
+                this.CustomerId = null;
+                this.Name = c.Name;
+                this.Surname = c.Surname;
+                this.Nickname = c.Nickname;
+                this.Gender = c.Gender;
+                this.Birthday = c.Birthday;
+                this.Age = 0;
 
-            this.Notations = c.Notations;
-            this.locationOfTrade = c.locationOfTrade;
-            this.PhoneNumber = c.PhoneNumber;
-            this.AlternatePhone = c.AlternatePhone;
-            this.Email = c.Email;
-            this.Skype = c.Skype;
-            this.OtherContact = c.OtherContact;
+                this.FirstMet = new Date();
 
-            this.Speciality = c.Speciality;
-            this.lastPurchase = this.FirstMet;
-            this.isInformed = true;
-            this.Balance = 0;
+                this.Notations = c.Notations;
+                this.locationOfTrade = c.locationOfTrade;
+                this.PhoneNumber = c.PhoneNumber;
+                this.AlternatePhone = c.AlternatePhone;
+                this.Email = c.Email;
+                this.Skype = c.Skype;
+                this.OtherContact = c.OtherContact;
 
-            this.MoneySpent = 0;
-            this.Level = 1;
-        };
+                this.Speciality = c.Speciality;
+                this.lastPurchase = this.FirstMet;
+                this.isInformed = true;
+                this.Balance = 0;
 
-        $scope.createNewCust = function () {
-            var cust = new Customer($scope.tempCustomer);
-            dataService.postNewCust(cust, $scope.$parent);
-            $modalInstance.close();
-        };
+                this.MoneySpent = 0;
+                this.Level = 1;
+            };
 
-        $scope.cancel = function () {
-            $modalInstance.dismiss();
-        };
+            $scope.createNewCust = function () {
+                var cust = new Customer($scope.tempCustomer);
+                dataService.postNewCust(cust, $scope.$parent);
+                $modalInstance.close();
+            };
+
+            $scope.cancel = function () {
+                $modalInstance.dismiss();
+            };
+        }
     }
-}
+})();

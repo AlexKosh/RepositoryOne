@@ -1,3 +1,7 @@
-﻿angular
-    .module('Jos.production', ['ngRoute']);
+﻿(function () {
+    'use strict';
+
+    angular
+        .module('Jos.production', ['ngRoute']);
+})();
 

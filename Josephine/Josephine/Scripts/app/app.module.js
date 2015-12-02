@@ -1,5 +1,9 @@
-﻿angular
-    .module('Josephine', [
-        'Jos.store',
-        'Jos.production'
-    ]);
+﻿(function () {
+    'use strict';
+
+    angular
+        .module('Josephine', [
+            'Jos.store',
+            'Jos.production'
+        ]);
+})();

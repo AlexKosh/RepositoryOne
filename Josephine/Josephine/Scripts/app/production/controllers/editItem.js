@@ -1,36 +1,40 @@
-﻿angular
-    .module('Jos.production')
-    .controller('ModalEditItemController', EditItemController);
+﻿(function() {
+    'use strict';
 
-EditItemController.$inject = ['$scope', '$modalInstance', 'prodDataService'];
-function EditItemController($scope, $modalInstance, prodDataService) {
+    angular
+        .module('Jos.production')
+        .controller('ModalEditItemController', EditItemController);
 
-    $scope.tempItem = { CategoryId: null };    
-    $scope.recipeCategories = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+    EditItemController.$inject = ['$scope', '$modalInstance', 'prodDataService'];
+    function EditItemController($scope, $modalInstance, prodDataService) {
 
-    $scope.$watch("tempItem.CategoryId", watchCategoryId);
+        $scope.tempItem = { CategoryId: null };    
+        $scope.recipeCategories = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 
-    function watchCategoryId(val) {
+        $scope.$watch("tempItem.CategoryId", watchCategoryId);
+
+        function watchCategoryId(val) {
         
-        if ($scope.tempItem.CategoryId < 6) {
-            $scope.tempItem.UnitOfMeasurement = "м";
+            if ($scope.tempItem.CategoryId < 6) {
+                $scope.tempItem.UnitOfMeasurement = "м";
+            }
+            else {
+                $scope.tempItem.UnitOfMeasurement = "шт.";
+            }        
         }
-        else {
-            $scope.tempItem.UnitOfMeasurement = "шт.";
-        }        
-    }
     
-    $scope.ok = function () {
+        $scope.ok = function () {
 
-        if ($scope.tempItem.CategoryId == 11) {
-            prodDataService.postCut($scope.tempItem);
-        } else {
-            prodDataService.postMainWhItem($scope.tempItem);
-        }
+            if ($scope.tempItem.CategoryId == 11) {
+                prodDataService.postCut($scope.tempItem);
+            } else {
+                prodDataService.postMainWhItem($scope.tempItem);
+            }
         
-        $modalInstance.close();
-    };
-    $scope.cancel = function () {
-        $modalInstance.dismiss();
+            $modalInstance.close();
+        };
+        $scope.cancel = function () {
+            $modalInstance.dismiss();
+        }
     }
-}
+})();

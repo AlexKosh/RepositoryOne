@@ -1,18 +1,29 @@
-﻿angular
-    .module('Jos.production')
-    .config(routeProviderHelper);
+﻿(function () {
+    'use strict';
 
-routeProviderHelper.$inject = ['$routeProvider'];
-function routeProviderHelper($routeProvider) {
+    angular
+        .module('Jos.production')
+        .config(routeProviderHelper);
 
-    $routeProvider
-        .when('/mainWh', {
-            templateUrl: 'mainWhView'
-        })
-        .when('/quilting', {
-            templateUrl: 'quiltingView'
-        })
-        .when('/manage', {
-            templateUrl: 'managmentView'
-        });
-}
+    routeProviderHelper.$inject = ['$routeProvider'];
+    function routeProviderHelper($routeProvider) {
+
+        $routeProvider
+            .when('/mainWh', {
+                templateUrl: 'mainWhView'
+            })
+            .when('/quilting', {
+                templateUrl: 'quiltingView',
+                controller: 'QuiltingController',
+                controllerAs: 'vm'
+            })
+            .when('/cutting', {
+                templateUrl: 'cuttingView',
+                controller: 'CuttingController',
+                controllerAs: 'vm'
+            })
+            .when('/manage', {
+                templateUrl: 'managmentView'
+            });
+    }
+})();

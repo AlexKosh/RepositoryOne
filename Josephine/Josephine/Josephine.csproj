@@ -105,11 +105,13 @@
     <Content Include="Content\Not so fast.mp3" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
+    <Content Include="Scripts\app\production\controllers\cutting.js" />
     <Content Include="Scripts\app\production\controllers\editItem.js" />
     <Content Include="Scripts\app\production\controllers\newRecipe.js" />
     <Content Include="Scripts\app\production\controllers\newTask.js" />
     <Content Include="Scripts\app\production\controllers\prodNav.js" />
     <Content Include="Scripts\app\production\controllers\production.js" />
+    <Content Include="Scripts\app\production\controllers\quilting.js" />
     <Content Include="Scripts\app\production\directives.js" />
     <Content Include="Scripts\app\production\prodData.service.js" />
     <Content Include="Scripts\app\production\production.routes.js" />
@@ -199,6 +201,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201511231857215_AddResultPropsForTask.resx">
       <DependentUpon>201511231857215_AddResultPropsForTask.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201512022004176_AddCutProp.resx">
+      <DependentUpon>201512022004176_AddCutProp.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Scripts\app\app.module.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -314,6 +319,10 @@
     <Compile Include="Migrations\201511231857215_AddResultPropsForTask.cs" />
     <Compile Include="Migrations\201511231857215_AddResultPropsForTask.Designer.cs">
       <DependentUpon>201511231857215_AddResultPropsForTask.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201512022004176_AddCutProp.cs" />
+    <Compile Include="Migrations\201512022004176_AddCutProp.Designer.cs">
+      <DependentUpon>201512022004176_AddCutProp.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Customer.cs" />
