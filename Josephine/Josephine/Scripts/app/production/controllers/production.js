@@ -507,6 +507,16 @@
                 scope: $scope
             });
         };
+        
+        $scope.openNewCuttingTask = function () {
+            var modalInstance = $modal.open({
+                templateUrl: 'newCuttingTask.modal',
+                size: 'lg',
+                scope: $scope,
+                controller: 'NewCuttingTaskController',
+                controllerAs: 'vm'
+            })
+        }
         //end of managment region
 
     }

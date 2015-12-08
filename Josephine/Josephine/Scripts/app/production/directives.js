@@ -54,7 +54,6 @@
         return directive;
     }
 
-
     angular
         .module('Jos.production')
         .directive('validateNewRecipe', validateNewRecipe);

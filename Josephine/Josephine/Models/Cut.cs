@@ -10,11 +10,12 @@ namespace Josephine.Models
     {
         [Key]
         public int CutId { get; set; }
-        public int ProductId { get; set; }
+        public int TaskId { get; set; }
         public int ModelNumber { get; set; }        
         public string Name { get; set; }
         public int Size { get; set; }
         public string Color { get; set; }
         public int Quantity { get; set; }
+        public int isComplete { get; set; }
     }
 }

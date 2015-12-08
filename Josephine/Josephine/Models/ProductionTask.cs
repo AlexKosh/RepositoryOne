@@ -20,6 +20,7 @@ namespace Josephine.Models
         public int Priority { get; set; }
 
         public virtual ICollection<TaskItem> TaskItems { get; set; }
+        public virtual ICollection<Cut> TaskCuts { get; set; }
 
         public ProductionTask()
         {

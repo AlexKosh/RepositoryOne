@@ -107,6 +107,7 @@
     <Content Include="Global.asax" />
     <Content Include="Scripts\app\production\controllers\cutting.js" />
     <Content Include="Scripts\app\production\controllers\editItem.js" />
+    <Content Include="Scripts\app\production\controllers\newCuttingTask.js" />
     <Content Include="Scripts\app\production\controllers\newRecipe.js" />
     <Content Include="Scripts\app\production\controllers\newTask.js" />
     <Content Include="Scripts\app\production\controllers\prodNav.js" />
@@ -133,77 +134,11 @@
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
-    <EmbeddedResource Include="Migrations\201506272051188_InitialCreate.resx">
-      <DependentUpon>201506272051188_InitialCreate.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201512081623125_Start.resx">
+      <DependentUpon>201512081623125_Start.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201507040934463_FixEmployee.resx">
-      <DependentUpon>201507040934463_FixEmployee.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201507040941581_EmployeeGender.resx">
-      <DependentUpon>201507040941581_EmployeeGender.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201507050528089_specForCustomer.resx">
-      <DependentUpon>201507050528089_specForCustomer.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201507071227553_extendedOrderProduct.resx">
-      <DependentUpon>201507071227553_extendedOrderProduct.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201507081244527_AddIsDeliveredAndIsPaidToOrderInfo.resx">
-      <DependentUpon>201507081244527_AddIsDeliveredAndIsPaidToOrderInfo.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201507081531512_addIsResolved.resx">
-      <DependentUpon>201507081531512_addIsResolved.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201507090729434_AddOrderInfoIsPacked.resx">
-      <DependentUpon>201507090729434_AddOrderInfoIsPacked.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201508051520101_saleNewProp.resx">
-      <DependentUpon>201508051520101_saleNewProp.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201508071246119_addEmployeeIdToSale.resx">
-      <DependentUpon>201508071246119_addEmployeeIdToSale.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201509291524380_addMainWh.resx">
-      <DependentUpon>201509291524380_addMainWh.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201510201322111_AddRecipeTable.resx">
-      <DependentUpon>201510201322111_AddRecipeTable.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201510231920161_AddRecipeCategoryToRecipe.resx">
-      <DependentUpon>201510231920161_AddRecipeCategoryToRecipe.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201510231952057_AddTask.resx">
-      <DependentUpon>201510231952057_AddTask.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201510281833373_AddTaskItem.resx">
-      <DependentUpon>201510281833373_AddTaskItem.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201510301109254_fixTaskAndItems.resx">
-      <DependentUpon>201510301109254_fixTaskAndItems.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201511031200503_addRecipeItemsAndFixedRecipe.resx">
-      <DependentUpon>201511031200503_addRecipeItemsAndFixedRecipe.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201511031212192_fixedRecipeItemsKeys.resx">
-      <DependentUpon>201511031212192_fixedRecipeItemsKeys.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201511031452431_fixedRecipeAndItems.resx">
-      <DependentUpon>201511031452431_fixedRecipeAndItems.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201511031844210_fixedRecipeAndItems1.resx">
-      <DependentUpon>201511031844210_fixedRecipeAndItems1.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201511171126027_AddCut.resx">
-      <DependentUpon>201511171126027_AddCut.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201511231530078_AddTaskCategory.resx">
-      <DependentUpon>201511231530078_AddTaskCategory.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201511231857215_AddResultPropsForTask.resx">
-      <DependentUpon>201511231857215_AddResultPropsForTask.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201512022004176_AddCutProp.resx">
-      <DependentUpon>201512022004176_AddCutProp.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201512081636400_AddTaskCutsForProductionTask.resx">
+      <DependentUpon>201512081636400_AddTaskCutsForProductionTask.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Scripts\app\app.module.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -228,101 +163,13 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Infrastructure\NinjectDependencyResolver.cs" />
-    <Compile Include="Migrations\201506272051188_InitialCreate.cs" />
-    <Compile Include="Migrations\201506272051188_InitialCreate.Designer.cs">
-      <DependentUpon>201506272051188_InitialCreate.cs</DependentUpon>
+    <Compile Include="Migrations\201512081623125_Start.cs" />
+    <Compile Include="Migrations\201512081623125_Start.Designer.cs">
+      <DependentUpon>201512081623125_Start.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201507040934463_FixEmployee.cs" />
-    <Compile Include="Migrations\201507040934463_FixEmployee.Designer.cs">
-      <DependentUpon>201507040934463_FixEmployee.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201507040941581_EmployeeGender.cs" />
-    <Compile Include="Migrations\201507040941581_EmployeeGender.Designer.cs">
-      <DependentUpon>201507040941581_EmployeeGender.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201507050528089_specForCustomer.cs" />
-    <Compile Include="Migrations\201507050528089_specForCustomer.Designer.cs">
-      <DependentUpon>201507050528089_specForCustomer.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201507071227553_extendedOrderProduct.cs" />
-    <Compile Include="Migrations\201507071227553_extendedOrderProduct.Designer.cs">
-      <DependentUpon>201507071227553_extendedOrderProduct.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201507081244527_AddIsDeliveredAndIsPaidToOrderInfo.cs" />
-    <Compile Include="Migrations\201507081244527_AddIsDeliveredAndIsPaidToOrderInfo.Designer.cs">
-      <DependentUpon>201507081244527_AddIsDeliveredAndIsPaidToOrderInfo.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201507081531512_addIsResolved.cs" />
-    <Compile Include="Migrations\201507081531512_addIsResolved.Designer.cs">
-      <DependentUpon>201507081531512_addIsResolved.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201507090729434_AddOrderInfoIsPacked.cs" />
-    <Compile Include="Migrations\201507090729434_AddOrderInfoIsPacked.Designer.cs">
-      <DependentUpon>201507090729434_AddOrderInfoIsPacked.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201508051520101_saleNewProp.cs" />
-    <Compile Include="Migrations\201508051520101_saleNewProp.Designer.cs">
-      <DependentUpon>201508051520101_saleNewProp.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201508071246119_addEmployeeIdToSale.cs" />
-    <Compile Include="Migrations\201508071246119_addEmployeeIdToSale.Designer.cs">
-      <DependentUpon>201508071246119_addEmployeeIdToSale.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201509291524380_addMainWh.cs" />
-    <Compile Include="Migrations\201509291524380_addMainWh.Designer.cs">
-      <DependentUpon>201509291524380_addMainWh.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201510201322111_AddRecipeTable.cs" />
-    <Compile Include="Migrations\201510201322111_AddRecipeTable.Designer.cs">
-      <DependentUpon>201510201322111_AddRecipeTable.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201510231920161_AddRecipeCategoryToRecipe.cs" />
-    <Compile Include="Migrations\201510231920161_AddRecipeCategoryToRecipe.Designer.cs">
-      <DependentUpon>201510231920161_AddRecipeCategoryToRecipe.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201510231952057_AddTask.cs" />
-    <Compile Include="Migrations\201510231952057_AddTask.Designer.cs">
-      <DependentUpon>201510231952057_AddTask.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201510281833373_AddTaskItem.cs" />
-    <Compile Include="Migrations\201510281833373_AddTaskItem.Designer.cs">
-      <DependentUpon>201510281833373_AddTaskItem.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201510301109254_fixTaskAndItems.cs" />
-    <Compile Include="Migrations\201510301109254_fixTaskAndItems.Designer.cs">
-      <DependentUpon>201510301109254_fixTaskAndItems.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201511031200503_addRecipeItemsAndFixedRecipe.cs" />
-    <Compile Include="Migrations\201511031200503_addRecipeItemsAndFixedRecipe.Designer.cs">
-      <DependentUpon>201511031200503_addRecipeItemsAndFixedRecipe.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201511031212192_fixedRecipeItemsKeys.cs" />
-    <Compile Include="Migrations\201511031212192_fixedRecipeItemsKeys.Designer.cs">
-      <DependentUpon>201511031212192_fixedRecipeItemsKeys.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201511031452431_fixedRecipeAndItems.cs" />
-    <Compile Include="Migrations\201511031452431_fixedRecipeAndItems.Designer.cs">
-      <DependentUpon>201511031452431_fixedRecipeAndItems.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201511031844210_fixedRecipeAndItems1.cs" />
-    <Compile Include="Migrations\201511031844210_fixedRecipeAndItems1.Designer.cs">
-      <DependentUpon>201511031844210_fixedRecipeAndItems1.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201511171126027_AddCut.cs" />
-    <Compile Include="Migrations\201511171126027_AddCut.Designer.cs">
-      <DependentUpon>201511171126027_AddCut.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201511231530078_AddTaskCategory.cs" />
-    <Compile Include="Migrations\201511231530078_AddTaskCategory.Designer.cs">
-      <DependentUpon>201511231530078_AddTaskCategory.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201511231857215_AddResultPropsForTask.cs" />
-    <Compile Include="Migrations\201511231857215_AddResultPropsForTask.Designer.cs">
-      <DependentUpon>201511231857215_AddResultPropsForTask.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201512022004176_AddCutProp.cs" />
-    <Compile Include="Migrations\201512022004176_AddCutProp.Designer.cs">
-      <DependentUpon>201512022004176_AddCutProp.cs</DependentUpon>
+    <Compile Include="Migrations\201512081636400_AddTaskCutsForProductionTask.cs" />
+    <Compile Include="Migrations\201512081636400_AddTaskCutsForProductionTask.Designer.cs">
+      <DependentUpon>201512081636400_AddTaskCutsForProductionTask.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Customer.cs" />

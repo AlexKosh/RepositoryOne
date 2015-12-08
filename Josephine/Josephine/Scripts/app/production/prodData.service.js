@@ -44,6 +44,12 @@
                 });
                 return promise;
             },
+            getCuttingRecipes: function(){
+                var promise = $http.get('/production/getCuttingRecipes').then(function (response) {
+                    return response.data;
+                });
+                return promise;
+            },
             postMainWhItem: function (data) {
                 $http.post('/production/postItem', { d: data })
                 .success(function (resp) {
@@ -83,6 +89,16 @@
                         console.log("-=----=----=-");
                     })
                     .error(function () { alert('err in post new recipe'); });
+            },
+            postCuttingTask: function (data) {
+                $http.post('/production/postCuttingTask', { d: data })
+                    .success(function (data) {
+                        console.log("-=----=CuttingTask=----=-");
+                        console.log(data);
+                        console.log('success!');
+                        console.log("-=----=----=-");
+                    })
+                .error(function (data) { alert('err in post new recipe'); });
             }
         }
     }

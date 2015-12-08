@@ -397,6 +397,10 @@
                 <select ng-model="tempItem.CategoryId"
                         ng-options="$parent.getCategoryName(c) for c in recipeCategories"></select>
             </div>
+            <div ng-show="tempItem.CategoryId > 10">
+                <label>Номер модели</label>
+                <input type="text" ng-model="tempItem.ModelNumber" class="form-control" />
+            </div>
             <div>
                 <label>Название</label>
                 <input type="text" ng-model="tempItem.Name" class="form-control" />
@@ -427,10 +431,82 @@
         </div>
     </div>
 </script>
+<script id="newCuttingTask.modal" type="text/ng-template">
+    <div class="modal-content">
+        <div class="modal-header"><h3>Новый крой</h3></div>
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-lg-4">
+                    <input class="form-control" type="text" ng-model="vm.search" placeholder="№ модели или цвет" />
+                    <h4>Рецепты:</h4>
+
+                    <li class="btn btn-link" ng-repeat="r in vm.recipes | filter: vm.search" ng-click="vm.selectRecipe(r)">
+                        <span class="glyphicon glyphicon-ok" ng-show="vm.selectedRecipe == r"></span>
+                        {{r.Name}}
+                    </li>
+                </div>
+                <div class="col-lg-8" ng-hide="vm.selectedRecipe == ' '">
+                    <p>
+                        ЧТО: <span style="font-size:x-large">{{vm.selectedRecipeToString()}}</span>
+                        <span class="pull-right">
+                            <span class="btn btn-link" ng-click="vm.multiplier = vm.multiplier - 1">
+                                <span class="glyphicon glyphicon-minus"></span>
+                            </span>
+                            <a>{{vm.multiplier}}</a>
+                            <span class="btn btn-link" ng-click="vm.multiplier = vm.multiplier + 1">
+                                <span class="glyphicon glyphicon-plus"></span>
+                            </span>
+                        </span>                        
+                    </p>
+                    <p>
+                        ИЗ ЧЕГО: <span style="font-size:x-large">
+                            {{vm.selectedRecipeResultToString()}}
+                        </span>
+                    </p>
+                    <div class="row">
+                        <div class="col-lg-2">
+                            <input type="number" class="form-control col-lg-2" step="2"
+                                   ng-model="vm.cuttingItems.sizes.min" placeholder="мин" />
+                        </div>
+                        <div class="col-lg-2">
+                            <input type="number" class="form-control col-lg-2" step="2"
+                                   ng-model="vm.cuttingItems.sizes.max" placeholder="макс" />
+                        </div>
+                        <div class="col-lg-8" style="font-size:x-large">
+                            <label>Всего:</label>  <span class="label" ng-class="vm.checkSum()">{{vm.cuttingItems.sum()}}</span>
+                            <label>из</label> <span class="label label-primary">{{vm.selectedRecipe.ResultQuantity * vm.multiplier}}</span>
+                        </div>
+                    </div>                    
+                    <div class="btn-group-vertical" style="margin-top:10px">
+                        <div ng-repeat="item in vm.cuttingItems.items">
+                            <button class="btn btn-default">{{item.size + ':'}}</button>
+                            <span class="btn btn-link" ng-click="vm.minusQuan(item)">
+                                <span class="glyphicon glyphicon-minus"></span>
+                            </span>
+                            <a>{{item.quantity}}</a>
+                            <span class="btn btn-link" ng-click="vm.addQuan(item)">
+                                <span class="glyphicon glyphicon-plus"></span>
+                            </span>
+                            <span class="btn btn-link">
+                                <input type="range" class="btn" ng-model="item.quantity" min="0" max="35"/>
+                            </span>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-default" ng-click="vm.ok()">Ok</button>
+            <button class="btn btn-link" ng-click="vm.cancel()">Отмена</button>
+        </div>
+    </div>
+</script>
 <script id="managmentView" type="text/ng-template">
-    <button class="btn btn-default" ng-click="openNewTask()">Новое задание</button>
+    <button class="btn btn-default" ng-click="openNewTask()">Новое задание стежка</button>
     <button class="btn btn-default" ng-click="openNewRecipe()">Новый рецепт</button>
-    <button class="btn btn-danger" ng-click="getQTasks()"> get quilting tasks</button>
+    <button class="btn btn-default" ng-click="openNewCuttingTask()">Новое задание крой</button>
+    @*<button class="btn btn-danger" ng-click="getQTasks()"> get quilting tasks</button>*@
 
 </script>
 

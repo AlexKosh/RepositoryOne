@@ -9,6 +9,7 @@ namespace Josephine.Concrete
 {
     public class EFProductRepository : IProductRepository
     {
+        const int CUT_CATEGORY = 11;
         private EFDbContext context = new EFDbContext();
         public IEnumerable<Store> Store
         {
@@ -320,6 +321,28 @@ namespace Josephine.Concrete
         {
             try
             {
+                var cutKits = context.MainWh
+                    .Where(x => x.CategoryId == CUT_CATEGORY && x.Color.ToLower() == c.Color.ToLower()).ToArray();
+                bool isSameExists = false;
+
+                for (int i = 0; i < cutKits.Count(); i++ )
+                {
+                    isSameExists = cutKits[i].Name.Contains(c.ModelNumber.ToString()) || cutKits[i].Name.Contains(c.Name);
+                    if (isSameExists == true)
+                    {
+                        context.Cut.Add(c);
+                        context.SaveChanges();
+                        return;
+                    }
+                }
+
+                context.MainWh.Add(
+                    new MainWarehouse(
+                        CUT_CATEGORY,
+                        c.ModelNumber.ToString() + ' ' + c.Name + " крой",
+                        c.Color,
+                        1,
+                        "шт."));
                 context.Cut.Add(c);
                 context.SaveChanges();
             }

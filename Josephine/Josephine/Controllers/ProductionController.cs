@@ -10,7 +10,7 @@ namespace Josephine.Controllers
 {    
     public class ProductionController : Controller
     {
-        private const int QUILTING_CAT = 1;
+        private const int QUILTING_CAT = 1, CUTTING_CAT = 11;
 
         private IProductRepository repository;
         public ProductionController(IProductRepository repo)
@@ -282,6 +282,20 @@ namespace Josephine.Controllers
                         
 
             return Json(result, JsonRequestBehavior.AllowGet);
+        }
+        public JsonResult getCuttingRecipes()
+        {
+            List<Recipe> result = new List<Recipe>();
+            using (EFDbContext ct = new EFDbContext())
+            {
+                result = ct.Recipe.Include("RecipeItems").Where(x => x.RecipeCategory == CUTTING_CAT).ToList();
+            }
+
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+        public void postCuttingTask(ProductionTask d)
+        {
+            repository.AddProductionTaskToDb(d);
         }
     }
 }
