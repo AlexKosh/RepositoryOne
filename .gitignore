@@ -187,3 +187,15 @@ FakesAssemblies/
 GeneratedArtifacts/
 _Pvt_Extensions/
 ModelManifest.xml
+/Josephine/Josephine/Migrations/201512061602067_TaskIdForCuts.cs
+/Josephine/Josephine/Migrations/201512061602067_TaskIdForCuts.Designer.cs
+/Josephine/Josephine/Migrations/201512061602067_TaskIdForCuts.resx
+/Josephine/Josephine/Migrations/201512061606526_isCompleteForCuts.cs
+/Josephine/Josephine/Migrations/201512061606526_isCompleteForCuts.Designer.cs
+/Josephine/Josephine/Migrations/201512061606526_isCompleteForCuts.resx
+/Josephine/Josephine/Migrations/201512081619076_AfterDeleteSomeDBs.cs
+/Josephine/Josephine/Migrations/201512081619076_AfterDeleteSomeDBs.Designer.cs
+/Josephine/Josephine/Migrations/201512081619076_AfterDeleteSomeDBs.resx
+/Josephine/Josephine/Migrations/201512081620039_AfterDeleteProdTaskAndOther.cs
+/Josephine/Josephine/Migrations/201512081620039_AfterDeleteProdTaskAndOther.Designer.cs
+/Josephine/Josephine/Migrations/201512081620039_AfterDeleteProdTaskAndOther.resx
