@@ -129,6 +129,8 @@ app.controller('AskDemoController', function ($scope, $http) {
                 break;
             case 5: return "Заказы";
                 break;
+            case 6: return "Главный склад";
+                break;
             default: return "Что-то новенькое";
         };
     };
