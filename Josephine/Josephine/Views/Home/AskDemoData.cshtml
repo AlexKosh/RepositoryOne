@@ -7,39 +7,43 @@
 
 <html ng-app="askDemoData">
 <body ng-controller="AskDemoController">
-    <div class="alert alert-info text-center">
-        <h1>Какая-то из БД пуста</h1>
-        <h3>Можно использовать демо-режим</h3>
-    </div>
-    <div class="row">
-        <div class="col-lg-3"></div>
-        <div class="col-lg-6">
-            <div class="text-center">
-                
-            </div>
-            <table class="table" ng-repeat="i in [0, 1, 2, 3, 4, 5]">
-                <thead>
-                    <tr>
-                        <th><h2>{{getDbName(i)}}</h2></th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><h4>статус БД:</h4></td>
-                        <td><h4>{{getTextInfo(isDbEmpty[i])}}</h4></td>
-                    </tr>
-                </tbody>
-                <tfoot>
-                    <tr>
-                        <td><button class="btn btn-default" ng-click="delDb(i)">Очистить</button></td>
-                        <td><button class="btn btn-default" ng-click="getDemo(i)">Использовать демо</button></td>
-                    </tr>
-                </tfoot>
-            </table>
+    <div class="container">
+        <div class="alert alert-info" role="alert">
+            <strong>Одна из БД пуста!</strong>           
+                Вы можете использовать демо-режим
+                <a class="alert-link" ng-click="setAllDemo()">для всех БД</a>,
+                <a class="alert-link" ng-click="setSomeDemo()">только для пустых БД</a>
+                или <a class="alert-link" ng-click="isManualSetting = true">настроить демо-режим в ручую</a>            
         </div>
-        <div class="col-lg-3"></div>
-    </div>
+        <div class="row" ng-show="isManualSetting">
+            <div class="col-lg-6">
+                <div class="panel panel-default">
+                    <div class="panel-heading"><h3 class="panel-title">Магазин</h3></div>
+                    <table class="table">                        
+                        <tr ng-repeat="i in [0, 1, 2, 3, 4, 5]">
+                            <td><span style="font-size:large">{{getDbName(i)}}</span></td>
+                            <td><button class="btn glyphicon" ng-class="getGlyphClass(i)"></button></td>
+                            <td><button ng-click="getDemo(i)" class="btn glyphicon glyphicon-import"></button></td>
+                            <td><button ng-click="delDb(i)" class="btn glyphicon glyphicon-floppy-remove"></button></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="panel panel-default">
+                    <div class="panel-heading"><h3 class="panel-title">Производство</h3></div>
+                    <table class="table">
+                        <tr ng-repeat="i in [6]">
+                            <td>{{getDbName(i)}}</td>
+                            <td><span class="glyphicon" ng-class="getGlyphClass(i)"></span></td>
+                            <td><span ng-click="getDemo(i)" class="glyphicon glyphicon-import"></span></td>
+                            <td><span ng-click="delDb(i)" class="glyphicon glyphicon-floppy-remove"></span></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>        
+    </div>    
     <script src="~/Scripts/Views/Home/AskDemo.js"></script>
 </body>
 </html>

@@ -383,10 +383,182 @@ namespace Josephine.Controllers
             repository.deleteOrders();
         }
 
+        public void pplMainWh()
+        {
+            List<MainWarehouse> mwh = new List<MainWarehouse>();
+
+            MainWarehouse mwhItem = new MainWarehouse(2, "Плащевка", "Синий", 500, "метр");
+            mwh.Add(mwhItem);
+            mwhItem = new MainWarehouse(2, "Плащевка", "Светлый беж", 700, "метр");
+            mwh.Add(mwhItem);
+            mwhItem = new MainWarehouse(2, "Плащевка", "Темный беж", 300, "метр");
+            mwh.Add(mwhItem);
+            mwhItem = new MainWarehouse(2, "Плащевка", "Черный", 200, "метр");
+            mwh.Add(mwhItem);
+            mwhItem = new MainWarehouse(3, "Артикул 575", "Черный", 200, "метр");
+            mwh.Add(mwhItem);
+            mwhItem = new MainWarehouse(3, "Артикул 675", "Синий", 400, "метр");
+            mwh.Add(mwhItem);
+            mwhItem = new MainWarehouse(7, "Змейка 10см", "Синий", 60, "шт.");
+            mwh.Add(mwhItem);
+            mwhItem = new MainWarehouse(7, "Змейка 10см", "Светлый беж", 110, "шт.");
+            mwh.Add(mwhItem);
+            mwhItem = new MainWarehouse(7, "Змейка 10см", "Темный беж", 40, "шт.");
+            mwh.Add(mwhItem);
+            mwhItem = new MainWarehouse(7, "Змейка 10см", "Черный", 20, "шт.");
+            mwh.Add(mwhItem);
+            mwhItem = new MainWarehouse(7, "Змейка 80см", "Синий", 30, "шт.");
+            mwh.Add(mwhItem);
+            mwhItem = new MainWarehouse(7, "Змейка 80см", "Светлый беж", 60, "шт.");
+            mwh.Add(mwhItem);
+            mwhItem = new MainWarehouse(7, "Змейка 80см", "Темный беж", 20, "шт.");
+            mwh.Add(mwhItem);
+            mwhItem = new MainWarehouse(7, "Змейка 80см", "Черный", 20, "шт.");
+            mwh.Add(mwhItem);
+            mwhItem = new MainWarehouse(7, "Шнурок для капюшона", "Черный", 20, "шт.");
+            mwh.Add(mwhItem);
+            mwhItem = new MainWarehouse(7, "Шнурок для капюшона", "Синий", 30, "шт.");
+            mwh.Add(mwhItem);
+            mwhItem = new MainWarehouse(7, "Шнурок для капюшона", "Светлый беж", 50, "шт.");
+            mwh.Add(mwhItem);
+            mwhItem = new MainWarehouse(7, "Шнурок для капюшона", "Темный беж", 20, "шт.");
+            mwh.Add(mwhItem);
+            mwhItem = new MainWarehouse(7, "Кнопка скрытая", "метал", 400, "шт.");
+            mwh.Add(mwhItem);
+            mwhItem = new MainWarehouse(7, "Змейка 20см", "Синий", 30, "шт.");
+            mwh.Add(mwhItem);
+            mwhItem = new MainWarehouse(7, "Змейка 20см", "Светлый беж", 55, "шт.");
+            mwh.Add(mwhItem);
+            mwhItem = new MainWarehouse(7, "Змейка 20см", "Темный беж", 20, "шт.");
+            mwh.Add(mwhItem);
+            mwhItem = new MainWarehouse(7, "Змейка 20см", "Черный", 10, "шт.");
+            mwh.Add(mwhItem);
+            mwhItem = new MainWarehouse(6, "Нитка PolyArt", "Синий", 1000, "метр");
+            mwh.Add(mwhItem);
+            mwhItem = new MainWarehouse(6, "Нитка PolyArt", "Светлый беж", 1500, "метр");
+            mwh.Add(mwhItem);
+            mwhItem = new MainWarehouse(6, "Нитка PolyArt", "Темный беж", 700, "метр");
+            mwh.Add(mwhItem);
+            mwhItem = new MainWarehouse(6, "Нитка PolyArt", "Черный", 500, "метр");
+            mwh.Add(mwhItem);
+            mwhItem = new MainWarehouse(6, "Нитка-резинка 60", "Белый", 1000, "метр");
+            mwh.Add(mwhItem);
+            mwhItem = new MainWarehouse(6, "Бирка Prunel", "Черный", 1000, "шт.");
+            mwh.Add(mwhItem);
+            mwhItem = new MainWarehouse(6, "Бирка Made in", "Черный", 1000, "шт.");
+            mwh.Add(mwhItem);
+            mwhItem = new MainWarehouse(6, "Бирка № размер", "Белый", 1000, "шт.");
+            mwh.Add(mwhItem);
+            mwhItem = new MainWarehouse(6, "Бирка № швеи", "Белый", 1000, "шт.");
+            mwh.Add(mwhItem);
+            mwhItem = new MainWarehouse(6, "Бирка условия эксплуатации", "Белый", 1000, "шт.");
+            mwh.Add(mwhItem);
+            mwhItem = new MainWarehouse(6, "Бирка условия эксплуатации", "Белый", 1000, "шт.");
+            mwh.Add(mwhItem);
+            mwhItem = new MainWarehouse(8, "Чернобурка", "Чернобурка", 1000, "шт.");
+            mwh.Add(mwhItem);
+            mwhItem = new MainWarehouse(1, "Вика", "Синий", 100, "метр");
+            mwh.Add(mwhItem);
+            mwhItem = new MainWarehouse(1, "Вика", "Светлый беж", 200, "метр");
+            mwh.Add(mwhItem);
+            mwhItem = new MainWarehouse(1, "Вика", "Темный беж", 50, "метр");
+            mwh.Add(mwhItem);
+            mwhItem = new MainWarehouse(1, "Вика", "Черный", 50, "метр");
+            mwh.Add(mwhItem);
+            mwhItem = new MainWarehouse(4, "Силикон 100", "б/ц", 3000, "метр");
+            mwh.Add(mwhItem);
+            mwhItem = new MainWarehouse(9, "Пакеты 120", "б/ц", 500, "шт.");
+            mwh.Add(mwhItem);
+            mwhItem = new MainWarehouse(9, "Пакеты 100", "б/ц", 500, "шт.");
+            mwh.Add(mwhItem);
+            mwhItem = new MainWarehouse(9, "Ярлык Prunel", "Черный", 2500, "шт.");
+            mwh.Add(mwhItem);
+            mwhItem = new MainWarehouse(9, "Наклейка размер 44", "б/ц", 400, "шт.");
+            mwh.Add(mwhItem);
+            mwhItem = new MainWarehouse(9, "Наклейка размер 46", "б/ц", 400, "шт.");
+            mwh.Add(mwhItem);
+            mwhItem = new MainWarehouse(9, "Наклейка размер 48", "б/ц", 400, "шт.");
+            mwh.Add(mwhItem);
+            mwhItem = new MainWarehouse(9, "Наклейка размер 50", "б/ц", 400, "шт.");
+            mwh.Add(mwhItem);
+            mwhItem = new MainWarehouse(9, "Наклейка № модели 435", "б/ц", 2400, "шт.");
+            mwh.Add(mwhItem);
+            mwhItem = new MainWarehouse(9, "Наклейка № модели 431", "б/ц", 400, "шт.");
+            mwh.Add(mwhItem);
+            mwhItem = new MainWarehouse(9, "Пакеты 120", "б/ц", 500, "шт.");
+            mwh.Add(mwhItem);
+            mwhItem = new MainWarehouse(9, "Тремпель", "Черный", 5000, "шт.");
+            mwh.Add(mwhItem);
+            mwhItem = new MainWarehouse(5, "Артикул 331", "б/ц", 200, "метр");
+            mwh.Add(mwhItem);
+            mwhItem = new MainWarehouse(5, "Артикул 241", "б/ц", 200, "метр");
+            mwh.Add(mwhItem);
+
+            repository.populateMainWh(mwh);
+        }
+        public void delMainWh()
+        {
+            repository.deleteMainWh();
+        }
+
+        public JsonResult allDemo()
+        {
+            pplWhAndSt();
+            pplPrices();
+            pplEmp();
+            pplCust();
+            pplOrders();
+            pplMainWh();
+
+            checkDbForEmpty();
+
+            return Json(Session["isDbsEmpty"], JsonRequestBehavior.AllowGet);
+        }
+        public JsonResult someDemo()
+        {
+            if (repository.Warehouse.Count() == 0)
+            {
+                pplWhAndSt();
+            }
+
+            if (repository.Store.Count() == 0)
+            {
+                pplWhAndSt();
+            }
+
+            if (repository.Prices.Count() == 0)
+            {
+                pplPrices();
+            }
+
+            if (repository.Customers.Count() == 0)
+            {
+                pplCust();
+            }
+
+            if (repository.Employees.Count() == 0)
+            {
+                pplEmp();
+            }
+
+            if (repository.OrderInfo.Count() == 0)
+            {
+                pplOrders();
+            }
+
+            if (repository.MainWh.Count() == 0)
+            {
+                pplMainWh();
+            }
+
+            checkDbForEmpty();
+            return Json(Session["isDbsEmpty"], JsonRequestBehavior.AllowGet);
+        }
+
         private bool checkDbForEmpty()
         {
-            //{ wh, st, prices, cust, empl, ordInf }
-            bool[] isDbEmpty = { false, false, false, false, false, false };
+            //{ wh, st, prices, cust, empl, ordInf, mainWh }
+            bool[] isDbEmpty = { false, false, false, false, false, false, false };
             
             if (repository.Warehouse.Count() == 0)
             {
@@ -418,6 +590,11 @@ namespace Josephine.Controllers
                 isDbEmpty[5] = true;
             }
 
+            if (repository.MainWh.Count() == 0)
+            {
+                isDbEmpty[6] = true;
+            }
+
             Session["isDbsEmpty"] = isDbEmpty;
 
             if (isDbEmpty[0] == true || isDbEmpty.Distinct().Count() == 2)
@@ -431,7 +608,7 @@ namespace Josephine.Controllers
         }
         public JsonResult isDbsEmpty()
         {
-            //checkDbForEmpty();
+            checkDbForEmpty();
             return Json(Session["isDbsEmpty"], JsonRequestBehavior.AllowGet);
         }
         public ActionResult askDemoData()
