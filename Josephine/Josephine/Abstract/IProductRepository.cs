@@ -34,14 +34,15 @@ namespace Josephine.Abstract
         void deleteEmployee();
         void populateOrders(OrderInfo[] oi, OrderProduct[] op);
         void deleteOrders();
+        void populateMainWh(List<MainWarehouse> mvh);
+        void deleteMainWh();
 
         void AddDataToDb<T>(T d);
         int AddOrderInfoToDb(OrderInfo oi);
         void AddOrderProductsToDb(IEnumerable<OrderProduct> op, int oId);
         void AddSoldProductsToDb(IEnumerable<OrderProduct> op, int customerId, int employeeId, int orderId);
-
-
-        void populateMainWh(List<MainWarehouse> mvh);
+        
+        
         void AddMainWhItemToDb(MainWarehouse item);
         void AddProductionTaskToDb(ProductionTask task);
         void AddRecipeToDb(Recipe rcp);

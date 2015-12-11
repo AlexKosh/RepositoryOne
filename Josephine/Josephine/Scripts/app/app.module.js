@@ -6,5 +6,4 @@
             'Jos.store',
             'Jos.production'
         ]);
-
 })();

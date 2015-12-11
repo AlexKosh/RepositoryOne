@@ -1,9 +1,11 @@
 ﻿var app = angular.module('askDemoData', []);
 app.controller('AskDemoController', function ($scope, $http) {
-
+    
     $scope.isDbEmpty = "ou-la-la!";
+    $scope.isDbEmpty = [null, null, null, null, null, null];
     $scope.getDbsEmptyData = function () {
         var result = $http.get('/home/isDbsEmpty').then(function (response) {
+            console.log(response.data);
             $scope.isDbEmpty = response.data;
         });
     };
@@ -27,9 +29,9 @@ app.controller('AskDemoController', function ($scope, $http) {
             $scope.checkDbs();
         })
     }
-    $scope.delPrices = function () {
+    $scope.delPrices = function () {        
         $http.get('/home/delPrices').then(function () {
-            $scope.isDbEmpty[2] = true;
+            $scope.isDbEmpty[2] = true;            
         })
     }
 
@@ -68,6 +70,26 @@ app.controller('AskDemoController', function ($scope, $http) {
         })
     }
 
+    $scope.getDemoMainWh = function () {
+        $http.get('/home/pplMainWh').then(function () {
+            $scope.isDbEmpty[6] = false;
+            $scope.checkDbs();
+        })
+    }
+    $scope.delMainWh = function () {
+        $http.get('/home/delMainWh').then(function () {
+            $scope.isDbEmpty[6] = true;
+        })
+    }
+    
+    $scope.getGlyphClass = function (i) {
+        //console.log(i);
+        //console.log($scope.isDbEmpty);
+        //console.log($scope.isDbEmpty[i]);
+        //console.log($scope.isDbEmpty[i] ? "glyphicon-alert btn-warning" : "glyphicon-ok btn-success");
+        return $scope.isDbEmpty[i] ? "glyphicon-alert btn-warning" : "glyphicon-ok btn-success";
+    }
+
     $scope.checkDbs = function () {
         var cond = false;
         for (var i = 0; i < $scope.isDbEmpty.length; i++) {
@@ -92,6 +114,8 @@ app.controller('AskDemoController', function ($scope, $http) {
                 break;
             case 5: $scope.getDemoOrders();
                 break;
+            case 6: $scope.getDemoMainWh();
+                break;
             default: alert('default in getDemo()');
 
         }
@@ -109,11 +133,26 @@ app.controller('AskDemoController', function ($scope, $http) {
                 break;
             case 5: $scope.delOrders();
                 break;
+            case 6: $scope.delMainWh();
+                break;
             default: alert('default in delDb()');
 
         }
     }
 
+    $scope.setAllDemo = function () {
+        $http.get('/home/allDemo').then(function (response) {
+            $scope.isDbEmpty = response.data;
+            $scope.checkDbs();
+        })
+    }
+    $scope.setSomeDemo = function () {
+        $http.get('/home/someDemo').then(function (response) {
+            $scope.isDbEmpty = response.data;
+            $scope.checkDbs();
+        })
+    }
+    $scope.isManualSetting = false;    
 
     $scope.getDbName = function (index) {
         switch (index) {
@@ -129,6 +168,8 @@ app.controller('AskDemoController', function ($scope, $http) {
                 break;
             case 5: return "Заказы";
                 break;
+            case 6: return "Главный склад";
+                break;
             default: return "Что-то новенькое";
         };
     };
@@ -136,5 +177,5 @@ app.controller('AskDemoController', function ($scope, $http) {
         return text = b == true ? "пуста" : "заполнена";
     };
     $scope.getDbsEmptyData();
-    console.log('hello asdasd');
+   
 });

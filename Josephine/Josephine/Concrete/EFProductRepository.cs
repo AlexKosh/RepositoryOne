@@ -142,7 +142,16 @@ namespace Josephine.Concrete
             context.OrderProduct.RemoveRange(context.OrderProduct);
             context.SaveChanges();
         }
-        
+        public void populateMainWh(List<MainWarehouse> mwh)
+        {
+            context.MainWh.AddRange(mwh);
+            context.SaveChanges();
+        }
+        public void deleteMainWh()
+        {
+            context.MainWh.RemoveRange(context.MainWh);
+            context.SaveChanges();
+        }
 
         public void AddDataToDb<T>(T d)
         {               
@@ -274,11 +283,7 @@ namespace Josephine.Concrete
 
 
         
-        public void populateMainWh(List<MainWarehouse> mwh)
-        {
-            context.MainWh.AddRange(mwh);
-            context.SaveChanges();
-        }
+        
         public void AddMainWhItemToDb(MainWarehouse item)
         {
             try
